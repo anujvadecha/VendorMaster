@@ -1,0 +1,12 @@
+MANIFEST.in
+README.rst
+setup.py
+apptemplates/__init__.py
+apptemplates/test/__init__.py
+apptemplates/test/settings.py
+apptemplates/test/urls.py
+django_apptemplates.egg-info/PKG-INFO
+django_apptemplates.egg-info/SOURCES.txt
+django_apptemplates.egg-info/dependency_links.txt
+django_apptemplates.egg-info/not-zip-safe
+django_apptemplates.egg-info/top_level.txt

@@ -1,0 +1,13 @@
+README.md
+setup.cfg
+setup.py
+kiteconnect/__init__.py
+kiteconnect/__version__.py
+kiteconnect/connect.py
+kiteconnect/exceptions.py
+kiteconnect/ticker.py
+kiteconnect.egg-info/PKG-INFO
+kiteconnect.egg-info/SOURCES.txt
+kiteconnect.egg-info/dependency_links.txt
+kiteconnect.egg-info/requires.txt
+kiteconnect.egg-info/top_level.txt
