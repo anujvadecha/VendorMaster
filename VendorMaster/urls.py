@@ -23,6 +23,7 @@ from VendorMaster import settings
 urlpatterns = [
     url('admin/', admin.site.urls),
     url('order/', include("orderManagement.urls")),
+    url('api/', include("api.urls")),
 ]
 
 if settings.DEBUG:
