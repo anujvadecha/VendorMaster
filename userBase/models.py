@@ -15,7 +15,8 @@ class NormalUser(BaseModel):
     enabled=models.BooleanField(default=True)
     phone_number=models.CharField(blank=True,max_length=14)
     profile_picture=models.ImageField(blank=True)
-
+    is_validated=models.BooleanField(default=False)
+    pan_card=models.ImageField(blank=True)
     def __str__(self):
         return self.user.username
 

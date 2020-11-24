@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'vendorbase',
     'userBase',
     'orderManagement',
-'phonenumber_field',
+    'phonenumber_field',
     # 'django_admin_index',
     'admin_interface',
     'colorfield',
@@ -43,16 +43,22 @@ INSTALLED_APPS = [
     "django_object_actions",
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+     'rest_auth.registration',
     'api'
 ]
 MEDIA_URL="/media/"
 MEDIA_ROOT="uploads"
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -125,5 +131,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
 ADMIN_USER="admin"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
+SITE_ID=1
+ACCOUNT_EMAIL_VERIFICATION="none"
+ACCOUNT_EMAIL_REQUIRED="true"
