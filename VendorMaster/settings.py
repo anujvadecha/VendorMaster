@@ -8,7 +8,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import os
 import pathlib
 import environ
 
@@ -51,12 +51,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-     'rest_auth.registration',
-    'api'
+    'rest_auth.registration',
+    'api',
+    'webpack_loader'
 ]
 MEDIA_URL="/media/"
 MEDIA_ROOT="uploads"
@@ -129,11 +129,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
 STATIC_URL = '/static/'
-
 ADMIN_USER="admin"
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
@@ -152,4 +149,16 @@ CHANNEL_LAYERS = {
             "hosts": [('127.0.0.1', 6379)],
         },
     },
+}
+
+AUTH_USER_MODEL="userBase.NormalUser"
+LOGIN_URL = "accounts/login"
+LOGIN_REDIRECT_URL="/"
+LOGOUT_REDIRECT_URL="/"
+CRISPY_TEMPLATE_PACK="bootstrap4"
+WEBPACK_LOADER={
+    "DEFAULT":{
+        'BUNDLE_DIR_NAME':'/dist',
+        'STATS_FILE':os.path.join(BASE_DIR,'frontend','webpack-stats.json')
+    }
 }

@@ -18,6 +18,7 @@
             + 'ticker'
             + '/'
         );
+
         tickerSocket.onmessage = function (e) {
             const data = JSON.parse(e.data);
 
@@ -35,7 +36,6 @@
                 tickpriceSell=data["gold_tick"]["ask"]
                 renderTablesOnInstruments(instruments)
             }
-            {#document.querySelector('#chat-log').value += (data.message + '\n');#}
         };
 
         tickerSocket.onclose = function (e) {

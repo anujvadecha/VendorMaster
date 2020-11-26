@@ -42,9 +42,6 @@ class VendorAdmin(admin.ModelAdmin):
     search_fields = ('name','city',)
     pass
 
-@admin.register(NormalUser)
-class User(admin.ModelAdmin):
-    pass
 
 
 @admin.register(OpenOrder)

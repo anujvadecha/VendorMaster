@@ -16,19 +16,27 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf.urls import url
-from django.urls import include, path
-
+from django.urls import include, path, re_path
 from VendorMaster import settings
-from vendorbase.api.views import get_normalUser, UserValidationView
+from userBase.forms import CustomUserForm
+from django_registration.backends.one_step.views import RegistrationView
+
+from vendorbase.views import IndexTemplateView
 
 urlpatterns = [
     url('admin/', admin.site.urls),
     url('order/', include("orderManagement.urls")),
+    path("accounts/register/",RegistrationView.as_view(
+        form_class=CustomUserForm,
+        success_url="admin/",
+    ),name="django_registration_register"),
+    path("accounts/",include("django_registration.backends.one_step.urls")),
+    path("accounts/",include("django.contrib.auth.urls")),
     url('api/', include("api.urls")),
     path('api-auth/', include("rest_framework.urls")),
     path("api/rest-auth/",include("rest_auth.urls")),
     path("api/rest-auth/registration",include("rest_auth.registration.urls")),
-    path("api/normaluser",UserValidationView.as_view())
+    path("",IndexTemplateView.as_view(),name="entry-point")
 ]
 
 if settings.DEBUG:
