@@ -2,56 +2,87 @@
 {% extends "admin/change_list.html" %}
 {% load static %}
 {% block content %}
-<table style="margin:40px;width:60%">
-  <tr>
-    <th>Product</th>
-    <th>Bid</th>
-    <th>Ask</th>
-    <th>High</th>
-    <th>Low</th>
-  </tr>
-  <tr>
-    <td>Gold 999</td>
-    <td>50191</td>
-    <td>50300</td>
-    <td>51000</td>
-    <td>50000</td>
-  </tr>
-  <tr>
-    <td>Gold 999</td>
-    <td>50198</td>
-    <td>50300</td>
-    <td>51000</td>
-    <td>50000</td>
-  </tr>
-  <tr>
-    <td>Gold 999</td>
-    <td>50191</td>
-    <td>50300</td>
-    <td>51000</td>
-    <td>50000</td>
-  </tr>
-  <tr>
-    <td>Gold 999</td>
-    <td>50191</td>
-    <td>50300</td>
-    <td>51000</td>
-    <td>50000</td>
-  </tr>
-  <tr>
-    <td>Gold 999</td>
-    <td>50191</td>
-    <td>50300</td>
-    <td>51000</td>
-    <td>50000</td>
-  </tr>
-  <tr>
-    <td>Gold 999</td>
-    <td>50191</td>
-    <td>50300</td>
-    <td>51000</td>
-    <td>50000</td>
-  </tr>
-</table>
+    <script>
+    connect();
+    var tickpriceBuy=50000;
+    var tickpriceSell=50000;
+    var instruments;
+    var globalPremiumBuy=0;
+    var globalPremiumSell=0;
+    function connect() {
+        var instruments;
+        const tickerSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/'
+            + 'ticker'
+            + '/'
+        );
+        tickerSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+
+            if (data["instruments"]) {
+                instruments=data["instruments"]
+                renderTablesOnInstruments(instruments)
+            }
+            if(data['global_premium'])
+            {
+                globalPremiumBuy=data["global_premium"]["buy_premium"]
+                globalPremiumSell=data["global_premium"]["sell_premium"]
+            }
+            if(data["gold_tick"])
+            {  tickpriceBuy=data["gold_tick"]["bid"]
+                tickpriceSell=data["gold_tick"]["ask"]
+                renderTablesOnInstruments(instruments)
+            }
+            {#document.querySelector('#chat-log').value += (data.message + '\n');#}
+        };
+
+        tickerSocket.onclose = function (e) {
+            console.log('Socket is closed. Reconnect will be attempted in 2 second.', e.reason);
+            setTimeout(function () {
+                connect();
+            }, 2000);
+        };
+
+        tickerSocket.onopen = function () {
+            console.log("tickerSocket opened");
+            tickerSocket.send(JSON.stringify({
+                "type": "ticker_request",
+                'message': "Please send ticks! I beg you my lord"
+            }));
+        }
+    }
+
+    function renderTablesOnInstruments(instruments)
+    {
+        console.log("instruments"+instruments)
+        var rows = '';
+        rows+="<tr>\n" +
+            "    <th>Product</th>\n" +
+            "    <th>Bid</th>\n" +
+            "    <th>Ask</th>\n" +
+            "    <th>High</th>\n" +
+            "    <th>Low</th>\n" +
+            "  </tr>";
+        instruments.forEach(function(item) {
+            const bidprice=item["buy_premium"]  +tickpriceBuy  + globalPremiumBuy
+            const askprice=item["sell_premium"] +tickpriceSell + globalPremiumSell
+            var row = '<tr>';
+            row += '<td>' + item["name"]+ '</td>';
+            row += '<td>' + bidprice+ '</td>';
+            row += '<td>' + askprice+ '</td>';
+            row += '<td>' + bidprice+ '</td>';
+            row += '<td>' + askprice+ '</td>';
+            row + '<tr>';
+            rows+=row
+        });
+        document.getElementById("data-table").innerHTML=rows;
+        {#$('#' + "data-table").html(rows);#}
+    }
+    </script>
+
+<table id="data-table"style="margin:40px;width:60%"></table>
+
 {{ block.super }}
 {% endblock %}

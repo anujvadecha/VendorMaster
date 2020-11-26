@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'base',
     'vendorbase',
     'userBase',
@@ -139,7 +140,16 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ]
 }
-
+ALLOWED_HOSTS=['*',]
 SITE_ID=1
 ACCOUNT_EMAIL_VERIFICATION="none"
 ACCOUNT_EMAIL_REQUIRED="true"
+ASGI_APPLICATION = 'VendorMaster.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
