@@ -2,6 +2,8 @@ venv
 .DS_Store
 db.sqlite3
 test.py
+*.env
+*.pyc
 *.pyc
 .idea/vcs.xml
 
