@@ -1,8 +1,9 @@
-import Home from "../views/Home.vue";
-import Orders from "../views/Orders.vue";
-import Account from "../views/Account.vue";
+import Home from "@/views/Home.vue";
+import Orders from "@/views/Orders.vue";
+import Account from "@/views/Account.vue";
 import Vue from "vue";
 import VueRouter from 'vue-router'
+import Favourites from "@/views/Favourites";
 
 Vue.use(VueRouter);
 
@@ -21,12 +22,16 @@ const routes = [
     path: "/account",
     name: "Account",
     component: Account
+  },
+  {
+    path: "/favourites",
+    name: "Favourites",
+    component: Favourites
   }
 ];
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
   routes
 })
 
