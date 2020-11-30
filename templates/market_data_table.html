@@ -11,12 +11,13 @@
     var globalPremiumSell=0;
     function connect() {
         var instruments;
-        const tickerSocket = new WebSocket(
-            'ws://'
+        const url='ws://'
             + window.location.host
             + '/ws/'
             + 'ticker'
             + '/'
+        const tickerSocket = new WebSocket(
+            url
         );
 
         tickerSocket.onmessage = function (e) {
@@ -56,7 +57,7 @@
 
     function renderTablesOnInstruments(instruments)
     {
-        console.log("instruments"+instruments)
+        instruments = JSON.parse(instruments)
         var rows = '';
         rows+="<tr>\n" +
             "    <th>Product</th>\n" +
@@ -65,17 +66,18 @@
             "    <th>High</th>\n" +
             "    <th>Low</th>\n" +
             "  </tr>";
-        instruments.forEach(function(item) {
-            const bidprice=item["buy_premium"]  +tickpriceBuy  + globalPremiumBuy
-            const askprice=item["sell_premium"] +tickpriceSell + globalPremiumSell
-            var row = '<tr>';
-            row += '<td>' + item["name"]+ '</td>';
-            row += '<td>' + bidprice+ '</td>';
-            row += '<td>' + askprice+ '</td>';
-            row += '<td>' + bidprice+ '</td>';
-            row += '<td>' + askprice+ '</td>';
-            row + '<tr>';
-            rows+=row
+        instruments.forEach(function(item){
+            console.log(item)
+                const bidprice = item["buy_premium"] + tickpriceBuy + globalPremiumBuy
+                const askprice = item["sell_premium"] + tickpriceSell + globalPremiumSell
+                var row = '<tr>';
+                row += '<td>' + item["name"] + '</td>';
+                row += '<td>' + bidprice + '</td>';
+                row += '<td>' + askprice + '</td>';
+                row += '<td>' + bidprice + '</td>';
+                row += '<td>' + askprice + '</td>';
+                row + '<tr>';
+                rows += row
         });
         document.getElementById("data-table").innerHTML=rows;
         {#$('#' + "data-table").html(rows);#}

@@ -13,20 +13,23 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import debug_toolbar
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf.urls import url
+from django.core.cache import cache
 from django.urls import include, path, re_path
 from VendorMaster import settings
+from order_engine.order_engine import OrderEngine
 from userBase.forms import CustomUserForm
 from django_registration.backends.one_step.views import RegistrationView
-
 from vendorbase.views import IndexTemplateView
 
+print("cached OrderEngine instance is "+str(hex(id(cache.get("orderEngine")))))
 urlpatterns = [
     url('admin/', admin.site.urls),
     url('order/', include("orderManagement.urls")),
-    path("accounts/register/",RegistrationView.as_view(
+    path("accounts/register/", RegistrationView.as_view(
         form_class=CustomUserForm,
         success_url="admin/",
     ),name="django_registration_register"),
@@ -36,7 +39,7 @@ urlpatterns = [
     path('api-auth/', include("rest_framework.urls")),
     path("api/rest-auth/",include("rest_auth.urls")),
     path("api/rest-auth/registration",include("rest_auth.registration.urls")),
-    path("",IndexTemplateView.as_view(),name="entry-point")
+    path("",IndexTemplateView.as_view(),name="entry-point"),
 ]
 
 if settings.DEBUG:

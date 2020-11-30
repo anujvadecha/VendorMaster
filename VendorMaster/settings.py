@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # 'debug_toolbar',
+    'django_celery_results',
     'channels',
     'base',
     'vendorbase',
@@ -69,6 +71,16 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
 
 ROOT_URLCONF = 'VendorMaster.urls'
 
@@ -114,6 +126,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+INTERNAL_IPS = [
+    # ...
+    '127.0.0.1',
+    # ...
+]
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -151,6 +168,12 @@ CHANNEL_LAYERS = {
     },
 }
 
+# BROKER_URL = 'redis://localhost:6379'
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Africa/Nairobi'
 AUTH_USER_MODEL="userBase.NormalUser"
 LOGIN_URL = "accounts/login"
 LOGIN_REDIRECT_URL="/"
@@ -162,3 +185,5 @@ WEBPACK_LOADER={
         'STATS_FILE':os.path.join(BASE_DIR,'frontend','webpack-stats.json')
     }
 }
+
+SOCKET_GROUP="ticker_group"

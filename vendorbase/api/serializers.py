@@ -11,8 +11,8 @@ class NormalUserSerializer(serializers.ModelSerializer):
 class SymbolSerializer(serializers.ModelSerializer):
     class Meta:
         model=Symbol
-        # fields="__all__"
-        exclude=("instrument_id","vendor_id")
+        fields="__all__"
+        # exclude=("instrument_id","vendor_id")
 class GlobalPremiumSerializer(serializers.ModelSerializer):
     class Meta:
         model=GlobalPremium

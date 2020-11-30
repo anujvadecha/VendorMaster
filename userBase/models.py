@@ -12,10 +12,9 @@ class UserType(DjangoChoices):
 
 class NormalUser(AbstractUser):
     enabled = models.BooleanField(default=True)
-    # user = models.OneToOneField(User,on_delete=models.CASCADE,default=User.objects.first())
-    # phone_number=models.CharField(blank=True,max_length=14)
-    # profile_picture=models.ImageField(blank=True)
-    # is_validated=models.BooleanField(default=False)
-    # pan_card=models.ImageField(blank=True)
-
+    phone_number=models.CharField(blank=True,max_length=14)
+    profile_picture=models.ImageField(blank=True)
+    pan_card=models.ImageField(blank=True)
+    def get_phone_number(self):
+        return self.phone_number
 

@@ -5,4 +5,4 @@ from orderManagement.models import Order
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model=Order
-        exclude=("order_id",)
+        fields="__all__"

@@ -1,11 +1,17 @@
 from django.conf.urls import *
 from django.contrib import admin
+from django.core.cache import cache
 from django.http import HttpResponseRedirect
 from django.urls import path, reverse
 from django.utils.html import format_html
-from orderManagement.models import Order, OrderStatus, OpenOrder, ExecutedOrder, ClosedOrder
+
+from base.models import BaseModel
+from orderManagement.models import Order, OrderStatus, OpenOrder, ExecutedOrder, ClosedOrder, LimitOrderPending
+from order_engine.order_engine import OrderEngine
 from userBase.models import NormalUser
-from vendorbase.models import Symbol, Vendor, Group, City
+from vendorbase.models import Symbol, Vendor, Group, City, GlobalPremium
+from vendorbase.views import startOrderEngine
+
 
 @admin.register(Symbol)
 class SymbolAdmin(admin.ModelAdmin):
@@ -42,16 +48,28 @@ class VendorAdmin(admin.ModelAdmin):
     search_fields = ('name','city',)
     pass
 
+@admin.register(LimitOrderPending)
+class LimitOrderPendingAdmin(admin.ModelAdmin):
+    def get_queryset(self, request):
+        return self.model.objects.filter(status=OrderStatus.WAITING_FOR_LIMIT)
+    list_display = ('instrument_id', 'side', 'quantity', 'status', 'created_at')
+    list_display_links = ('instrument_id',)
+    list_editable = ('status',)
+    list_filter = ('status',)
+    search_fields = ('order_id', 'instrument_id__name', 'user_id__name')
+    list_per_page = 10
+    ordering = ('created_at',)
+
 
 
 @admin.register(OpenOrder)
 class OpenOrderAdmin(admin.ModelAdmin):
-    def user_id_url(self, obj):
-        if obj and obj.user_id:
-            return format_html('<a  href="{}">{}</a>'.format(obj.user_id.get_admin_url(), obj.user_id))
-
-    user_id_url.make_safe = True
-    user_id_url.allow_tags = True
+    # def user_id_url(self, obj):
+    #     if obj and obj.user_id:
+    #         return format_html('<a  href="{}">{}</a>'.format(obj.user_id.get_admin_url(), obj.user_id))
+    #
+    # user_id_url.make_safe = True
+    # user_id_url.allow_tags = True
 
     def get_urls(self):
         urls = super(OpenOrderAdmin,self).get_urls()
@@ -73,11 +91,13 @@ class OpenOrderAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         return self.model.objects.filter(status=OrderStatus.OPEN)
 
-    list_display = ('instrument_id', 'user_id_url','side','quantity','created_at','approve_payment')
+    # 'user_id_url'
+    list_display = ('instrument_id' ,'side','quantity','created_at','approve_payment')
     list_display_links = ('instrument_id',)
     # list_editable = ( 'status',)
     list_filter = ('instrument_id__name',)
     search_fields = ('order_id', 'instrument_id__name','user_id__name')
+    list_per_page = 10
 
 @admin.register(ExecutedOrder)
 class ExecutedOrderAdmin(admin.ModelAdmin):
@@ -93,6 +113,7 @@ class ExecutedOrderAdmin(admin.ModelAdmin):
     list_editable = ( 'status',)
     list_filter = ('status',)
     search_fields = ('order_id',  'instrument_id__name','user_id__name')
+    list_per_page = 10
 
 @admin.register(ClosedOrder)
 class ExecutedOrderAdmin(admin.ModelAdmin):
@@ -108,6 +129,7 @@ class ExecutedOrderAdmin(admin.ModelAdmin):
     list_editable = ( 'status',)
     list_filter = ('status',)
     search_fields = ('order_id', 'instrument_id__name','user_id__name')
+    list_per_page = 10
 
 @admin.register(Group)
 class Group(admin.ModelAdmin):
@@ -116,3 +138,20 @@ class Group(admin.ModelAdmin):
 @admin.register(City)
 class City(admin.ModelAdmin):
     pass
+
+@admin.register(GlobalPremium)
+class GlobalPremium(admin.ModelAdmin):
+    pass
+
+
+class OrderEngine_Pool(BaseModel):
+
+    pass
+
+@admin.register(OrderEngine_Pool)
+class OrderEngineAdmin(admin.ModelAdmin):
+    change_list_template = "StartOrderEngine.html"
+    def get_urls(self):
+        urls = super(OrderEngineAdmin, self).get_urls()
+        my_urls = [url(r"^startOrderEngine/$",startOrderEngine)]
+        return my_urls + urls

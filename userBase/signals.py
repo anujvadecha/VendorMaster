@@ -4,8 +4,8 @@ from django.dispatch import receiver
 from userBase.models import NormalUser
 
 
-# @receiver(post_save,sender=User)
-# def create_user(sender,instance,created,**kwargs):
-#     print("Created",created)
-#     if created:
-#         NormalUser.objects.create(user=instance)
+@receiver(post_save,sender=User)
+def create_user(sender,instance,created,**kwargs):
+    print("Created",created)
+    # if created:
+    #     NormalUser.objects.create(user=instance)

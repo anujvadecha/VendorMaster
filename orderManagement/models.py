@@ -1,5 +1,4 @@
 import uuid
-
 from django.db import models
 from djchoices import DjangoChoices, ChoiceItem
 from base.models import BaseModel
@@ -15,6 +14,7 @@ class OrderStatus(DjangoChoices):
     EXECUTED=ChoiceItem("EXECUTED")
     CLOSED=ChoiceItem("CLOSED")
     CANCELLED=ChoiceItem("CANCELLED")
+    WAITING_FOR_LIMIT=ChoiceItem("WAITING_FOR_LIMIT")
 
 class OrderSide(DjangoChoices):
     BUY=ChoiceItem("BUY")
@@ -27,11 +27,13 @@ class Order(BaseModel):
     user_id = models.ForeignKey(NormalUser,on_delete=models.DO_NOTHING,blank=True)
     price = models.FloatField(max_length=200)
     type = models.CharField(max_length=200, choices=OrderType, default=OrderType.MARKET)
-    status  =   models.CharField(max_length=100,choices=OrderStatus,default=OrderStatus.OPEN)
+    status = models.CharField(max_length=100,choices=OrderStatus,default=OrderStatus.OPEN)
     side = models.CharField( default=OrderSide.BUY,max_length=200 ,choices=OrderSide)
+    def vendor(self):
+        return self.instrument_id.vendor_id
+
     def __str__(self):
         return self.user_id.__str__();
-
 
 class OpenOrder(Order):
     class Meta:
@@ -44,3 +46,7 @@ class ClosedOrder(Order):
 class ExecutedOrder(Order):
     class Meta:
         proxy=True
+
+class LimitOrderPending(Order):
+    class Meta:
+        proxy = True

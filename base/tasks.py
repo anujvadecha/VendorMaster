@@ -3,7 +3,7 @@ from raven.contrib.django.raven_compat.models import client
 from django.db import transaction
 from django.core.cache import cache
 
-from pps.celery import app
+from vendorbase.celery import app
 
 LOGGER = logging.getLogger(__name__)
 
