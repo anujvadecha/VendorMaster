@@ -20,12 +20,10 @@ from django.conf.urls import url
 from django.core.cache import cache
 from django.urls import include, path, re_path
 from VendorMaster import settings
-from order_engine.order_engine import OrderEngine
 from userBase.forms import CustomUserForm
 from django_registration.backends.one_step.views import RegistrationView
 from vendorbase.views import IndexTemplateView
 
-print("cached OrderEngine instance is "+str(hex(id(cache.get("orderEngine")))))
 urlpatterns = [
     url('admin/', admin.site.urls),
     url('order/', include("orderManagement.urls")),

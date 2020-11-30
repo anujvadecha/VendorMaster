@@ -7,10 +7,8 @@ from django.utils.html import format_html
 
 from base.models import BaseModel
 from orderManagement.models import Order, OrderStatus, OpenOrder, ExecutedOrder, ClosedOrder, LimitOrderPending
-from order_engine.order_engine import OrderEngine
 from userBase.models import NormalUser
 from vendorbase.models import Symbol, Vendor, Group, City, GlobalPremium
-from vendorbase.views import startOrderEngine
 
 
 @admin.register(Symbol)
@@ -144,14 +142,14 @@ class GlobalPremium(admin.ModelAdmin):
     pass
 
 
-class OrderEngine_Pool(BaseModel):
+# class OrderEngine_Pool(BaseModel):
+#
+#     pass
 
-    pass
-
-@admin.register(OrderEngine_Pool)
-class OrderEngineAdmin(admin.ModelAdmin):
-    change_list_template = "StartOrderEngine.html"
-    def get_urls(self):
-        urls = super(OrderEngineAdmin, self).get_urls()
-        my_urls = [url(r"^startOrderEngine/$",startOrderEngine)]
-        return my_urls + urls
+# @admin.register(OrderEngine_Pool)
+# class OrderEngineAdmin(admin.ModelAdmin):
+#     change_list_template = "StartOrderEngine.html"
+#     def get_urls(self):
+#         urls = super(OrderEngineAdmin, self).get_urls()
+#         my_urls = [url(r"^startOrderEngine/$",startOrderEngine)]
+#         return my_urls + urls

@@ -7,7 +7,6 @@ from channels.generic.websocket import WebsocketConsumer
 from VendorMaster import settings
 from orderManagement.api.serializers import OrderSerializer
 from orderManagement.models import Order, OrderStatus, OrderType
-from order_engine.order_engine import OrderEngine
 from vendorbase.api.serializers import SymbolSerializer, GlobalPremiumSerializer
 from vendorbase.models import Symbol, GlobalPremium
 import time
