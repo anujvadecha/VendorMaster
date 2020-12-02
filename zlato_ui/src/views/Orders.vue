@@ -2,7 +2,7 @@
   <div class="orders">
     <v-card>
       <v-card-title>Orders</v-card-title>
-      <v-tabs vertical>
+      <v-tabs horizontal>
         <v-tab>
           <v-icon left>
             mdi-account
@@ -10,49 +10,26 @@
           Open
         </v-tab>
         <v-tab>
-          <v-icon left>
+          <v-icon >
             mdi-lock
           </v-icon>
           Executed
         </v-tab>
         <v-tab>
-          <v-icon left>
+          <v-icon >
             mdi-access-point
           </v-icon>
           Previous
         </v-tab>
 
         <v-tab-item>
-          <v-card flat>
-            <v-list three-line>
-              <v-list-item-group v-model="model">
-                <v-list-item>
-                  <v-list-item-content>
-                    <v-card class="d-flex flex-row pa-2" outlined tile>
-                      <v-row ></v-row>
-                      <v-row no-gutters align-self="middle">
-                        <v-col cols="8">#TR1234567890</v-col>
-                        <v-col cols="4"><v-chip>Limit</v-chip>50600</v-col>
-                      </v-row>
-                      <!--                        Arihant Gold 999-->
-                      <!--                        <div>Delivery 3-10th Nov</div>-->
-                      <!--                        <div>15:23:19</div>-->
-                      <!--                        <v-chip>BUY</v-chip>-->
-                      <!--                        200-->
-                      <!--                        <v-btn>Cancel</v-btn>-->
-                    </v-card>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
-          </v-card>
+          <ActiveOrders v-bind:active_orders="active_orders" />
         </v-tab-item>
+
         <v-tab-item>
-          <v-card flat>
-            <v-card-text>
-            </v-card-text>
-          </v-card>
+          <ExecutedOrders />
         </v-tab-item>
+
         <v-tab-item>
           <v-card flat>
             <v-card-text>
@@ -70,8 +47,16 @@
 </template>
 
 <script>
+import ActiveOrders from "../components/orders/ActiveOrders";
+import ExecutedOrders from "../components/orders/ExecutedOrders";
+
+
 export default {
   name: "Orders",
+  components: {
+    ActiveOrders,
+    ExecutedOrders
+  },
   data() {
     return {
       items: [
@@ -93,8 +78,24 @@ export default {
         },
       ],
       model: 1,
+      active_orders: [
+        {
+          title: "Arihant",
+          instrument_id: "#12313123",
+          quantity: 200,
+          order_id: 1,
+          price: 1000
+        },
+        {
+          title: "Tribhovan",
+          instrument_id: "#0327490",
+          quantity: 300,
+          order_id: 2,
+          price: 2000
+        }
+      ]
     }
-  }
+  },
 };
 </script>
 

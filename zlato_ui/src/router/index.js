@@ -2,7 +2,7 @@ import Home from "@/views/Home.vue";
 import Orders from "@/views/Orders.vue";
 import Account from "@/views/Account.vue";
 import Vue from "vue";
-import VueRouter from 'vue-router'
+import VueRouter from "vue-router";
 import Favourites from "@/views/Favourites";
 
 Vue.use(VueRouter);
@@ -31,8 +31,8 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   routes
 })
 
-export default router
+export default router;
