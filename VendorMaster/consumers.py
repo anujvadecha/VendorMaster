@@ -115,7 +115,6 @@ class OrderEngineConsumer(WebsocketConsumer):
     def tick(self,data):
         message = data
         self.send(text_data=json.dumps(message))
-
     #For future use in frontend ui to update premums on the go
     #Backend admin page anyway reloads on update
     def premium_update(self,data):

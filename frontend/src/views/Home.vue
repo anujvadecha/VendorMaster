@@ -62,7 +62,6 @@ export default {
 },
 
   created() {
-    console.log("page created starting websocket connection");
     const url='ws://'
             + window.location.host
             + '/ws/'
