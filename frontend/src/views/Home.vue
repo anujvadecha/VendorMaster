@@ -61,29 +61,7 @@ export default {
       },
 },
 
-  created() {
-    const url='ws://'
-            + window.location.host
-            + '/ws/'
-            + 'ticker'
-            + '/'
-    const symbolsocket=new WebSocket(url)
-    symbolsocket.onopen=function(event){
-      console.log("websocket connected "+event)
-      symbolsocket.send(JSON.stringify({
-        "type":"ticker_request",
-        "message":"Please send all symbols"
-      }))
-    }
-    symbolsocket.onmessage=function (event){
-      var message=JSON.parse(event.data)
-      console.log(message)
-      if(message["instruments"]){
-        var instruments=JSON.parse(message["instruments"])
-        store.dispatch("push_instruments",instruments)
-      }
-    }
-  }
+
 
 };
 </script>

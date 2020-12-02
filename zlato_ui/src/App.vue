@@ -1,43 +1,18 @@
 <template>
   <v-app>
-<!--    <v-system-bar-->
-<!--  height="33"-->
-<!--  color="blue"-->
-<!--    > Prices Gold:50999 </v-system-bar>-->
-    <v-app-bar app color="orange"  dark >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Zlato Logo"
-          class="shrink mr-2"
-          contain
-          src="logo.png"
-          transition="scale-transition"
-          width="40"
-        />
-        <v-card-text
-          alt="Zlato"
-          class="shrink mt-1 show-sm-and-down"
-          contain
-          min-width="100"
-          width="100"
-        ><h1>Zlato</h1></v-card-text>
-      </div>
-      <v-spacer></v-spacer>
-      <router-link  to="/"><v-btn  text><span class="mr-2">Home</span></v-btn></router-link>
-      <router-link to="/orders"><v-btn text><span class="mr-2">Orders</span></v-btn></router-link>
-      <router-link to="/favourites"><v-btn text><span class="mr-2">Favourites</span></v-btn></router-link>
-      <router-link to="/account"><v-btn  text><span class="mr-2">Account</span></v-btn></router-link>
-      </v-app-bar>
-
-      <v-main >
-        <v-container >
-          <router-view />
-        </v-container>
-      </v-main>
+    <!--    <v-system-bar-->
+    <!--  height="33"-->
+    <!--  color="blue"-->
+    <!--    > Prices Gold:50999 </v-system-bar>-->
+    <NavBar></NavBar>
+    <v-main>
+      <v-container>
+        <router-view />
+      </v-container>
+    </v-main>
     <v-footer app>
       Built with love and dedication from DeltaCap Bullion
     </v-footer>
-
   </v-app>
 </template>
 <script>
@@ -47,15 +22,39 @@
 // import 'bootstrap-vue/dist/bootstrap-vue.css'
 // Vue.use(BootstrapVue)
 // Vue.use(IconsPlugin)
-
+import store from "@/store";
+import NavBar from "./components/NavBar/NavBar";
 export default {
   name: "App",
 
-  components: {
-  },
+  components: { NavBar },
 
   data: () => ({
     //
-  })
+  }),
+  created() {
+    const url = "ws://" + window.location.host + "/ws/" + "ticker" + "/";
+    const symbolsocket = new WebSocket(url);
+    symbolsocket.onopen = function() {
+      symbolsocket.send(
+        JSON.stringify({
+          type: "ticker_request",
+          message: "Please send all symbols"
+        })
+      );
+    };
+    symbolsocket.onmessage = function(event) {
+      var message = JSON.parse(event.data);
+      if (message["instruments"]) {
+        var instruments = JSON.parse(message["instruments"]);
+        console.log("instruments received" + instruments);
+        store.dispatch("push_instruments", instruments);
+      }
+      if (message["gold_tick"]) {
+        console.log(message["gold_tick"]);
+        store.dispatch("update_prices", message);
+      }
+    };
+  }
 };
 </script>

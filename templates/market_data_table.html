@@ -11,6 +11,7 @@
     var globalPremiumSell=0;
     function connect() {
         var instruments;
+
         const url='ws://'
             + window.location.host
             + '/ws/'
@@ -33,7 +34,8 @@
                 globalPremiumSell=data["global_premium"]["sell_premium"]
             }
             if(data["gold_tick"])
-            {  tickpriceBuy=data["gold_tick"]["bid"]
+            {
+                tickpriceBuy=data["gold_tick"]["bid"]
                 tickpriceSell=data["gold_tick"]["ask"]
                 renderTablesOnInstruments(instruments)
             }

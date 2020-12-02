@@ -9,7 +9,7 @@ export default new Vuex.Store({
   },
   mutations: {
     push_instruments(state,instruments){
-      state.instruments=instruments
+      state.instruments.push(instruments)
     }
   },
   actions: {
@@ -18,5 +18,6 @@ export default new Vuex.Store({
     }
   },
   modules: {
+
   }
 })

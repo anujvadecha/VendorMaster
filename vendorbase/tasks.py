@@ -1,8 +1,7 @@
 import time
 from django.core.cache import cache
 from orderManagement.models import Order, OrderType, OrderSide, OrderStatus
-from order_engine.instrument_engine import InstrumentEngine
-from order_engine.order_engine import OrderEngine
+
 from .celery import  app
 from .symbols_functions import get_instrument_data, load_instruments, load_limit_orders_pending
 
