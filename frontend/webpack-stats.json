@@ -1,1 +1,0 @@
-{"status":"error","publicPath":"http://0.0.0.0:8080/","error":"ModuleNotFoundError","message":"Module not found: Error: Can't resolve '../stylus/main.styl' in '/Users/anuj.vadecha/PycharmProjects/VendorMaster/frontend/src'"}

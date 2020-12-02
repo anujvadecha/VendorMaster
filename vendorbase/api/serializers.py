@@ -2,7 +2,7 @@ from rest_framework import serializers
 from userBase.models import NormalUser
 from vendorbase.models import Symbol, GlobalPremium, Vendor
 
-
+#NormalUserSerializer
 class NormalUserSerializer(serializers.ModelSerializer):
     class Meta:
         model=NormalUser
@@ -20,10 +20,12 @@ class VendorSerializer(serializers.ModelSerializer):
         fields="__all__"
 
 class SymbolSerializer(serializers.ModelSerializer):
-    vendor=serializers.StringRelatedField()
+    vendor = VendorSerializer(source="vendor_id")
     class Meta:
         model=Symbol
-        fields="__all__"
+        fields=[
+            "instrument_id","vendor_id","type","name","delivery_from","delivery_to",
+        "quantity","source_symbol","buy_premium","sell_premium","vendor"]
         # exclude=("instrument_id","vendor_id")
 class GlobalPremiumSerializer(serializers.ModelSerializer):
     class Meta:

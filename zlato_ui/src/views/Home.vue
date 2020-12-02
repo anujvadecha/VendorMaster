@@ -22,14 +22,20 @@
         :headers="headers"
         :items="instruments_to_render"
         :search="search"
+        loading-text="Loading... Please wait"
       >
+        <template v-slot:item.vendor_id="{ item }">
+          <div dark @click="open_order_sheet(item)" style="color:slateblue;">
+            {{ item.vendor.name }}
+          </div>
+        </template>
         <template v-slot:item.bid="{ item }">
-          <div dark @click="sheet = !sheet">
+          <div dark @click="open_order_sheet(item)">
             {{ item.bid }}
           </div>
         </template>
         <template v-slot:item.ask="{ item }">
-          <div dark @click="sheet = !sheet">
+          <div dark @click="open_order_sheet(item)">
             {{ item.ask }}
           </div>
         </template>
@@ -42,6 +48,7 @@
         </v-btn>
         <div class="my-3">
           Order Page
+          {{ selected_item }}
         </div>
       </v-sheet>
     </v-bottom-sheet>
@@ -55,16 +62,17 @@ export default {
   name: "Home",
   data() {
     return {
+      selected_item: null,
       sheet: false,
       items: ["gold999", "gold 999 1kg", "gold 995", "gold 995 1kg"],
       search: "",
       headers: [
         { text: "Vendor", align: "start", value: "vendor_id" },
         { text: "Symbol", value: "name" },
-        { text: "Bid", value: "bid" },
-        { text: "Ask", value: "ask" },
-        { text: "High", value: "high" },
-        { text: "Low", value: "low" }
+        { text: "Bid", value: "bid", filterable: false },
+        { text: "Ask", value: "ask", filterable: false },
+        { text: "High", value: "high", filterable: false },
+        { text: "Low", value: "low", filterable: false }
       ],
       instruments: this.$store.getters.get_instruments
     };
@@ -72,6 +80,13 @@ export default {
   computed: {
     instruments_to_render: function() {
       return this.$store.getters.get_instruments;
+    }
+  },
+  methods: {
+    open_order_sheet: function(item) {
+      console.log(item);
+      this.selected_item = item;
+      this.sheet = !this.sheet;
     }
   }
 };

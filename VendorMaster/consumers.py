@@ -61,9 +61,8 @@ class TickConsumer(WebsocketConsumer):
 
     #For future use in frontend ui to update premums on the go
     #Backend admin page anyway reloads on update
-
     def instrument_update(self,data):
-        pass
+        self.send(text_data=json.dumps(data, cls=UUIDEncoder))
 
     def order_update(self,data):
         pass

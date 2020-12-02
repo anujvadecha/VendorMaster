@@ -24,4 +24,4 @@ class Command(BaseCommand):
                     }
                 }
             )
-            time.sleep(0.2)
+            time.sleep(1)

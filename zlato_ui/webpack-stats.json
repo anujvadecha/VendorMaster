@@ -1,4 +1,1 @@
-{"status":"done","publicPath":"http://0.0.0.0:8080/",
-  "chunks":{"app":[{"name":"bundle.js","publicPath":"http://0.0.0.0:8080/bundle.js","path":"/Users/anuj.vadecha/PycharmProjects/VendorMaster/zlato_ui/dist/bundle.js"},
-    {"name":"app.90ddf9879e13a03d099a.hot-update.js","publicPath":"http://0.0.0.0:8080/app.90ddf9879e13a03d099a.hot-update.js",
-  "path":"/Users/anuj.vadecha/PycharmProjects/VendorMaster/zlato_ui/dist/app.90ddf9879e13a03d099a.hot-update.js"}]}}
+{"status":"done","publicPath":"http://127.0.0.1:8080/","chunks":{"app":[{"name":"bundle.js","publicPath":"http://127.0.0.1:8080/bundle.js","path":"/Users/anuj.vadecha/PycharmProjects/VendorMaster/zlato_ui/dist/bundle.js"}]}}

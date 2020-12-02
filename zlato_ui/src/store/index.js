@@ -17,10 +17,31 @@ export default new Vuex.Store({
       state.instruments = state.instruments.map(function(instrument) {
         instrument.bid = tick.gold_tick.bid + instrument.buy_premium;
         instrument.ask = tick.gold_tick.ask + instrument.sell_premium;
-        instrument.high = Math.max(instrument.bid, instrument.high);
-        instrument.low = Math.min(instrument.bid, instrument.low);
+        instrument.high = Math.max(
+          instrument.bid,
+          instrument.high,
+          instrument.ask
+        );
+        instrument.low = Math.min(
+          instrument.bid,
+          instrument.low,
+          instrument.ask
+        );
         return instrument;
       });
+    },
+
+    update_instrument(state, instrument) {
+      for (var i = 0; i < state.instruments.length; i++) {
+        if (state.instruments[i].instrument_id == instrument.instrument_id) {
+          instrument.bid = instrument.buy_premium + 40000;
+          instrument.ask = instrument.sell_premium + 50000;
+          instrument.high = instrument.buy_premium + 40000;
+          instrument.low = instrument.sell_premium + 50000;
+          state.instruments[i] = instrument;
+          console.log("updating instrument");
+        }
+      }
     }
     // update_prices(state,tick)
     // {
@@ -40,6 +61,9 @@ export default new Vuex.Store({
     },
     update_prices({ commit }, tick) {
       commit("update_prices", tick);
+    },
+    update_instrument({ commit }, instrument) {
+      commit("update_instrument", instrument);
     }
   },
   modules: {},
