@@ -1,4 +1,6 @@
-{% extends 'auth_layout.html' %}
+{#{% extends 'auth_layout.html' %}#}
+{#{% extends 'all_auth' %}#}
+{% extends 'admin/login.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +9,7 @@
 </head>
 <body>
 {% block content %}
-    <h3>Login to your zlato account</h3>
+    <h3></h3>
     <div class="registration-form-container">
     <form method="POST">
         {% csrf_token %}

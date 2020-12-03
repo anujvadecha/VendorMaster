@@ -5,7 +5,7 @@
     <!--  color="blue"-->
     <!--    > Prices Gold:50999 </v-system-bar>-->
 
-    <NavBar></NavBar>
+    <NavBar> </NavBar>
     <v-main>
       <v-container>
         <router-view />

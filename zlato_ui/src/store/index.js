@@ -70,6 +70,11 @@ export default new Vuex.Store({
   getters: {
     get_instruments: state => {
       return state.instruments;
+    },
+    get_vendor_instruments: state => vendor_id => {
+      return state.instruments.filter(
+        instrument => instrument.vendor_id == vendor_id
+      );
     }
   }
 });
