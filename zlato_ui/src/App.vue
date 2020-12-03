@@ -4,6 +4,7 @@
     <!--  height="33"-->
     <!--  color="blue"-->
     <!--    > Prices Gold:50999 </v-system-bar>-->
+
     <NavBar></NavBar>
     <v-main>
       <v-container>

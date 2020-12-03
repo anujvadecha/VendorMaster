@@ -1,29 +1,41 @@
 <template>
-  <v-app-bar app light elevation="1">
-    <div class="d-flex align-center">
-      <v-img
-        alt="Zlato Logo"
-        class=" mr-2"
-        contain
-        src="@/assets/logo.png"
-        transition="scale-transition"
-        width="80"
-      />
-      <v-card-text
-        alt="Zlato"
-        class="shrink mt-1 show-sm-and-down"
-        contain
-        min-width="100"
-        width="100"
-        ><h2>Zlato</h2></v-card-text
-      >
-    </div>
-    <v-spacer></v-spacer>
-    <NavBarButton link="/" title="home" icon="mdi-home" />
-    <NavBarButton link="/orders" title="orders" icon="mdi-bag-checked" />
-    <NavBarButton link="/favourites" title="Favourites" icon="mdi-heart" />
-    <NavBarButton link="/account" icon="mdi-account" title="Account" />
-  </v-app-bar>
+  <div>
+    <v-system-bar app color="light-blue" height="40%" content-center>
+      <!--      <v-spacer></v-spacer>-->
+      <v-icon>mdi-gold</v-icon>
+      <span>Gold :Bid 1290 Ask 1270</span>
+      <v-icon>mdi-silverware-clean</v-icon>
+      <span>Silver 128392</span>
+      <v-icon>mdi-coin</v-icon>
+      <span>78.9</span>
+    </v-system-bar>
+
+    <v-app-bar app light elevation="1">
+      <div class="d-flex align-center">
+        <v-img
+          alt="Zlato Logo"
+          class=" mr-2"
+          contain
+          src="@/assets/logo.png"
+          transition="scale-transition"
+          width="80"
+        />
+        <v-card-text
+          alt="Zlato"
+          class="shrink mt-1 show-sm-and-down"
+          contain
+          min-width="100"
+          width="100"
+          ><h2>Zlato</h2></v-card-text
+        >
+      </div>
+      <v-spacer></v-spacer>
+      <NavBarButton link="/" title="home" icon="mdi-home" />
+      <NavBarButton link="/orders" title="orders" icon="mdi-bag-checked" />
+      <NavBarButton link="/favourites" title="Favourites" icon="mdi-heart" />
+      <NavBarButton link="/account" icon="mdi-account" title="Account" />
+    </v-app-bar>
+  </div>
 </template>
 
 <script>
