@@ -22,8 +22,11 @@ from django.urls import include, path, re_path
 from VendorMaster import settings
 from userBase.forms import CustomUserForm
 from django_registration.backends.one_step.views import RegistrationView
+
+from vendorbase.models import Symbol
 from vendorbase.views import IndexTemplateView
 
+Symbol.update_cache()
 urlpatterns = [
     url('admin/', admin.site.urls),
     url('order/', include("orderManagement.urls")),

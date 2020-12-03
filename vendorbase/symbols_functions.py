@@ -14,6 +14,7 @@ def load_instruments():
         cache.set(str(symbol.instrument_id),symbol)
         print("setting symbol"+str(symbol.instrument_id))
     return symbols
+
 def get_instrument_data(instrument_id):
     symbol = cache.get(str(instrument_id))
     if symbol is None:
@@ -26,5 +27,4 @@ def load_limit_orders_pending():
     orders=OrderSerializer(Order.objects.filter(type=OrderType.LIMIT).filter(status=OrderStatus.WAITING_FOR_LIMIT),many=True)
     cache.set("orders",orders)
     return orders
-
 

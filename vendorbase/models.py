@@ -1,7 +1,10 @@
 import uuid as uuid
+
+from django.core.cache import cache
 from django.db import models
 
 # Create your models here.
+from django.forms import model_to_dict
 from djchoices import DjangoChoices, ChoiceItem
 
 from base.models import BaseModel
@@ -79,12 +82,24 @@ class Symbol(BaseModel):
     buy_premium = models.FloatField()
     sell_premium = models.FloatField()
 
-
-    def get_bid_price_from_tick(self,tick):
-        return self.buy_premium+tick["bid"]+GlobalPremium.objects.first().buy_premium
-
-    def get_sell_price_from_tick(self,tick):
-        return self.sell_premium + tick["ask"]+GlobalPremium.objects.first().sell_premium
+    # def get_bid_price_from_tick(self,tick):
+    #     return self.buy_premium+tick["bid"]+GlobalPremium.objects.first().buy_premium
+    #
+    # def get_sell_price_from_tick(self,tick):
+    #     return self.sell_premium + tick["ask"]+GlobalPremium.objects.first().sell_premium
 
     def __str__(self):
         return self.name.__str__();
+
+    @classmethod
+    def update_cache(cls):
+        print("updating cache for all instruments")
+        cache.set("instruments",list(Symbol.objects.all()))
+        print("updating cache for each instrument")
+        for symbol in Symbol.objects.all():
+            to_store={}
+            to_store["high"]=0
+            to_store["low"]=999999999
+            to_store["bid"]=None
+            to_store["ask"]=None
+            cache.set(symbol.instrument_id,to_store)

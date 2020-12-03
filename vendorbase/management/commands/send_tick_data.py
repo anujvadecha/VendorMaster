@@ -6,16 +6,15 @@ from django.core.cache import cache
 from django.core.management import BaseCommand
 from VendorMaster import settings
 from VendorMaster.consumers import TickConsumer
-from vendorbase.tasks import process_limit_orders_gold
+from vendorbase.models import Symbol
+from vendorbase.tasks import update_high_low
+
 
 class Command(BaseCommand):
     help = 'Process to send gold ticker data'
     def handle(self, *args, **options):
         while True:
-            channel_layer = get_channel_layer()
-            async_to_sync(channel_layer.group_send)(
-                settings.SOCKET_GROUP,
-                {
+            tick={
                     "type":"tick",
                     "gold_tick":
                     {
@@ -23,5 +22,10 @@ class Command(BaseCommand):
                         "ask": randint(40000, 60000)
                     }
                 }
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                settings.SOCKET_GROUP,
+                tick
             )
+            update_high_low.delay(tick)
             time.sleep(1)
