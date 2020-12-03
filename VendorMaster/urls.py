@@ -32,7 +32,7 @@ urlpatterns = [
     url('order/', include("orderManagement.urls")),
     path("accounts/register/", RegistrationView.as_view(
         form_class=CustomUserForm,
-        success_url="admin/",
+        success_url="/",
     ),name="django_registration_register"),
     path('accounts/',include('allauth.urls')),
     # path("accounts/",include("django_registration.backends.one_step.urls")),

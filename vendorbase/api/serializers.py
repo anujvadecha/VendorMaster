@@ -9,11 +9,11 @@ class NormalUserSerializer(serializers.ModelSerializer):
         model=NormalUser
         fields="__all__"
 
-class VendorRelatedField(serializers.RelatedField):
-    def to_representation(self, value):
-        if isinstance(value,Vendor):
-            serializer=VendorSerializer(value)
-        return serializer.data
+# class VendorRelatedField(serializers.RelatedField):
+#     def to_representation(self, value):
+#         if isinstance(value,Vendor):
+#             serializer=VendorSerializer(value)
+#         return serializer.data
 
 class VendorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,18 +21,26 @@ class VendorSerializer(serializers.ModelSerializer):
         fields="__all__"
 
 class SymbolSerializer(serializers.ModelSerializer):
-    vendor = VendorSerializer(source="vendor_id")
+    vendor = serializers.CharField(source="vendor_id.name")
     high = serializers.SerializerMethodField()
     low = serializers.SerializerMethodField()
     bid = serializers.SerializerMethodField()
     ask = serializers.SerializerMethodField()
     def get_high(self,obj):
+        if(cache.get(obj.instrument_id)==None):
+            return 0
         return cache.get(obj.instrument_id).get("high")
     def get_low(self,obj):
+        if (cache.get(obj.instrument_id) == None):
+            return 0
         return cache.get(obj.instrument_id).get("low")
     def get_bid(self,obj):
+        if (cache.get(obj.instrument_id) == None):
+            return 0
         return cache.get(obj.instrument_id).get("bid")
     def get_ask(self, obj):
+        if (cache.get(obj.instrument_id) == None):
+            return 0
         return cache.get(obj.instrument_id).get("ask")
     class Meta:
         model=Symbol

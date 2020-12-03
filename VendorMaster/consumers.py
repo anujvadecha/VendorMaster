@@ -7,8 +7,8 @@ from channels.generic.websocket import WebsocketConsumer
 from VendorMaster import settings
 from orderManagement.api.serializers import OrderSerializer
 from orderManagement.models import Order, OrderStatus, OrderType
-from vendorbase.api.serializers import SymbolSerializer, GlobalPremiumSerializer
-from vendorbase.models import Symbol, GlobalPremium
+from vendorbase.api.serializers import SymbolSerializer, GlobalPremiumSerializer, VendorSerializer
+from vendorbase.models import Symbol, GlobalPremium, Vendor
 import time
 
 class UUIDEncoder(json.JSONEncoder):
@@ -53,6 +53,10 @@ class TickConsumer(WebsocketConsumer):
             self.send(json.dumps({
                 'instruments':json.dumps(SymbolSerializer(Symbol.objects.all(),many=True).data,cls=UUIDEncoder),
                 'global_premium':GlobalPremiumSerializer(GlobalPremium.objects.all().first()).data
+            }))
+        if(type=="vendor_request"):
+            self.send(json.dumps({
+                "vendors":VendorSerializer(Vendor.objects.all(),many=True).data
             }))
 
     def tick(self,data):

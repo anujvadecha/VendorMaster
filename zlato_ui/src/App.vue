@@ -44,6 +44,12 @@ export default {
             message: "Please send all symbols"
           })
         );
+        symbolsocket.send(
+          JSON.stringify({
+            type: "vendor_request",
+            message: "Please send all vendors"
+          })
+        );
       };
       symbolsocket.onmessage = function(event) {
         var message = JSON.parse(event.data);
@@ -61,6 +67,10 @@ export default {
           var to_update = JSON.parse(message["instrument_update"]);
           console.log(to_update);
           store.dispatch("update_instrument", to_update);
+        }
+        if (message["vendors"]) {
+          console.log(message["vendors"]);
+          store.dispatch("push_vendors", message["vendors"]);
         }
       };
       symbolsocket.onclose = function(event) {

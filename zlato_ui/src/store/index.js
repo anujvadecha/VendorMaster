@@ -1,11 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
+// import { version } from "vuex/dist/vuex";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    instruments: []
+    instruments: [],
+    vendors: []
   },
 
   mutations: {
@@ -37,6 +39,9 @@ export default new Vuex.Store({
           console.log("updating instrument");
         }
       }
+    },
+    push_vendors(state, vendors) {
+      state.vendors = vendors;
     }
   },
   actions: {
@@ -51,6 +56,9 @@ export default new Vuex.Store({
     },
     update_instrument({ commit }, instrument) {
       commit("update_instrument", instrument);
+    },
+    push_vendors({ commit }, vendors) {
+      commit("push_vendors", vendors);
     }
   },
   modules: {},
@@ -59,9 +67,16 @@ export default new Vuex.Store({
       return state.instruments;
     },
     get_vendor_instruments: state => vendor_id => {
-      return state.instruments.filter(
-        instrument => instrument.vendor_id == vendor_id
+      var vendor_object = {};
+      vendor_object.instruments = state.instruments.filter(
+        instrument => instrument.vendor_id === vendor_id
       );
+      console.log(vendor_id);
+      console.log(state.vendors);
+      vendor_object.vendor = state.vendors.filter(
+        vendor => vendor.vendor_id === vendor_id
+      );
+      return vendor_object;
     }
   }
 });
