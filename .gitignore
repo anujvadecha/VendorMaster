@@ -5,7 +5,7 @@ test.py
 *.env
 *.pyc
 .idea/vcs.xml
-*migrations/
+#*migrations/
 node_modules
 /dist
 # local env files
@@ -64,3 +64,4 @@ coverage.xml
 *.pot
 # Sphinx documentation
 docs/_build/
+zlato_ui/webpack-stats.json

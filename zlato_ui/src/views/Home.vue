@@ -1,5 +1,14 @@
 <template>
   <div class="home">
+    <v-img
+      alt="Zlato Marketing"
+      class=" mr-2"
+      contain
+      src="@/assets/marketing.png"
+      transition="scale-transition"
+      max-height="150px"
+    />
+
     <v-card>
       <v-card-title>
         Ticker Prices
@@ -25,7 +34,7 @@
         loading-text="Loading... Please wait"
       >
         <template v-slot:item.vendor_id="{ item }">
-          <div dark @click="open_order_sheet(item)" style="color:slateblue;">
+          <div dark @click="open_vendor_dialog(item)" style="color:slateblue;">
             {{ item.vendor.name }}
           </div>
         </template>
@@ -52,6 +61,15 @@
         </div>
       </v-sheet>
     </v-bottom-sheet>
+    <v-dialog v-model="dialog" persistent max-width="600px">
+      <v-card>
+        Hello im vendor
+        {{ selected_vendor_item }}
+        <v-btn color="blue darken-1" text @click="dialog = false">
+          Close
+        </v-btn>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -63,6 +81,8 @@ export default {
   data() {
     return {
       selected_item: null,
+      selected_vendor_item: null,
+      dialog: false,
       sheet: false,
       items: ["gold999", "gold 999 1kg", "gold 995", "gold 995 1kg"],
       search: "",
@@ -87,6 +107,14 @@ export default {
       console.log(item);
       this.selected_item = item;
       this.sheet = !this.sheet;
+    },
+    open_vendor_dialog: function(item) {
+      console.log(this.$store);
+      console.log(item);
+      this.selected_vendor_item = this.$store.getters.get_vendor_instruments(
+        item.vendor_id
+      );
+      this.dialog = !this.dialog;
     }
   }
 };
