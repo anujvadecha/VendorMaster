@@ -50,7 +50,7 @@
         <!--        <v-divider></v-divider>-->
         <v-spacer></v-spacer>
         <v-icon>mdi-gold</v-icon>
-        <span>Bid 1290 Ask 1270</span>
+        <span>1270</span>
         <v-spacer></v-spacer>
         <v-icon>mdi-silverware-clean</v-icon>
         <span>128392</span>

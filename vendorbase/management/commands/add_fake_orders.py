@@ -1,7 +1,7 @@
 from random import randint
 from django.core.management import BaseCommand
 from orderManagement.models import Order, OrderStatus, OrderType
-from order_engine.order_engine import OrderEngine
+# from order_engine.order_engine import OrderEngine
 from userBase.models import NormalUser
 from vendorbase.models import Symbol
 
@@ -14,9 +14,8 @@ class Command(BaseCommand):
             order.save()
 
     def handle(self, *args, **options):
-            OrderEngine.getInstance()
             self.delete_all_orders()
-            self.add_fake_orders(5000)
+            self.add_fake_orders(10)
 
     def delete_all_orders(self):
         Order.objects.all().delete()

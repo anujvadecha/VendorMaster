@@ -50,6 +50,7 @@
         </template>
       </v-data-table>
     </v-card>
+    <v-btn @click="get_api">Close</v-btn>
     <v-bottom-sheet v-model="sheet" inset>
       <v-sheet class="text-center" height="400px">
         <v-btn class="mt-6" text color="red" @click="sheet = !sheet">
@@ -75,6 +76,8 @@
 
 <script>
 // @ is an alias to /src
+
+import { apiService } from "@/common/api.service";
 
 export default {
   name: "Home",
@@ -115,6 +118,12 @@ export default {
         item.vendor_id
       );
       this.dialog = !this.dialog;
+    },
+    get_api() {
+      let endpoint = window.location.host + "/order/api/orderDetails";
+      apiService(endpoint).then(response => {
+        console.log(response);
+      });
     }
   }
 };
