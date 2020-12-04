@@ -1,43 +1,49 @@
 <template>
+  <div>
+    <v-container style="">
+      <ExecutedOrderItemConfirmed></ExecutedOrderItemConfirmed>
+      <ExecutedOrderItemWaiting></ExecutedOrderItemWaiting>
+    </v-container>
     <div class="text-xs-center">
-    <v-dialog
-      v-model="dialog"
-      width="500"
-    >
-      <template v-slot:activator="{ on }">
-        <v-btn
-          color="red lighten-2"
-          dark
-          v-on="on"
-        >
-          Check status
-        </v-btn>
-      </template>
+      <v-dialog v-model="dialog" width="500">
+        <template v-slot:activator="{ on }">
+          <v-btn color="red lighten-2" dark v-on="on">
+            Check status
+          </v-btn>
+        </template>
 
-      <v-card>
-        <v-card-title
-          class="headline grey lighten-2"
-          primary-title
-        >
-          Order has been confirmed
-          Waiting for payment
-        </v-card-title>
+        <v-card>
+          <v-card-title class="headline grey lighten-2" primary-title>
+            Order has been confirmed Waiting for payment
+          </v-card-title>
 
-        <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </v-card-text>
-      </v-card>
-    </v-dialog>
+          <v-card-text>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum.
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+    </div>
   </div>
 </template>
 
 <script>
+import ExecutedOrderItemConfirmed from "@/components/orders/ExecutedOrderItemConfirmed";
+import ExecutedOrderItemWaiting from "@/components/orders/ExecutedOrderItemWaiting";
+// import ExecutedOrderItemWaiting from "@/components/orders/ExecutedOrderItemWaiting";
+
 export default {
-    name: "ExecutedOrders",
-    data() {
-        return {
-            dialog: false
-        }
-    }
-}
+  name: "ExecutedOrders",
+  components: { ExecutedOrderItemConfirmed, ExecutedOrderItemWaiting },
+  data() {
+    return {
+      dialog: false
+    };
+  }
+};
 </script>
