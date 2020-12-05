@@ -121,9 +121,11 @@ export default {
       this.dialog = !this.dialog;
     },
     get_api() {
-      let endpoint = window.location.host + "/order/api/orderDetails";
+      let endpoint = "http://127.0.0.1:8000/" + "/order/api/orderDetails";
+      // console.log(window.location.host);
+      // console.log(endpoint);
       apiService(endpoint).then(response => {
-        console.log(response);
+        console.log(response)
       });
     }
   }

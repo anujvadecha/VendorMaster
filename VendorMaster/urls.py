@@ -43,6 +43,7 @@ urlpatterns = [
     path("api/rest-auth/",include("rest_auth.urls")),
     path("api/rest-auth/registration",include("rest_auth.registration.urls")),
     path("",IndexTemplateView.as_view(),name="entry-point"),
+
     path("favourites/",FavouritesView.as_view(),name="favourite")
 ]
 
