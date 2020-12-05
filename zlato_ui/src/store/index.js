@@ -82,6 +82,10 @@ export default new Vuex.Store({
         vendor => vendor.vendor_id === vendor_id
       );
       return vendor_object;
+    },
+    get_favourite_instruments: state => {
+      //TODO
+      console.log(state);
     }
   }
 });

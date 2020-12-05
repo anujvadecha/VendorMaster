@@ -55,17 +55,16 @@ export default {
         var message = JSON.parse(event.data);
         if (message["instruments"]) {
           var instruments = JSON.parse(message["instruments"]);
-          var favourites = JSON.parse(message["favourites"]);
+          // var favourites = JSON.parse(message["favourites"]);
           // TODO
           // for instrument in instrument instrument.favourite=True when favourites has it
+          instruments.map(instrument => {
+            instrument.is_favourite = false;
+          });
           store.dispatch("push_instruments", instruments);
         }
         if (message["gold_tick"]) {
           store.dispatch("update_prices", message);
-        }
-        if (message["favourites"]) {
-          var favourites = JSON.parse(message["favourites"]);
-          console.log(favourites);
         }
         if (message["instrument_update"]) {
           console.log("instrument_update received");
