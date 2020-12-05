@@ -8,6 +8,7 @@ from django.forms import model_to_dict
 from djchoices import DjangoChoices, ChoiceItem
 
 from base.models import BaseModel
+from userBase.models import NormalUser
 
 
 class GlobalPremium(BaseModel):
@@ -103,3 +104,7 @@ class Symbol(BaseModel):
             to_store["bid"]=None
             to_store["ask"]=None
             cache.set(symbol.instrument_id,to_store)
+
+class Favourite(BaseModel):
+    user_id = models.ForeignKey(NormalUser,on_delete=models.DO_NOTHING)
+    instrument_id = models.ForeignKey(Symbol,on_delete=models.DO_NOTHING)

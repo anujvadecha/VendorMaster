@@ -4,7 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from userBase.models import NormalUser
-from vendorbase.api.serializers import NormalUserSerializer
+from vendorbase.api.serializers import NormalUserSerializer, FavouriteSerializer
+from vendorbase.models import Favourite
 
 # @api_view(["GET"])
 # @permission_classes([IsAuthenticated])
@@ -27,3 +28,15 @@ from vendorbase.api.serializers import NormalUserSerializer
     #         return Response(normaluser.data, status=status.HTTP_201_CREATED)
     #     return Response(normaluser.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class FavouritesView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        favourites=Favourite.objects.filter(user_id__in=request.user)
+        return Response(FavouriteSerializer(favourites,many=True).data,status=status.HTTP_200_OK)
+
+    def post(self,request):
+        data=request.data
+        FavouriteSerializer(request.user,request.data["instrument_id"]).save()
+        return Response(data,status=status.HTTP_200_OK)

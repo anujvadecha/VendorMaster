@@ -23,6 +23,7 @@ from VendorMaster import settings
 from userBase.forms import CustomUserForm
 from django_registration.backends.one_step.views import RegistrationView
 
+from vendorbase.api.views import FavouritesView
 from vendorbase.models import Symbol
 from vendorbase.views import IndexTemplateView
 
@@ -42,6 +43,7 @@ urlpatterns = [
     path("api/rest-auth/",include("rest_auth.urls")),
     path("api/rest-auth/registration",include("rest_auth.registration.urls")),
     path("",IndexTemplateView.as_view(),name="entry-point"),
+    path("favourites/",FavouritesView.as_view(),name="favourite")
 ]
 
 if settings.DEBUG:

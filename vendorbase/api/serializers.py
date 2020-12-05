@@ -1,7 +1,8 @@
 from django.core.cache import cache
 from rest_framework import serializers
 from userBase.models import NormalUser
-from vendorbase.models import Symbol, GlobalPremium, Vendor
+from vendorbase.models import Symbol, GlobalPremium, Vendor, Favourite
+
 
 #NormalUserSerializer
 class NormalUserSerializer(serializers.ModelSerializer):
@@ -48,7 +49,13 @@ class SymbolSerializer(serializers.ModelSerializer):
             "instrument_id","vendor_id","type","name","delivery_from","delivery_to",
         "quantity","source_symbol","buy_premium","sell_premium","vendor","high","low","bid","ask"]
         # exclude=("instrument_id","vendor_id")
+
 class GlobalPremiumSerializer(serializers.ModelSerializer):
     class Meta:
         model=GlobalPremium
+        fields="__all__"
+
+class FavouriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Favourite
         fields="__all__"
