@@ -7,8 +7,8 @@ from channels.generic.websocket import WebsocketConsumer
 from VendorMaster import settings
 from orderManagement.api.serializers import OrderSerializer
 from orderManagement.models import Order, OrderStatus, OrderType
-from vendorbase.api.serializers import SymbolSerializer, GlobalPremiumSerializer, VendorSerializer
-from vendorbase.models import Symbol, GlobalPremium, Vendor
+from vendorbase.api.serializers import SymbolSerializer, GlobalPremiumSerializer, VendorSerializer, FavouriteSerializer
+from vendorbase.models import Symbol, GlobalPremium, Vendor, Favourite
 import time
 
 class UUIDEncoder(json.JSONEncoder):
@@ -22,6 +22,7 @@ class TickConsumer(WebsocketConsumer):
     room_group_name=settings.SOCKET_GROUP
 
     def connect(self):
+        self.user = self.scope["user"]
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
             self.channel_name
@@ -52,7 +53,8 @@ class TickConsumer(WebsocketConsumer):
         if (type == "ticker_request"):
             self.send(json.dumps({
                 'instruments':json.dumps(SymbolSerializer(Symbol.objects.all(),many=True).data,cls=UUIDEncoder),
-                'global_premium':GlobalPremiumSerializer(GlobalPremium.objects.all().first()).data
+                'global_premium':GlobalPremiumSerializer(GlobalPremium.objects.all().first()).data,
+                'favourites':json.dumps(FavouriteSerializer(Favourite.objects.filter(user_id=self.user),many=True).data,cls=UUIDEncoder)
             }))
         if(type=="vendor_request"):
             self.send(json.dumps({
