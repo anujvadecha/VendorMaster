@@ -3,7 +3,7 @@
         <v-card flat class="text-center ma-3">
             <v-layout row wrap>
                 <v-flex md1>
-                    {{active_order.instrument_id}}
+                    {{active_order.instrument.name}}
                 </v-flex>
                 <v-flex md10>
                 </v-flex>
@@ -33,6 +33,18 @@
 <script>
 export default {
     name: "ActiveOrderItem",
-    props: ["active_order"]
+    props: ["active_order"],
+    data() {
+        return {
+            instruments: '',
+            instrument_name: ''
+        }
+    },
+    methods: {
+
+    },
+    created() {
+        
+    }
 };
 </script>

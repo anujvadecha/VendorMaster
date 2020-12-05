@@ -43,6 +43,7 @@
 <script>
 import ActiveOrders from "../components/orders/ActiveOrders";
 import ExecutedOrders from "../components/orders/ExecutedOrders";
+import { apiService } from "@/common/api.service";
 
 export default {
   name: "Orders",
@@ -71,25 +72,33 @@ export default {
         }
       ],
       model: 1,
-      active_orders: [
-        {
-          title: "Arihant",
-          instrument_id: "#12313123",
-          quantity: 200,
-          order_id: 1,
-          price: 1000
-        },
-        {
-          title: "Tribhovan",
-          instrument_id: "#0327490",
-          quantity: 300,
-          order_id: 2,
-          price: 2000
-        }
-      ]
+      orders: [],
+      active_orders: [],
+      executed_orders: [],
+      previous_orders: []
     };
+  },
+  created() {
+    let endpoint = window.location.host + "/order/api/orderDetails";
+    apiService(endpoint).then(res => {
+      // console.log(res);
+      this.orders = res;
+      // console.log(this.orders);
+    })
+    .then(() => {
+      this.orders.map(order => {
+        order.instrument = this.$store.getters.get_instrument(order.instrument_id);
+        console.log(order.instrument);
+      })
+    })
+    .then(() => {
+      this.active_orders = this.orders.filter(order => {
+        return order.status === 'OPEN';
+      })
+      // console.log(this.active_orders)
+    })
   }
-};
+}
 </script>
 
 <style scoped>

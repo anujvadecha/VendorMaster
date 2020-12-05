@@ -4,7 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from userBase.models import NormalUser
-from vendorbase.api.serializers import NormalUserSerializer
+from vendorbase.models import Symbol
+from vendorbase.api.serializers import NormalUserSerializer, SymbolSerializer
 
 # @api_view(["GET"])
 # @permission_classes([IsAuthenticated])
@@ -27,3 +28,8 @@ from vendorbase.api.serializers import NormalUserSerializer
     #         return Response(normaluser.data, status=status.HTTP_201_CREATED)
     #     return Response(normaluser.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# @api_view(["GET"])
+# def getSymbolDetails(request):
+#     if request.method == "GET":
+#         symbol=Symbol.objects.filter(instrument_id=request.data["instrument_id"])
+#         return Response(SymbolSerializer(symbol).data)

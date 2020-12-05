@@ -18,9 +18,7 @@ def placeOrder(request):
 @api_view(["GET"])
 def getOrderDetails(request):
     if request.method=="GET":
-        print(request.user.id)
-        orders=Order.objects.filter(user_id=request.user)
+        # orders=Order.objects.filter(order_id__in=request.data["order_id"])
+        orders=Order.objects.all()
         return Response(OrderSerializer(orders,many=True).data)
-        # orders=Order.objects.filter(order_id__in=request.data["order_ids"])
-        # return Response(OrderSerializer(orders,many=True).data)
 
