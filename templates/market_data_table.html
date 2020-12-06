@@ -62,6 +62,7 @@
         instruments = JSON.parse(instruments)
         var rows = '';
         rows+="<tr>\n" +
+            "    <th>Vendor</th>\n" +
             "    <th>Product</th>\n" +
             "    <th>Bid</th>\n" +
             "    <th>Ask</th>\n" +
@@ -73,11 +74,12 @@
                 const bidprice = item["buy_premium"] + tickpriceBuy + globalPremiumBuy
                 const askprice = item["sell_premium"] + tickpriceSell + globalPremiumSell
                 var row = '<tr>';
+                row += '<td>' + item["vendor"] + '</td>';
                 row += '<td>' + item["name"] + '</td>';
                 row += '<td>' + bidprice + '</td>';
                 row += '<td>' + askprice + '</td>';
-                row += '<td>' + bidprice + '</td>';
-                row += '<td>' + askprice + '</td>';
+                row += '<td>' + item["high"] + '</td>';
+                row += '<td>' + item["low"] + '</td>';
                 row + '<tr>';
                 rows += row
         });

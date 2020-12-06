@@ -55,6 +55,7 @@ export default {
         var message = JSON.parse(event.data);
         if (message["instruments"]) {
           var instruments = JSON.parse(message["instruments"]);
+          console.log(instruments);
           // var favourites = JSON.parse(message["favourites"]);
           // TODO
           // for instrument in instrument instrument.favourite=True when favourites has it

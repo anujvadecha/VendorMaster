@@ -39,6 +39,9 @@ class SymbolType(DjangoChoices):
 
 
 class Vendor(BaseModel):
+    #TODO REMOVE DEFAULT USER WHEN GOING TO PROD NEED IT FOR DEV MIGRATIONS
+    user_id = models.ForeignKey(NormalUser, blank=True, on_delete=models.CASCADE,
+                                default=NormalUser.objects.first().pk)
     vendor_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     enabled = models.BooleanField(default=True)
     name = models.CharField(max_length=500)
@@ -50,12 +53,11 @@ class Vendor(BaseModel):
     city = models.CharField(max_length=200, blank=True)
     company_card_image = models.ImageField(blank=True)
     company_logo = models.ImageField(blank=True)
-    margin_available = models.FloatField(blank=True,max_length=200,default=0)
+    margin_available = models.FloatField(blank=True, max_length=200, default=0)
     pancard_photo = models.ImageField(blank=True)
     promoter_name = models.CharField(max_length=200, blank=True)
-    reference_1 = models.CharField(max_length=200, blank=True)
-    reference_2 = models.CharField(max_length=200, blank=True)
-
+    reference_1 = models.CharField(max_length=500, blank=True)
+    reference_2 = models.CharField(max_length=500, blank=True)
     def __str__(self):
         return self.name.__str__();
 
@@ -66,11 +68,14 @@ class BankDetails(BaseModel):
     account_number = models.CharField(max_length=200)
     ifsc_code = models.CharField(max_length=200)
     branch = models.CharField(max_length=200)
+
     def __str__(self):
         return self.vendor.name
 
+
 class City(BaseModel):
     name = models.CharField(max_length=200)
+
     def __str__(self):
         return self.name.__str__()
 
@@ -84,6 +89,7 @@ class Group(BaseModel):
 
     def __str__(self):
         return self.name.__str__()
+
 
 class SourceSymbol(DjangoChoices):
     gold_fut = ChoiceItem("gold_fut")
@@ -110,7 +116,7 @@ class Symbol(BaseModel):
     #     return self.sell_premium + tick["ask"]+GlobalPremium.objects.first().sell_premium
 
     def __str__(self):
-        return self.name.__str__();
+        return str(self.name)+"_"+str(self.vendor_id);
 
     @classmethod
     def update_cache(cls):
@@ -121,9 +127,10 @@ class Symbol(BaseModel):
             to_store = {}
             to_store["high"] = 0
             to_store["low"] = 999999999
-            to_store["bid"] = None
-            to_store["ask"] = None
+            to_store["bid"] = 0
+            to_store["ask"] = 0
             cache.set(symbol.instrument_id, to_store)
+
 
 class Favourite(models.Model):
     user_id = models.ForeignKey(NormalUser, on_delete=models.DO_NOTHING)
