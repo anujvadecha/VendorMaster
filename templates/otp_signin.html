@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{#Hello#}
+{#<form action="{{ order_id }}/234/verify_otp/"  method="get">#}
+{#   <input style="width: 30px" id="otp">#}
+{#    <input type="submit" value="OK" onclick="console.log('clicked')"></form>#}
+{#  <a class="button" type="submit" >OK</a>#}
+{#</form>#}
+    <input type="text" id="otp" style="width:40px">
+    <a class ="button"
+    onclick="this.href = '{{ order_id }}/'+document.getElementById('otp').value+'/verify_otp'; console.log(this.href)">OK</a>
+</body>
+</html>

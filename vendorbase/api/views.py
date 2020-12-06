@@ -40,5 +40,5 @@ class FavouritesView(APIView):
 
     def post(self,request):
         data=request.data
-        FavouriteSerializer(request.user,request.data["instrument_id"]).save()
+        FavouriteSerializer(request.user , request.data["instrument_id"]).save()
         return Response(data,status=status.HTTP_200_OK)

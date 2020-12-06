@@ -67,7 +67,6 @@ export default {
           store.dispatch("update_prices", message);
         }
         if (message["instrument_update"]) {
-          console.log("instrument_update received");
           console.log(message);
           var to_update = JSON.parse(message["instrument_update"]);
           console.log(to_update);

@@ -27,6 +27,7 @@ class SymbolSerializer(serializers.ModelSerializer):
     low = serializers.SerializerMethodField()
     bid = serializers.SerializerMethodField()
     ask = serializers.SerializerMethodField()
+
     def get_high(self,obj):
         if(cache.get(obj.instrument_id)==None):
             return 0
