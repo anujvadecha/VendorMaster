@@ -27,7 +27,7 @@ from vendorbase.api.views import FavouritesView
 from vendorbase.models import Symbol
 from vendorbase.views import IndexTemplateView
 
-Symbol.update_cache()
+# Symbol.update_cache()
 urlpatterns = [
     url('admin/', admin.site.urls),
     url('order/', include("orderManagement.urls")),

@@ -71,7 +71,7 @@ class SourceSymbol(DjangoChoices):
         gold_bank=ChoiceItem("gold_bank")
 
 class Symbol(BaseModel):
-    instrument_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    instrument_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     vendor_id = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     enabled = models.BooleanField(default=True)
     type = models.CharField(max_length=200,  choices=SymbolType.choices, default=SymbolType.gold_999)

@@ -35,10 +35,23 @@ class FavouritesView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self,request):
-        favourites=Favourite.objects.filter(user_id__in=request.user)
+        favourites=Favourite.objects.filter(user_id=request.user)
         return Response(FavouriteSerializer(favourites,many=True).data,status=status.HTTP_200_OK)
 
     def post(self,request):
+        print(request.user)
+        print(request.data)
         data=request.data
-        FavouriteSerializer(request.user,request.data["instrument_id"]).save()
-        return Response(data,status=status.HTTP_200_OK)
+        # Favourite(user_id=request.user, instrument_id=request.data["instrument_id"]).save()
+        favourite = FavouriteSerializer(data={"user_id":request.user.id, "instrument_id": request.data["instrument_id"]})
+        if favourite.is_valid():
+            favourite.save()
+            return Response(data,status=status.HTTP_200_OK)
+        else:
+            return Response(favourite.errors)
+
+    def delete(self, request):
+        print(request.user)
+        print(request.data)
+        Favourite.objects.filter(user_id=request.user, instrument_id=request.data).delete()
+        return Response("Instrument has been deleted from favourites")
