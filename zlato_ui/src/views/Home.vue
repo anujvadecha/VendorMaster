@@ -48,6 +48,16 @@
             {{ item.ask }}
           </div>
         </template>
+        <template v-slot:item.is_favourite="{ item }">
+          <div dark @click="toggleFavourite(item)" >
+            <v-icon v-if="item.is_favourite">
+              mdi-star
+            </v-icon>
+            <v-icon v-else>
+              mdi-star-outline
+            </v-icon>
+          </div>
+        </template>
       </v-data-table>
     </v-card>
     <v-btn @click="get_api">Close</v-btn>
@@ -96,7 +106,8 @@ export default {
         { text: "Bid", value: "bid", filterable: false },
         { text: "Ask", value: "ask", filterable: false },
         { text: "High", value: "high", filterable: false },
-        { text: "Low", value: "low", filterable: false }
+        { text: "Low", value: "low", filterable: false },
+        { text: "", value: "is_favourite"},
       ],
       instruments: this.$store.getters.get_instruments
     };
@@ -121,12 +132,28 @@ export default {
       this.dialog = !this.dialog;
     },
     get_api() {
-      let endpoint = "http://127.0.0.1:8000/" + "/order/api/orderDetails";
+      let endpoint = window.location.host + "/order/api/orderDetails";
       // console.log(window.location.host);
       // console.log(endpoint);
       apiService(endpoint).then(response => {
         console.log(response)
       });
+    },
+    toggleFavourite(item) {
+      let endpoint = "/favourites/";
+      item.is_favourite = !item.is_favourite;
+      if(item.is_favourite === false) {
+        apiService(endpoint, "DELETE", item.instrument_id).then(res => {
+          console.log(res);
+        })
+      }
+      else {
+
+        console.log(endpoint);
+        apiService(endpoint, "POST", item).then(res => {
+          console.log(res);
+        })
+      }
     }
   }
 };
