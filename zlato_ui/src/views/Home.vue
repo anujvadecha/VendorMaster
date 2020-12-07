@@ -1,13 +1,13 @@
 <template>
   <div class="home">
-    <v-img
-      alt="Zlato Marketing"
-      class=" mr-2"
-      contain
-      src="@/assets/marketing.png"
-      transition="scale-transition"
-      max-height="150px"
-    />
+    <!--    <v-img-->
+    <!--      alt="Zlato Marketing"-->
+    <!--      class=" mr-2"-->
+    <!--      contain-->
+    <!--      src="@/assets/marketing.png"-->
+    <!--      transition="scale-transition"-->
+    <!--      max-height="150px"-->
+    <!--    />-->
 
     <v-card>
       <v-card-title>

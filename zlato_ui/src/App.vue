@@ -27,6 +27,9 @@
 import store from "@/store";
 import NavBar from "./components/NavBar/NavBar";
 import SnackbarAlert from "@/components/SnackbarAlert";
+import SlimUI from "slim-ui";
+import Vue from "vue";
+Vue.use(SlimUI);
 export default {
   name: "App",
 

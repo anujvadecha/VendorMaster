@@ -29,7 +29,7 @@
           contain
           src="@/assets/logo.png"
           transition="scale-transition"
-          width="80px"
+          width="50px"
         />
         <v-card-text
           alt="Zlato"

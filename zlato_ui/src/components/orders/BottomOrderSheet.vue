@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-sheet v-model="get_set_sheet" inset>
+  <v-bottom-sheet persistent v-model="get_set_sheet" inset>
     <v-sheet style="max-width: 700px">
       <v-card dark tile color="#FF8F00">
         <v-container fluid>
@@ -21,6 +21,15 @@
               <v-col class="text-right">
                 <span class="ml-2">Bid: {{ selected_item.bid }}</span>
                 <span class="ml-2">Ask: {{ selected_item.ask }}</span>
+                <su-switch
+                  v-model="order"
+                  state-on-label="Sell"
+                  state-off-label="Buy"
+                  state-on="SELL"
+                  state-off="BUY"
+                >
+                </su-switch>
+
                 <!--                <v-btn @click="close_sheet()">Cancel</v-btn>-->
               </v-col>
             </v-row>
@@ -53,12 +62,13 @@
 
 <script>
 import OrderFormBottom from "@/components/orders/OrderFormBottom";
+import { Switch } from "slim-ui";
 export default {
   name: "BottomOrderSheet",
-  components: { OrderFormBottom },
+  components: { OrderFormBottom, "su-switch": Switch },
   props: ["selected_item"],
   data() {
-    return { side: "BUY" };
+    return { side: "BUY", order: "BUY" };
   },
   computed: {
     get_set_sheet: function() {

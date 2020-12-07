@@ -1,26 +1,34 @@
 <template>
   <div>
     <v-card elevation="2px" class="ma-2" outlined>
-      <v-tabs color="orange" vertical>
-        <v-tab>BUY</v-tab>
-        <v-tab>SELL</v-tab>
-        <v-tab-item>
-          <div v-if="market">
-            BUY FORM
-          </div>
-          <div v-else>
-            BUY LIMIT FORM
-          </div>
-        </v-tab-item>
-        <v-tab-item>
-          <div v-if="market">
-            SELL FORM
-          </div>
-          <div v-else>
-            SELL LIMIT FORM
-          </div>
-        </v-tab-item>
-      </v-tabs>
+      <!--      <v-tabs color="orange" vertical>-->
+      <!--        <v-tab>BUY</v-tab>-->
+      <!--        <v-tab>SELL</v-tab>-->
+      <!--        <v-tab-item>-->
+      <!--          <div v-if="market">-->
+      <!--            BUY FORM-->
+      <!--          </div>-->
+      <!--          <div v-else>-->
+      <!--            BUY LIMIT FORM-->
+      <!--          </div>-->
+      <!--        </v-tab-item>-->
+      <!--        <v-tab-item>-->
+      <!--          <div v-if="market">-->
+      <!--            SELL FORM-->
+      <!--          </div>-->
+      <!--          <div v-else>-->
+      <!--            SELL LIMIT FORM-->
+      <!--          </div>-->
+      <!--        </v-tab-item>-->
+      <!--      </v-tabs>-->
+      <su-switch
+        v-model="order"
+        state-on-label="Sell"
+        state-off-label="Buy"
+        state-on="SELL"
+        state-off="BUY"
+      >
+      </su-switch>
     </v-card>
     <v-card tile>
       <v-container fluid>
@@ -41,14 +49,15 @@
 </template>
 
 <script>
+import { Switch } from "slim-ui";
 export default {
   name: "OrderFormBottom",
   props: ["type", "item", "side"],
-  // data() {
-  //   return {
-  //     side: "BUY"
-  //   };
-  // },
+  data() {
+    return {
+      order: "BUY"
+    };
+  },
   computed: {
     market: function() {
       if (this.type == "MARKET") return true;
@@ -59,6 +68,9 @@ export default {
     set_sheet: function() {
       this.$store.dispatch("set_sheet", false);
     }
+  },
+  components: {
+    "su-switch": Switch
   },
   created() {
     console.log(this.item);
