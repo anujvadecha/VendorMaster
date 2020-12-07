@@ -1,18 +1,15 @@
 <template>
   <div class="orders">
-    <v-card>
+    <v-card outlined>
       <v-card-title>Orders</v-card-title>
       <v-tabs horizontal>
         <v-tab>
-          <!--          <v-icon left>mdi-circle</v-icon>-->
           Executed
         </v-tab>
         <v-tab>
-          <!--          <v-icon>mdi-</v-icon>-->
           Open
         </v-tab>
         <v-tab>
-          <!--          <v-icon>mdi-access-point</v-icon>-->
           Previous
         </v-tab>
         <v-tab-item>

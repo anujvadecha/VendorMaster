@@ -28,7 +28,6 @@ from vendorbase.models import Symbol
 from vendorbase.views import IndexTemplateView, fallback_404
 
 # Symbol.update_cache()
-
 urlpatterns = [
     url('admin/', admin.site.urls),
     url('order/', include("orderManagement.urls")),
