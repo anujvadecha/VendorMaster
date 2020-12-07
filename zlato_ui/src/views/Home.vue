@@ -194,14 +194,18 @@ export default {
         remove_from_favourites(item.instrument_id).then(res => {
           console.log(res);
         });
+        this.$store.dispatch(
+          "show_snackbar",
+          "Removed " + item.vendor + " " + item.name + " from favourites"
+        );
       } else {
+        add_to_favourites(item).then(res => {
+          console.log(res);
+        });
         this.$store.dispatch(
           "show_snackbar",
           "Added " + item.vendor + " " + item.name + " to favourites"
         );
-        add_to_favourites(item).then(res => {
-          console.log(res);
-        });
       }
     }
   }

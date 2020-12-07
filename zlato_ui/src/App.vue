@@ -36,7 +36,7 @@ export default {
     snackbar: false
   }),
   created() {
-    store.dispatch("show_snackbar", "Hey im started");
+    store.dispatch("show_snackbar", "Hey welcome to zlato.");
     function connect() {
       const url = "ws://" + window.location.host + "/ws/" + "ticker" + "/";
       const symbolsocket = new WebSocket(url);
