@@ -1,8 +1,10 @@
 <template>
-  <router-link :to="link" style="text-decoration:none">
+  <router-link :to="link" style="text-decoration:none; ">
     <v-btn text class="">
-      <v-icon left>{{ icon }}</v-icon>
-      <span class="hidden-sm-and-down">{{ title }}</span></v-btn
+      <v-icon left style="color:dimgrey">{{ icon }}</v-icon>
+      <span class="hidden-sm-and-down" style="color:dimgrey">{{
+        title
+      }}</span></v-btn
     >
   </router-link>
 </template>

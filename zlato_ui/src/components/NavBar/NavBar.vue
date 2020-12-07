@@ -29,13 +29,13 @@
           contain
           src="@/assets/logo.png"
           transition="scale-transition"
-          width="80"
+          width="80px"
         />
         <v-card-text
           alt="Zlato"
-          class="shrink mt-1 show-sm-and-down"
+          class="shrink mt-1 hidden-sm-and-down"
           contain
-          min-width="100"
+          min-width="20%"
           width="100"
           ><h2>Zlato</h2></v-card-text
         >

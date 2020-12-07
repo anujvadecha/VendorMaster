@@ -1,6 +1,7 @@
 <template>
   <div class="orders">
-    <v-card outlined>
+    <!--    <v-container fluid>-->
+    <v-card>
       <v-card-title>Orders</v-card-title>
       <v-tabs horizontal>
         <v-tab>
@@ -26,6 +27,7 @@
         </v-tab-item>
       </v-tabs>
     </v-card>
+    <!--    </v-container>-->
   </div>
 </template>
 

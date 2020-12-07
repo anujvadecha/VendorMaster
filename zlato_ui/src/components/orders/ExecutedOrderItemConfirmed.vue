@@ -15,9 +15,7 @@
         <v-col class="">{{ executed_confirmed.order_id }}</v-col>
         <!--        <v-spacer></v-spacer>-->
         <v-col class="text-right"
-          ><v-chip outlined dark small color="light-blue"
-            >Order confirmed</v-chip
-          >
+          ><v-chip outlined dark small color="green">Order confirmed</v-chip>
           <v-chip outlined dark small color="light-blue ml-2">OTP :123</v-chip>
         </v-col>
       </v-row>

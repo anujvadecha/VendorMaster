@@ -195,6 +195,10 @@ export default {
           console.log(res);
         });
       } else {
+        this.$store.dispatch(
+          "show_snackbar",
+          "Added " + item.vendor + " " + item.name + " to favourites"
+        );
         add_to_favourites(item).then(res => {
           console.log(res);
         });

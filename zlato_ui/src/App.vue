@@ -9,6 +9,7 @@
     <v-main>
       <v-container>
         <router-view />
+        <SnackbarAlert></SnackbarAlert>
       </v-container>
     </v-main>
     <v-footer app>
@@ -25,15 +26,17 @@
 // Vue.use(IconsPlugin)
 import store from "@/store";
 import NavBar from "./components/NavBar/NavBar";
+import SnackbarAlert from "@/components/SnackbarAlert";
 export default {
   name: "App",
 
-  components: { NavBar },
+  components: { SnackbarAlert, NavBar },
 
   data: () => ({
-    //
+    snackbar: false
   }),
   created() {
+    store.dispatch("show_snackbar", "Hey im started");
     function connect() {
       const url = "ws://" + window.location.host + "/ws/" + "ticker" + "/";
       const symbolsocket = new WebSocket(url);

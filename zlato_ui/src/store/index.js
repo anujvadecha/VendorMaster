@@ -8,7 +8,9 @@ export default new Vuex.Store({
   state: {
     instruments: [],
     vendors: [],
-    bottom_sheet: false
+    bottom_sheet: false,
+    snackbar_message: "",
+    snackbar: false
   },
 
   mutations: {
@@ -44,6 +46,10 @@ export default new Vuex.Store({
         }
       }
     },
+    show_snackbar(state, message) {
+      state.snackbar = true;
+      state.snackbar_message = message;
+    },
     push_vendors(state, vendors) {
       state.vendors = vendors;
     }
@@ -66,6 +72,9 @@ export default new Vuex.Store({
     },
     set_sheet({ commit }, boolean) {
       commit("set_sheet", boolean);
+    },
+    show_snackbar({ commit }, message) {
+      commit("show_snackbar", message);
     }
   },
   modules: {},
