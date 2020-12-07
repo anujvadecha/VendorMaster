@@ -2,18 +2,55 @@
   <div class="Favourites">
     <h2>Favourites</h2>
 
-    <v-data-table
+    <!-- <v-data-table
       :headers="headers"
       :items="favourite_items"
       loading-text="Loading text.....Please wait"
     >
+    </v-data-table> -->
+
+ <v-data-table
+      :headers="headers"
+      :items="favourite_items"
+      :loading="loading"
+      :hide-default-footer="true"
+    >
+      <template v-slot:body="props">
+        <draggable
+          :list="props.items"
+          tag="tbody"
+        >
+          <tr
+            v-for="(user, index) in props.items"
+            :key="index"
+          >
+            <td>
+              <v-icon>
+                mdi-arrow-all
+              </v-icon>
+            </td>
+            <td> {{ user.vendor }} </td>
+            <td> {{ user.name }} </td>
+            <td> {{ user.bid }} </td>
+            <td> {{ user.ask }} </td>
+            <td> {{ user.high }} </td>
+            <td> {{ user.low }} </td>
+          </tr>
+        </draggable>
+      </template>
     </v-data-table>
+
   </div>
 </template>
 
 <script>
+import draggable from "vuedraggable";
+
 export default {
   name: "Favourites",
+  components: {
+    draggable,
+  },
   data() {
     return {
       favourite_items: [],
@@ -24,8 +61,7 @@ export default {
         { text: "Bid", value: "bid", filterable: false },
         { text: "Ask", value: "ask", filterable: false },
         { text: "High", value: "high", filterable: false },
-        { text: "Low", value: "low", filterable: false },
-        { text: "", value: "favourites" }
+        { text: "Low", value: "low", filterable: false }
       ]
     };
   },

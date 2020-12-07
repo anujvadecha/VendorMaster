@@ -12,6 +12,16 @@ class Command(BaseCommand):
             order=Order(user_id=NormalUser.objects.first(),instrument_id=Symbol.objects.first(),quantity=randint(1, 200),status=OrderStatus.WAITING_FOR_LIMIT,
                   type=OrderType.LIMIT,price=randint(70000,80000))
             order.save()
+            order=Order(user_id=NormalUser.objects.first(),instrument_id=Symbol.objects.first(),quantity=randint(1, 200),status=OrderStatus.OPEN,
+                  type=OrderType.LIMIT,price=randint(70000,80000))
+            order.save()
+            order=Order(user_id=NormalUser.objects.first(),instrument_id=Symbol.objects.first(),quantity=randint(1, 200),status=OrderStatus.EXECUTED,
+                  type=OrderType.LIMIT,price=randint(70000,80000))
+            order.save()
+            order=Order(user_id=NormalUser.objects.first(),instrument_id=Symbol.objects.first(),quantity=randint(1, 200),status=OrderStatus.CLOSED,
+                  type=OrderType.LIMIT,price=randint(70000,80000))
+            order.save()
+
 
     def handle(self, *args, **options):
             self.delete_all_orders()

@@ -99,7 +99,7 @@ class Symbol(BaseModel):
     vendor_id = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     enabled = models.BooleanField(default=True)
     type = models.CharField(max_length=200, choices=SymbolType.choices, default=SymbolType.gold_999)
-    name = models.CharField(max_length=500, choices=SymbolType)
+    name = models.CharField(max_length=500, choices=SymbolName)
     delivery_from = models.DateField()
     delivery_to = models.DateField()
     quantity = models.CharField(max_length=200)

@@ -22,16 +22,18 @@
         ></v-text-field>
       </v-card-title>
       <v-chip-group mandatory active-class="primary--text">
-        <v-chip class="ma-2">Gold 999</v-chip>
-        <v-chip class="ma-2">Gold 999 1kg</v-chip>
-        <v-chip class="ma-2">Gold 995</v-chip>
-        <v-chip class="ma-2">Gold 995 1kg</v-chip>
+        <v-chip @click="changeSearchValue('')" class="ma-2">All</v-chip>
+        <v-chip @click="changeSearchValue('gold 999')" class="ma-2">Gold 999</v-chip>
+        <v-chip @click="changeSearchValue('gold 999 1kg')" class="ma-2">Gold 999 1kg</v-chip>
+        <v-chip @click="changeSearchValue('gold 995')" class="ma-2">Gold 995</v-chip>
+        <v-chip @click="changeSearchValue('gold 995 1kg')" class="ma-2">Gold 995 1kg</v-chip>
       </v-chip-group>
       <v-data-table
         :headers="headers"
         :items="instruments_to_render"
-        :search="search"
         loading-text="Loading... Please wait"
+        :search="search"
+        :custom-filter="customFilter"
       >
         <template v-slot:item.vendor="{ item }">
           <div dark @click="open_vendor_dialog(item)" style="color:slateblue;">
@@ -50,13 +52,19 @@
           </div>
         </template>
         <template v-slot:item.is_favourite="{ item }">
-          <div dark @click="toggleFavourite(item)">
-            <v-icon v-if="item.is_favourite">
-              mdi-star
-            </v-icon>
-            <v-icon v-else>
-              mdi-star-outline
-            </v-icon>
+          <div 
+            v-on:mouseover="showStar"
+            v-on:mouseleave="hideStar"
+          >
+            <div dark @click="toggleFavourite(item)">
+              <v-icon v-if="item.is_favourite && isVisible">
+                mdi-star
+              </v-icon>
+              <v-icon v-else-if="!item.is_favourite && isVisible">
+                mdi-star-outline
+              </v-icon>
+              {{}}
+            </div>
           </div>
         </template>
       </v-data-table>
@@ -143,12 +151,12 @@ export default {
   components: { BottomOrderSheet },
   data() {
     return {
+      isVisible: false,
       selected_item: null,
       selected_vendor_item: null,
       dialog: false,
       sheet: false,
       items: ["gold999", "gold 999 1kg", "gold 995", "gold 995 1kg"],
-      search: "",
       headers: [
         { text: "Vendor", align: "start", value: "vendor" },
         { text: "Symbol", value: "name" },
@@ -158,7 +166,9 @@ export default {
         { text: "Low", value: "low", filterable: false },
         { text: "", value: "is_favourite" }
       ],
-      instruments: this.$store.getters.get_instruments
+      instruments: this.$store.getters.get_instruments,
+      selectedInstruments: [],
+      search: ''
     };
   },
   computed: {
@@ -170,6 +180,23 @@ export default {
     }
   },
   methods: {
+    changeSearchValue(text) {
+      this.search = text;
+    },
+    customFilter(value, search, item) {
+      // search = "/^" + search + "$/";
+      let isSymbolType = search === item.type;
+      console.log(search);
+      console.log(item.type);
+      console.log(isSymbolType);
+      return isSymbolType;
+    },
+    showStar: function() {
+      this.isVisible = true;
+    },
+    hideStar: function() {
+      this.isVisible = false;
+    },
     open_order_sheet: function(item) {
       this.$store.dispatch("set_sheet", true);
       this.selected_item = item;
