@@ -5,35 +5,27 @@
       <v-tabs horizontal>
         <v-tab>
           <!--          <v-icon left>mdi-circle</v-icon>-->
-          Open
+          Executed
         </v-tab>
         <v-tab>
           <!--          <v-icon>mdi-</v-icon>-->
-          Executed
+          Open
         </v-tab>
         <v-tab>
           <!--          <v-icon>mdi-access-point</v-icon>-->
           Previous
         </v-tab>
         <v-tab-item>
+          <ExecutedOrders
+            v-bind:executed_orders_confirmed="executed_orders_confirmed"
+            v-bind:executed_orders_waiting="executed_orders_waiting"
+          />
+        </v-tab-item>
+        <v-tab-item>
           <ActiveOrders v-bind:active_orders="active_orders" />
         </v-tab-item>
-
         <v-tab-item>
-          <ExecutedOrders />
-        </v-tab-item>
-
-        <v-tab-item>
-          <v-card flat>
-            <v-card-text>
-              <p>
-                Fusce a quam. Phasellus nec sem in justo pellentesque facilisis.
-                Nam eget dui. Proin viverra, ligula sit amet ultrices semper,
-                ligula arcu tristique sapien, a accumsan nisi mauris ac eros. In
-                dui magna, posuere eget, vestibulum et, tempor auctor, justo.
-              </p>
-            </v-card-text>
-          </v-card>
+          <ClosedOrders v-bind:closed_orders="closed_orders" />
         </v-tab-item>
       </v-tabs>
     </v-card>
@@ -43,62 +35,55 @@
 <script>
 import ActiveOrders from "../components/orders/ActiveOrders";
 import ExecutedOrders from "../components/orders/ExecutedOrders";
-import { apiService } from "@/common/api.service";
+import ClosedOrders from "@/components/orders/ClosedOrders";
+import { get_orders } from "@/common/api_calls";
 
 export default {
   name: "Orders",
   components: {
     ActiveOrders,
-    ExecutedOrders
+    ExecutedOrders,
+    ClosedOrders
   },
   data() {
     return {
-      items: [
-        {
-          icon: "mdi-inbox",
-          text: "Inbox"
-        },
-        {
-          icon: "mdi-star",
-          text: "Star"
-        },
-        {
-          icon: "mdi-send",
-          text: "Send"
-        },
-        {
-          icon: "mdi-email-open",
-          text: "Drafts"
-        }
-      ],
       model: 1,
       orders: [],
       active_orders: [],
-      executed_orders: [],
-      previous_orders: []
+      executed_orders_confirmed: [],
+      executed_orders_waiting: [],
+      closed_orders: []
     };
   },
   created() {
-    let endpoint = window.location.host + "/order/api/orderDetails";
-    apiService(endpoint).then(res => {
-      // console.log(res);
-      this.orders = res;
-      // console.log(this.orders);
-    })
-    .then(() => {
-      this.orders.map(order => {
-        order.instrument = this.$store.getters.get_instrument(order.instrument_id);
-        console.log(order.instrument);
+    get_orders()
+      .then(res => {
+        this.orders = res;
       })
-    })
-    .then(() => {
-      this.active_orders = this.orders.filter(order => {
-        return order.status === 'OPEN';
+      .then(() => {
+        console.log(this.orders);
+        this.orders.map(order => {
+          order.instrument = this.$store.getters.get_instrument(
+            order.instrument_id
+          );
+        });
       })
-      // console.log(this.active_orders)
-    })
+      .then(() => {
+        this.active_orders = this.orders.filter(order => {
+          return order.status === "WAITING_FOR_LIMIT";
+        });
+        this.executed_orders_waiting = this.orders.filter(order => {
+          return order.status === "OPEN";
+        });
+        this.executed_orders_confirmed = this.orders.filter(order => {
+          return order.status === "EXECUTED";
+        });
+        this.closed_orders = this.orders.filter(order => {
+          return order.status === "CLOSED";
+        });
+      });
   }
-}
+};
 </script>
 
 <style scoped>

@@ -39,9 +39,7 @@ class SymbolType(DjangoChoices):
 
 
 class Vendor(BaseModel):
-    #TODO REMOVE DEFAULT USER WHEN GOING TO PROD NEED IT FOR DEV MIGRATIONS
-    user_id = models.ForeignKey(NormalUser, blank=True, on_delete=models.CASCADE,
-                                default=NormalUser.objects.first().pk)
+    user_id = models.ForeignKey(NormalUser, blank=True, on_delete=models.CASCADE,)
     vendor_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     enabled = models.BooleanField(default=True)
     name = models.CharField(max_length=500)

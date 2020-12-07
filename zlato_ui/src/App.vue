@@ -58,20 +58,15 @@ export default {
           let favourites = JSON.parse(message["favourites"]);
           favourites = favourites.map(favourite => {
             return favourite.instrument_id;
-          })
-
-          // TODO
-          // for instrument in instrument instrument.favourite=True when favourites has it
+          });
           instruments.map(instrument => {
-            for(let i=0; i<favourites.length; i++) {
-              if(favourites[i] === instrument.instrument_id) {
-                instrument.is_favourite= true;
+            for (let i = 0; i < favourites.length; i++) {
+              if (favourites[i] === instrument.instrument_id) {
+                instrument.is_favourite = true;
+              } else {
+                instrument.is_favourite = false;
               }
-              else {
-               instrument.is_favourite = false;
             }
-            }
-
           });
           console.log(favourites);
           console.log(instruments);

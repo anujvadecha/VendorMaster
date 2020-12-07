@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 
 
@@ -12,6 +12,8 @@ class IndexTemplateView(LoginRequiredMixin,TemplateView):
         template_name="index.html"
         return template_name
 
+def fallback_404(request):
+    return redirect("/")
 # from django.contrib.admin.views.decorators import staff_member_required
 #
 # @staff_member_required

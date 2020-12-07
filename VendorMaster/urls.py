@@ -25,9 +25,9 @@ from userBase.forms import CustomUserForm
 from django_registration.backends.one_step.views import RegistrationView
 from vendorbase.api.views import FavouritesView
 from vendorbase.models import Symbol
-from vendorbase.views import IndexTemplateView
+from vendorbase.views import IndexTemplateView, fallback_404
 
-Symbol.update_cache()
+# Symbol.update_cache()
 
 urlpatterns = [
     url('admin/', admin.site.urls),
@@ -44,7 +44,8 @@ urlpatterns = [
     path("api/rest-auth/",include("rest_auth.urls")),
     path("api/rest-auth/registration",include("rest_auth.registration.urls")),
     path("",IndexTemplateView.as_view(),name="entry-point"),
-    path("favourites/",FavouritesView.as_view(),name="favourite")
+    path("api/favourites/",FavouritesView.as_view(),name="favourite"),
+    url(r'^.*$',fallback_404,name="404 fallback")
 ]
 
 if settings.DEBUG:

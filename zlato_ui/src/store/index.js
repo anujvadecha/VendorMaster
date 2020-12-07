@@ -7,14 +7,14 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     instruments: [],
-    vendors: []
+    vendors: [],
+    bottom_sheet: false
   },
 
   mutations: {
     push_instruments(state, instruments) {
       state.instruments = instruments;
     },
-
     update_prices(state, tick) {
       state.instruments = state.instruments.map(function(instrument) {
         instrument.bid = tick.gold_tick.bid + instrument.buy_premium;
@@ -31,6 +31,10 @@ export default new Vuex.Store({
         );
         return instrument;
       });
+    },
+
+    set_sheet(state, boolean) {
+      state.bottom_sheet = boolean;
     },
     update_instrument(state, instrument) {
       for (var i = 0; i < state.instruments.length; i++) {
@@ -59,6 +63,9 @@ export default new Vuex.Store({
     },
     push_vendors({ commit }, vendors) {
       commit("push_vendors", vendors);
+    },
+    set_sheet({ commit }, boolean) {
+      commit("set_sheet", boolean);
     }
   },
   modules: {},
@@ -86,6 +93,9 @@ export default new Vuex.Store({
     get_favourite_instruments: state => {
       //TODO
       console.log(state);
+    },
+    get_sheet: state => {
+      return state.bottom_sheet;
     }
   }
 });

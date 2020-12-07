@@ -1,16 +1,32 @@
 <template>
   <div>
     <v-container style="">
-      <ExecutedOrderItemConfirmed></ExecutedOrderItemConfirmed>
-      <ExecutedOrderItemWaiting></ExecutedOrderItemWaiting>
+      <!--      {{ executed_orders_waiting }}-->
+      <!--      {{ // executed_orders_confirmed }}}-->
+      <div
+        v-for="executed_waiting in executed_orders_waiting"
+        :key="executed_waiting.order_id"
+      >
+        <ExecutedOrderItemWaiting
+          v-bind:executed_waiting="executed_waiting"
+        ></ExecutedOrderItemWaiting>
+      </div>
+      <div
+        v-for="executed_confirmed in executed_orders_confirmed"
+        :key="executed_confirmed.order_id"
+      >
+        <ExecutedOrderItemConfirmed
+          v-bind:executed_confirmed="executed_confirmed"
+        ></ExecutedOrderItemConfirmed>
+      </div>
     </v-container>
     <div class="text-xs-center">
       <v-dialog v-model="dialog" width="500">
-        <template v-slot:activator="{ on }">
-          <v-btn color="red lighten-2" dark v-on="on">
-            Check status
-          </v-btn>
-        </template>
+        <!--        <template v-slot:activator="{ on }">-->
+        <!--          <v-btn color="red lighten-2" dark v-on="on">-->
+        <!--            Check status-->
+        <!--          </v-btn>-->
+        <!--        </template>-->
 
         <v-card>
           <v-card-title class="headline grey lighten-2" primary-title>
@@ -39,6 +55,7 @@ import ExecutedOrderItemWaiting from "@/components/orders/ExecutedOrderItemWaiti
 
 export default {
   name: "ExecutedOrders",
+  props: ["executed_orders_confirmed", "executed_orders_waiting"],
   components: { ExecutedOrderItemConfirmed, ExecutedOrderItemWaiting },
   data() {
     return {

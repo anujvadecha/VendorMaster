@@ -45,11 +45,12 @@
         </template>
         <template v-slot:item.ask="{ item }">
           <div dark @click="open_order_sheet(item)">
+            <!--          <div dark @click="B">-->
             {{ item.ask }}
           </div>
         </template>
         <template v-slot:item.is_favourite="{ item }">
-          <div dark @click="toggleFavourite(item)" >
+          <div dark @click="toggleFavourite(item)">
             <v-icon v-if="item.is_favourite">
               mdi-star
             </v-icon>
@@ -60,18 +61,63 @@
         </template>
       </v-data-table>
     </v-card>
-    <v-btn @click="get_api">Close</v-btn>
-    <v-bottom-sheet v-model="sheet" inset>
-      <v-sheet class="text-center" height="400px">
-        <v-btn class="mt-6" text color="red" @click="sheet = !sheet">
-          close
-        </v-btn>
-        <div class="my-3">
-          Order Page
-          {{ selected_item }}
-        </div>
-      </v-sheet>
-    </v-bottom-sheet>
+    <!--    <v-btn @click="get_api">Close</v-btn>-->
+    <!--    <v-bottom-sheet v-model="sheet" inset>-->
+    <!--      <v-sheet>-->
+    <!--        <v-card dark tile color="blue">-->
+    <!--          <v-container fluid>-->
+    <!--            <v-row no-gutters>-->
+    <!--              <v-col class="text-right">-->
+    <!--                Place order-->
+    <!--              </v-col>-->
+    <!--            </v-row>-->
+    <!--            <div v-if="selected_item">-->
+    <!--              <v-row>-->
+    <!--                <v-col v-if="selected_item">-->
+    <!--                  &lt;!&ndash;              <v-if></v-if>&ndash;&gt;-->
+    <!--                  <span class="font-weight-bold">{{-->
+    <!--                    selected_item.vendor-->
+    <!--                  }}</span>-->
+    <!--                  <span class="ml-2">{{ selected_item.name }}</span>-->
+    <!--                  &lt;!&ndash;              {{selected_item }}&ndash;&gt;-->
+    <!--                </v-col>-->
+    <!--                <v-col class="text-right">-->
+    <!--                  <span class="ml-2">Bid: {{ selected_item.bid }}</span>-->
+    <!--                  <span class="ml-2">Ask: {{ selected_item.ask }}</span>-->
+    <!--                </v-col>-->
+    <!--              </v-row>-->
+    <!--            </div>-->
+    <!--          </v-container>-->
+    <!--        </v-card>-->
+    <!--        <v-card height="200px">-->
+    <!--          <v-tabs>-->
+    <!--            <v-tab>Buy</v-tab>-->
+    <!--            <v-tab>Sell</v-tab>-->
+    <!--            <v-tab-item>-->
+    <!--              <v-card tile>-->
+    <!--                <v-container fluid>-->
+    <!--                  <v-col class="text-right">-->
+    <!--                    <v-btn outlined color="blue">Buy</v-btn>-->
+    <!--                    <v-btn outlined class="ml-2" color="blue">Cancel</v-btn>-->
+    <!--                  </v-col>-->
+    <!--                </v-container>-->
+    <!--              </v-card>-->
+    <!--            </v-tab-item>-->
+    <!--            <v-tab-item>-->
+    <!--              <v-card tile>-->
+    <!--                <v-container fluid>-->
+    <!--                  <v-col class="text-right">-->
+    <!--                    <v-btn outlined color="blue">Sell</v-btn>-->
+    <!--                    <v-btn outlined class="ml-2" color="blue">Cancel</v-btn>-->
+    <!--                  </v-col>-->
+    <!--                </v-container>-->
+    <!--              </v-card>-->
+    <!--            </v-tab-item>-->
+    <!--          </v-tabs>-->
+    <!--        </v-card>-->
+    <!--      </v-sheet>-->
+    <!--    </v-bottom-sheet>-->
+    <BottomOrderSheet :selected_item="selected_item"></BottomOrderSheet>
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <!--        {{ selected_vendor_item.vendor.name }}-->
@@ -89,9 +135,12 @@
 // @ is an alias to /src
 
 import { apiService } from "@/common/api.service";
+import { add_to_favourites, remove_from_favourites } from "@/common/api_calls";
+import BottomOrderSheet from "@/components/orders/BottomOrderSheet";
 
 export default {
   name: "Home",
+  components: { BottomOrderSheet },
   data() {
     return {
       selected_item: null,
@@ -107,7 +156,7 @@ export default {
         { text: "Ask", value: "ask", filterable: false },
         { text: "High", value: "high", filterable: false },
         { text: "Low", value: "low", filterable: false },
-        { text: "", value: "is_favourite"},
+        { text: "", value: "is_favourite" }
       ],
       instruments: this.$store.getters.get_instruments
     };
@@ -115,13 +164,15 @@ export default {
   computed: {
     instruments_to_render: function() {
       return this.$store.getters.get_instruments;
+    },
+    bottom_sheet: function() {
+      return this.$store.getters.get_sheet;
     }
   },
   methods: {
     open_order_sheet: function(item) {
-      console.log(item);
+      this.$store.dispatch("set_sheet", true);
       this.selected_item = item;
-      this.sheet = !this.sheet;
     },
     open_vendor_dialog: function(item) {
       console.log(this.$store);
@@ -133,26 +184,20 @@ export default {
     },
     get_api() {
       let endpoint = window.location.host + "/order/api/orderDetails";
-      // console.log(window.location.host);
-      // console.log(endpoint);
       apiService(endpoint).then(response => {
-        console.log(response)
+        console.log(response);
       });
     },
     toggleFavourite(item) {
-      let endpoint = "/favourites/";
       item.is_favourite = !item.is_favourite;
-      if(item.is_favourite === false) {
-        apiService(endpoint, "DELETE", item.instrument_id).then(res => {
+      if (item.is_favourite === false) {
+        remove_from_favourites(item.instrument_id).then(res => {
           console.log(res);
-        })
-      }
-      else {
-
-        console.log(endpoint);
-        apiService(endpoint, "POST", item).then(res => {
+        });
+      } else {
+        add_to_favourites(item).then(res => {
           console.log(res);
-        })
+        });
       }
     }
   }
