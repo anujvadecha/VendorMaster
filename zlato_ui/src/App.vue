@@ -67,7 +67,7 @@ export default {
           });
           instruments.map(instrument => {
             for (let i = 0; i < favourites.length; i++) {
-              if (favourites[i] === instrument.instrument_id) {
+              if (favourites[i] == instrument.instrument_id) {
                 instrument.is_favourite = true;
               } else {
                 instrument.is_favourite = false;
