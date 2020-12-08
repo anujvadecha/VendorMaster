@@ -65,15 +65,28 @@ export default {
           favourites = favourites.map(favourite => {
             return favourite.instrument_id;
           });
-          instruments.map(instrument => {
-            for (let i = 0; i < favourites.length; i++) {
-              if (favourites[i] === instrument.instrument_id) {
-                instrument.is_favourite = true;
-              } else {
-                instrument.is_favourite = false;
+          instruments = instruments.map(instrument => {
+            instrument.is_favourite = false;
+            return instrument;
+          });
+          for (let i = 0; i < instruments.length; i++) {
+            for (let j = 0; j < favourites.length; j++) {
+              if (favourites[j] == instruments[i].instrument_id) {
+                console.log("setting instrument");
+                instruments[i].is_favourite = true;
               }
             }
-          });
+          }
+          // instruments = instruments.map(instrument => {
+          //   for (let i = 0; i < favourites.length; i++) {
+          //     if (favourites[i] === instrument.instrument_id) {
+          //       instrument.is_favourite = true;
+          //     } else {
+          //       instrument.is_favourite = false;
+          //     }
+          //     return instrument;
+          //   }
+          // });
           console.log(favourites);
           console.log(instruments);
           store.dispatch("push_instruments", instruments);
