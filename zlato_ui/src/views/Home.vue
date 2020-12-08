@@ -1,13 +1,13 @@
 <template>
   <div class="home">
-    <!--    <v-img-->
-    <!--      alt="Zlato Marketing"-->
-    <!--      class=" mr-2"-->
-    <!--      contain-->
-    <!--      src="@/assets/marketing.png"-->
-    <!--      transition="scale-transition"-->
-    <!--      max-height="150px"-->
-    <!--    />-->
+    <v-img
+      alt="Zlato Marketing"
+      class=" mr-2"
+      contain
+      src="@/assets/marketing.png"
+      transition="scale-transition"
+      max-height="150px"
+    />
 
     <v-card>
       <v-card-title>
@@ -23,10 +23,18 @@
       </v-card-title>
       <v-chip-group mandatory active-class="primary--text">
         <v-chip @click="changeSearchValue('')" class="ma-2">All</v-chip>
-        <v-chip @click="changeSearchValue('gold 999')" class="ma-2">Gold 999</v-chip>
-        <v-chip @click="changeSearchValue('gold 999 1kg')" class="ma-2">Gold 999 1kg</v-chip>
-        <v-chip @click="changeSearchValue('gold 995')" class="ma-2">Gold 995</v-chip>
-        <v-chip @click="changeSearchValue('gold 995 1kg')" class="ma-2">Gold 995 1kg</v-chip>
+        <v-chip @click="changeSearchValue('gold 999')" class="ma-2"
+          >Gold 999</v-chip
+        >
+        <v-chip @click="changeSearchValue('gold 999 1kg')" class="ma-2"
+          >Gold 999 1kg</v-chip
+        >
+        <v-chip @click="changeSearchValue('gold 995')" class="ma-2"
+          >Gold 995</v-chip
+        >
+        <v-chip @click="changeSearchValue('gold 995 1kg')" class="ma-2"
+          >Gold 995 1kg</v-chip
+        >
       </v-chip-group>
       <v-data-table
         :headers="headers"
@@ -47,89 +55,27 @@
         </template>
         <template v-slot:item.ask="{ item }">
           <div dark @click="open_order_sheet(item)">
-            <!--          <div dark @click="B">-->
             {{ item.ask }}
           </div>
         </template>
         <template v-slot:item.is_favourite="{ item }">
-          <div 
-            v-on:mouseover="showStar"
-            v-on:mouseleave="hideStar"
-          >
+          <div v-on:mouseover="showStar" v-on:mouseleave="hideStar">
             <div dark @click="toggleFavourite(item)">
-              <v-icon v-if="item.is_favourite && isVisible">
+              <v-icon v-if="item.is_favourite">
+                <!-- && isVisible">-->
                 mdi-star
               </v-icon>
-              <v-icon v-else-if="!item.is_favourite && isVisible">
+              <v-icon v-else-if="!item.is_favourite">
                 mdi-star-outline
               </v-icon>
-              {{}}
             </div>
           </div>
         </template>
       </v-data-table>
     </v-card>
-    <!--    <v-btn @click="get_api">Close</v-btn>-->
-    <!--    <v-bottom-sheet v-model="sheet" inset>-->
-    <!--      <v-sheet>-->
-    <!--        <v-card dark tile color="blue">-->
-    <!--          <v-container fluid>-->
-    <!--            <v-row no-gutters>-->
-    <!--              <v-col class="text-right">-->
-    <!--                Place order-->
-    <!--              </v-col>-->
-    <!--            </v-row>-->
-    <!--            <div v-if="selected_item">-->
-    <!--              <v-row>-->
-    <!--                <v-col v-if="selected_item">-->
-    <!--                  &lt;!&ndash;              <v-if></v-if>&ndash;&gt;-->
-    <!--                  <span class="font-weight-bold">{{-->
-    <!--                    selected_item.vendor-->
-    <!--                  }}</span>-->
-    <!--                  <span class="ml-2">{{ selected_item.name }}</span>-->
-    <!--                  &lt;!&ndash;              {{selected_item }}&ndash;&gt;-->
-    <!--                </v-col>-->
-    <!--                <v-col class="text-right">-->
-    <!--                  <span class="ml-2">Bid: {{ selected_item.bid }}</span>-->
-    <!--                  <span class="ml-2">Ask: {{ selected_item.ask }}</span>-->
-    <!--                </v-col>-->
-    <!--              </v-row>-->
-    <!--            </div>-->
-    <!--          </v-container>-->
-    <!--        </v-card>-->
-    <!--        <v-card height="200px">-->
-    <!--          <v-tabs>-->
-    <!--            <v-tab>Buy</v-tab>-->
-    <!--            <v-tab>Sell</v-tab>-->
-    <!--            <v-tab-item>-->
-    <!--              <v-card tile>-->
-    <!--                <v-container fluid>-->
-    <!--                  <v-col class="text-right">-->
-    <!--                    <v-btn outlined color="blue">Buy</v-btn>-->
-    <!--                    <v-btn outlined class="ml-2" color="blue">Cancel</v-btn>-->
-    <!--                  </v-col>-->
-    <!--                </v-container>-->
-    <!--              </v-card>-->
-    <!--            </v-tab-item>-->
-    <!--            <v-tab-item>-->
-    <!--              <v-card tile>-->
-    <!--                <v-container fluid>-->
-    <!--                  <v-col class="text-right">-->
-    <!--                    <v-btn outlined color="blue">Sell</v-btn>-->
-    <!--                    <v-btn outlined class="ml-2" color="blue">Cancel</v-btn>-->
-    <!--                  </v-col>-->
-    <!--                </v-container>-->
-    <!--              </v-card>-->
-    <!--            </v-tab-item>-->
-    <!--          </v-tabs>-->
-    <!--        </v-card>-->
-    <!--      </v-sheet>-->
-    <!--    </v-bottom-sheet>-->
     <BottomOrderSheet :selected_item="selected_item"></BottomOrderSheet>
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
-        <!--        {{ selected_vendor_item.vendor.name }}-->
-        <!--        <v-divider></v-divider>-->
         {{ selected_vendor_item }}
         <v-btn color="blue darken-1" text @click="dialog = false">
           Close
@@ -168,7 +114,7 @@ export default {
       ],
       instruments: this.$store.getters.get_instruments,
       selectedInstruments: [],
-      search: ''
+      search: ""
     };
   },
   computed: {
@@ -186,9 +132,6 @@ export default {
     customFilter(value, search, item) {
       // search = "/^" + search + "$/";
       let isSymbolType = search === item.type;
-      console.log(search);
-      console.log(item.type);
-      console.log(isSymbolType);
       return isSymbolType;
     },
     showStar: function() {

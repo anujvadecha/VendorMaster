@@ -1,6 +1,40 @@
 <template>
   <div>
     <v-card elevation="2px" class="ma-2" outlined>
+      <v-row>
+        <v-col>
+          <v-text-field
+            v-model="quantity"
+            placeholder="Quantity"
+            label="Quantity in gms"
+            type="number"
+            class="ml-2 "
+            outlined
+          ></v-text-field>
+        </v-col>
+        <v-col>
+          <div v-if="market">
+            <v-text-field
+              disabled
+              :placeholder="item.bid"
+              label="Price"
+              type="number"
+              class="ml-2"
+              outlined
+            ></v-text-field>
+          </div>
+          <div v-if="!market">
+            <v-text-field
+              :placeholder="item.bid"
+              label="Price"
+              v-model="price"
+              type="number"
+              class="ml-2"
+              outlined
+            ></v-text-field>
+          </div>
+        </v-col>
+      </v-row>
       <!--      <v-tabs color="orange" vertical>-->
       <!--        <v-tab>BUY</v-tab>-->
       <!--        <v-tab>SELL</v-tab>-->
@@ -21,14 +55,6 @@
       <!--          </div>-->
       <!--        </v-tab-item>-->
       <!--      </v-tabs>-->
-      <su-switch
-        v-model="order"
-        state-on-label="Sell"
-        state-off-label="Buy"
-        state-on="SELL"
-        state-off="BUY"
-      >
-      </su-switch>
     </v-card>
     <v-card tile>
       <v-container fluid>
@@ -49,13 +75,15 @@
 </template>
 
 <script>
-import { Switch } from "slim-ui";
+// import { Switch } from "slim-ui";
 export default {
   name: "OrderFormBottom",
   props: ["type", "item", "side"],
   data() {
     return {
-      order: "BUY"
+      order: "BUY",
+      quantity: 0,
+      price: 0
     };
   },
   computed: {
@@ -67,11 +95,15 @@ export default {
   methods: {
     set_sheet: function() {
       this.$store.dispatch("set_sheet", false);
+    },
+    increment() {
+      this.quantity = parseInt(this.quantity, 10) + 1;
+    },
+    decrement() {
+      this.quantity = parseInt(this.quantity, 10) - 1;
     }
   },
-  components: {
-    "su-switch": Switch
-  },
+  components: {},
   created() {
     console.log(this.item);
   }

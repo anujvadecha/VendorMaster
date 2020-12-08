@@ -67,7 +67,7 @@ def get_vendor_order_queryset(request=None,queryset=None):
 @admin.register(LimitOrderPending)
 class LimitOrderPendingAdmin(admin.ModelAdmin,OrderAdminBase):
     def get_queryset(self, request):
-        return self.model.objects.filter(status=OrderStatus.WAITING_FOR_LIMIT)
+        return get_vendor_order_queryset(request=request,queryset=self.model.objects.filter(status=OrderStatus.WAITING_FOR_LIMIT))
     list_display = ('instrument_id', 'side', 'quantity', 'status', 'created_at')
     list_display_links = ('instrument_id',)
     list_editable = ('status',)

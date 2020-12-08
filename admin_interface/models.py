@@ -11,6 +11,10 @@ from colorfield.fields import ColorField
 import django
 from django.db import models
 from django.db.models.signals import post_delete, post_save, pre_save
+
+from userBase.models import NormalUser
+from vendorbase.models import Vendor
+
 if django.VERSION < (2, 0):
     from django.utils.encoding import force_text as force_str
     from django.utils.translation import ugettext_lazy as _
@@ -22,7 +26,6 @@ from six import python_2_unicode_compatible
 
 @python_2_unicode_compatible
 class Theme(models.Model):
-
     @staticmethod
     def post_migrate_handler(**kwargs):
         del_cached_active_theme()
@@ -74,7 +77,7 @@ class Theme(models.Model):
             obj = objs_active_ls[-1]
             obj.set_active()
         return obj
-
+    vendor=models.ForeignKey(NormalUser,on_delete=models.DO_NOTHING,blank=True,null=True)
     name = models.CharField(
         unique=True,
         max_length=50,

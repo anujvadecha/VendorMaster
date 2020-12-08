@@ -42,7 +42,7 @@ urlpatterns = [
     path("api/rest-auth/registration",include("rest_auth.registration.urls")),
     path("",IndexTemplateView.as_view(),name="entry-point"),
     path("api/favourites/",FavouritesView.as_view(),name="favourite"),
-    url(r'^.*$',fallback_404,name="404 fallback")
+    # url(r'^.*$',fallback_404,name="404 fallback")
 ]
 
 if settings.DEBUG:

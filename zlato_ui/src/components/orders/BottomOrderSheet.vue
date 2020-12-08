@@ -1,41 +1,48 @@
 <template>
   <v-bottom-sheet persistent v-model="get_set_sheet" inset>
-    <v-sheet style="max-width: 700px">
+    <v-sheet style>
       <v-card dark tile color="#FF8F00">
         <v-container fluid>
           <div v-if="selected_item">
             <v-row>
               <v-col v-if="selected_item">
-                <!--              <v-if></v-if>-->
                 <span class="font-weight-bold">{{ selected_item.vendor }}</span>
                 <span class="ml-2">{{ selected_item.name }}</span>
-                <!--              {{selected_item }}-->
               </v-col>
               <!--              <v-col>-->
-              <!--                <v-switch-->
-              <!--                  style="height: 10px"-->
-              <!--                  :label="side"-->
-              <!--                  color="primary"-->
-              <!--                ></v-switch>-->
+
               <!--              </v-col>-->
+
               <v-col class="text-right">
                 <span class="ml-2">Bid: {{ selected_item.bid }}</span>
                 <span class="ml-2">Ask: {{ selected_item.ask }}</span>
-                <su-switch
-                  v-model="order"
-                  state-on-label="Sell"
-                  state-off-label="Buy"
-                  state-on="SELL"
-                  state-off="BUY"
-                >
-                </su-switch>
 
                 <!--                <v-btn @click="close_sheet()">Cancel</v-btn>-->
               </v-col>
             </v-row>
+            <v-row no-gutters>
+              <v-switch
+                v-model="order_switch"
+                style=""
+                :label="get_order_side"
+                color="white"
+                dark
+              ></v-switch>
+              <!--              <su-switch-->
+              <!--                class="mt-2 text-right"-->
+              <!--                v-model="order"-->
+              <!--                state-on-label="Sell"-->
+              <!--                state-off-label="Buy"-->
+              <!--                state-on="SELL"-->
+              <!--                state-off="BUY"-->
+              <!--                style="color: white"-->
+              <!--              >-->
+              <!--              </su-switch>-->
+            </v-row>
           </div>
         </v-container>
       </v-card>
+      <v-card> </v-card>
       <v-card>
         <v-tabs>
           <v-tab>Market</v-tab>
@@ -62,17 +69,24 @@
 
 <script>
 import OrderFormBottom from "@/components/orders/OrderFormBottom";
-import { Switch } from "slim-ui";
+// import { Switch } from "slim-ui";
 export default {
   name: "BottomOrderSheet",
-  components: { OrderFormBottom, "su-switch": Switch },
+  components: { OrderFormBottom },
   props: ["selected_item"],
   data() {
-    return { side: "BUY", order: "BUY" };
+    return { side: "BUY", order: "BUY", order_switch: false };
   },
   computed: {
     get_set_sheet: function() {
       return this.$store.getters.get_sheet;
+    },
+    get_order_side: function() {
+      if (this.order_switch == false) {
+        return "SELL";
+      } else {
+        return "BUY";
+      }
     }
   },
   methods: {

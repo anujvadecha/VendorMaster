@@ -1,45 +1,37 @@
 <template>
   <div class="Favourites">
-    <h2>Favourites</h2>
-
     <!-- <v-data-table
       :headers="headers"
       :items="favourite_items"
       loading-text="Loading text.....Please wait"
     >
     </v-data-table> -->
-
- <v-data-table
-      :headers="headers"
-      :items="favourite_items"
-      :loading="loading"
-      :hide-default-footer="true"
-    >
-      <template v-slot:body="props">
-        <draggable
-          :list="props.items"
-          tag="tbody"
-        >
-          <tr
-            v-for="(user, index) in props.items"
-            :key="index"
-          >
-            <td>
-              <v-icon>
-                mdi-arrow-all
-              </v-icon>
-            </td>
-            <td> {{ user.vendor }} </td>
-            <td> {{ user.name }} </td>
-            <td> {{ user.bid }} </td>
-            <td> {{ user.ask }} </td>
-            <td> {{ user.high }} </td>
-            <td> {{ user.low }} </td>
-          </tr>
-        </draggable>
-      </template>
-    </v-data-table>
-
+    <v-card>
+      <v-card-title>Favourites</v-card-title>
+      <v-data-table
+        :headers="headers"
+        :items="favourite_items"
+        :loading="loading"
+      >
+        <template v-slot:body="props">
+          <draggable :list="props.items" tag="tbody">
+            <tr v-for="(user, index) in props.items" :key="index">
+              <td>
+                <v-icon>
+                  mdi-arrow-all
+                </v-icon>
+              </td>
+              <td>{{ user.vendor }}</td>
+              <td>{{ user.name }}</td>
+              <td>{{ user.bid }}</td>
+              <td>{{ user.ask }}</td>
+              <td>{{ user.high }}</td>
+              <td>{{ user.low }}</td>
+            </tr>
+          </draggable>
+        </template>
+      </v-data-table>
+    </v-card>
   </div>
 </template>
 
@@ -49,7 +41,7 @@ import draggable from "vuedraggable";
 export default {
   name: "Favourites",
   components: {
-    draggable,
+    draggable
   },
   data() {
     return {

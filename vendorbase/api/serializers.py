@@ -34,7 +34,7 @@ class SymbolSerializer(serializers.ModelSerializer):
         return cache.get(obj.instrument_id).get("high")
     def get_low(self,obj):
         if (cache.get(obj.instrument_id) == None):
-            return 0
+            return 9999999
         return cache.get(obj.instrument_id).get("low")
     def get_bid(self,obj):
         if (cache.get(obj.instrument_id) == None):

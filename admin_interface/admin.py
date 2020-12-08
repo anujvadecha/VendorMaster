@@ -16,7 +16,7 @@ class ThemeAdmin(admin.ModelAdmin):
         if(request.user.username==settings.ADMIN_USER):
             return qs
         else:
-            return qs.filter(name=request.user.username)
+            return qs.filter(vendor=request.user)
 
     list_display = ('name', 'active', )
     list_editable = ('active', )
@@ -27,6 +27,12 @@ class ThemeAdmin(admin.ModelAdmin):
         (None, {
             'classes': ('wide', ),
             'fields': ('name', 'active', )
+        }),
+        (_('Vendor'), {
+            'classes': ('wide',),
+            'fields': (
+                'vendor',
+            )
         }),
         (_('Environment'), {
             'classes': ('wide', ),

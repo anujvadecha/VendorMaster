@@ -15,7 +15,7 @@
         const url='ws://'
             + window.location.host
             + '/ws/'
-            + 'ticker'
+            + 'vendor'
             + '/'
         const tickerSocket = new WebSocket(
             url
@@ -66,8 +66,8 @@
             "    <th>Product</th>\n" +
             "    <th>Bid</th>\n" +
             "    <th>Ask</th>\n" +
-            "    <th>High</th>\n" +
-            "    <th>Low</th>\n" +
+            {#"    <th>High</th>\n" +#}
+            {#"    <th>Low</th>\n" +#}
             "  </tr>";
         instruments.forEach(function(item){
             console.log(item)
@@ -78,8 +78,8 @@
                 row += '<td>' + item["name"] + '</td>';
                 row += '<td>' + bidprice + '</td>';
                 row += '<td>' + askprice + '</td>';
-                row += '<td>' + item["high"] + '</td>';
-                row += '<td>' + item["low"] + '</td>';
+                {#row += '<td>' + item["high"] + '</td>';#}
+                {#row += '<td>' + item["low"] + '</td>';#}
                 row + '<tr>';
                 rows += row
         });
