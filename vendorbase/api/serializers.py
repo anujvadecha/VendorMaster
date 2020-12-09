@@ -1,7 +1,12 @@
+import json
+from uuid import UUID
+
 from django.core.cache import cache
 from rest_framework import serializers
+
+from admin_interface.models import Theme
 from userBase.models import NormalUser
-from vendorbase.models import Symbol, GlobalPremium, Vendor, Favourite
+from vendorbase.models import Symbol, GlobalPremium, Vendor, Favourite, VendorDetails
 
 
 #NormalUserSerializer
@@ -15,11 +20,53 @@ class NormalUserSerializer(serializers.ModelSerializer):
 #         if isinstance(value,Vendor):
 #             serializer=VendorSerializer(value)
 #         return serializer.data
+class UUIDEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, UUID):
+            return str(obj)
+        return json.JSONEncoder.default(self, obj)
+
+class ThemeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Theme
+        fields="__all__"
+class VendorDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=VendorDetails
+        fields="__all__"
+
+
 
 class VendorSerializer(serializers.ModelSerializer):
+    theme=serializers.SerializerMethodField()
+    vendor_details=serializers.SerializerMethodField()
+    def get_theme(self,obj):
+        return json.dumps(ThemeSerializer(Theme.objects.filter(vendor=obj),many=True).data,cls=UUIDEncoder)
+    def get_vendor_details(self, obj):
+        return json.dumps(VendorDetailsSerializer(VendorDetails.objects.filter(vendor=obj),many=True).data,cls=UUIDEncoder)
     class Meta:
         model=Vendor
-        fields="__all__"
+        fields=[
+        "user_id",
+        "vendor_id",
+        "enabled",
+        "name",
+        "address",
+        "email",
+        "company",
+        "gst_in",
+        "zip_code",
+        "city",
+        "company_card_image",
+        "company_logo",
+        "margin_available",
+        "pancard_photo",
+        "promoter_name",
+        "reference_1",
+        "reference_2",
+        "theme",
+        "vendor_details"
+        ]
 
 class SymbolSerializer(serializers.ModelSerializer):
     vendor = serializers.CharField(source="vendor_id.name")

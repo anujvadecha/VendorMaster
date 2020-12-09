@@ -9,12 +9,11 @@
     <v-main>
       <v-container>
         <router-view />
-        <SnackbarAlert></SnackbarAlert>
       </v-container>
     </v-main>
-    <v-footer app>
-      Built with love and dedication from DeltaCap Bullion
-    </v-footer>
+    <!--    <v-footer app>-->
+    <!--      Built with love and dedication from DeltaCap Bullion-->
+    <!--    </v-footer>-->
   </v-app>
 </template>
 <script>
@@ -26,20 +25,30 @@
 // Vue.use(IconsPlugin)
 import store from "@/store";
 import NavBar from "./components/NavBar/NavBar";
-import SnackbarAlert from "@/components/SnackbarAlert";
 import SlimUI from "slim-ui";
 import Vue from "vue";
 Vue.use(SlimUI);
 export default {
   name: "App",
 
-  components: { SnackbarAlert, NavBar },
+  components: { NavBar },
 
   data: () => ({
     snackbar: false
   }),
+  methods: {
+    successToast: function(message) {
+      this.$toast.success({
+        message: message,
+        orientation: this.$toast.TOP_RIGHT,
+        duration: 2000
+      });
+    }
+  },
   created() {
-    store.dispatch("show_snackbar", "Hey welcome to zlato.");
+    this.successToast(
+      "Welcome to zlato . You are connected to high speed data feeds"
+    );
     function connect() {
       const url = "ws://" + window.location.host + "/ws/" + "ticker" + "/";
       const symbolsocket = new WebSocket(url);
@@ -102,7 +111,13 @@ export default {
           store.dispatch("update_instrument", to_update);
         }
         if (message["vendors"]) {
-          store.dispatch("push_vendors", message["vendors"]);
+          console.log(message["vendors"]);
+          var vendors = message["vendors"].map(vendor => {
+            vendor.theme = JSON.parse(vendor.theme)[0];
+            vendor.vendor_details = JSON.parse(vendor.vendor_details)[0];
+            return vendor;
+          });
+          store.dispatch("push_vendors", vendors);
         }
       };
       symbolsocket.onclose = function(event) {

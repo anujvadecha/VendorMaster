@@ -94,7 +94,7 @@ export default new Vuex.Store({
       );
       console.log(vendor_id);
       console.log(state.vendors);
-      vendor_object.vendor = state.vendors.filter(
+      vendor_object.vendor = state.vendors.find(
         vendor => vendor.vendor_id === vendor_id
       );
       return vendor_object;

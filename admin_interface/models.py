@@ -77,7 +77,7 @@ class Theme(models.Model):
             obj = objs_active_ls[-1]
             obj.set_active()
         return obj
-    vendor=models.ForeignKey(NormalUser,on_delete=models.DO_NOTHING,blank=True,null=True)
+    vendor=models.ForeignKey(Vendor,on_delete=models.DO_NOTHING,blank=True,null=True)
     name = models.CharField(
         unique=True,
         max_length=50,
@@ -102,6 +102,12 @@ class Theme(models.Model):
         default=True,
         verbose_name=_('visible'))
     logo = models.FileField(
+        upload_to='logo-assets/',
+        blank=True,
+        help_text=_('Leave blank to use the default logo'),
+        verbose_name=_('logo'),
+    )
+    background_image=models.FileField(
         upload_to='logo-assets/',
         blank=True,
         help_text=_('Leave blank to use the default logo'),

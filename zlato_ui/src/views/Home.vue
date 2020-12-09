@@ -129,6 +129,20 @@ export default {
     changeSearchValue(text) {
       this.search = text;
     },
+    successToast: function(message) {
+      this.$toast.success({
+        message: message,
+        orientation: this.$toast.TOP_RIGHT,
+        duration: 2000
+      });
+    },
+    errorToast: function(message) {
+      this.$toast.error({
+        message: message,
+        orientation: this.$toast.TOP_RIGHT,
+        duration: 2000
+      });
+    },
     customFilter(value, search, item) {
       // search = "/^" + search + "$/";
       let isSymbolType = search === item.type;
@@ -150,7 +164,15 @@ export default {
       this.selected_vendor_item = this.$store.getters.get_vendor_instruments(
         item.vendor_id
       );
-      this.dialog = !this.dialog;
+
+      this.$router.push({
+        name: "Vendor",
+        params: {
+          vendor: this.selected_vendor_item.vendor.name,
+          vendor_object: this.selected_vendor_item
+        }
+      });
+      // this.dialog = !this.dialog;
     },
     get_api() {
       let endpoint = window.location.host + "/order/api/orderDetails";
@@ -164,17 +186,15 @@ export default {
         remove_from_favourites(item.instrument_id).then(res => {
           console.log(res);
         });
-        this.$store.dispatch(
-          "show_snackbar",
+        this.errorToast(
           "Removed " + item.vendor + " " + item.name + " from favourites"
         );
       } else {
         add_to_favourites(item).then(res => {
           console.log(res);
         });
-        this.$store.dispatch(
-          "show_snackbar",
-          "Added " + item.vendor + " " + item.name + " to favourites"
+        this.successToast(
+          "Added " + item.vendor + " " + item.name + " from favourites"
         );
       }
     }

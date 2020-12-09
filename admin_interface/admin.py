@@ -56,6 +56,7 @@ class ThemeAdmin(admin.ModelAdmin):
                 'logo',
                 'logo_color',
                 'logo_visible',
+                'background_image'
             )
         }),
         (_('Favicon'), {

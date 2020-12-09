@@ -60,6 +60,13 @@ class Vendor(BaseModel):
         return self.name.__str__();
 
 
+class VendorDetails(BaseModel):
+    vendor=models.ForeignKey(Vendor,on_delete=models.DO_NOTHING,null=True)
+    contact_details=models.TextField()
+    about_us=models.TextField()
+    messages=models.TextField()
+    delivery_charges=models.TextField()
+
 class BankDetails(BaseModel):
     vendor = models.ForeignKey(Vendor, on_delete=models.DO_NOTHING)
     bank_name = models.CharField(max_length=200)

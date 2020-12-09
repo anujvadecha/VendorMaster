@@ -10,7 +10,7 @@ from django.utils.html import format_html
 from base.models import BaseModel
 from orderManagement.models import Order, OrderStatus, OpenOrder, ExecutedOrder, ClosedOrder, LimitOrderPending
 from userBase.models import NormalUser
-from vendorbase.models import Symbol, Vendor, Group, City, GlobalPremium, Favourite
+from vendorbase.models import Symbol, Vendor, Group, City, GlobalPremium, Favourite, VendorDetails
 
 
 @admin.register(Symbol)
@@ -184,6 +184,9 @@ class FavouriteAdmin(admin.ModelAdmin):
 #
 #     pass
 
+@admin.register(VendorDetails)
+class VendorDetailAdmin(admin.ModelAdmin):
+    pass
 # @admin.register(OrderEngine_Pool)
 # class OrderEngineAdmin(admin.ModelAdmin):
 #     change_list_template = "StartOrderEngine.html"
