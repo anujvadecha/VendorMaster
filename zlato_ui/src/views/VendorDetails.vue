@@ -4,8 +4,11 @@
       <v-card height="100%" width="100%">
         <v-list-item
           v-bind:style="{
-            backgroundColor:
-              vendor_object.vendor.theme.css_header_background_color
+            'background-image':
+              'url(' + vendor_object.vendor.theme.background_image + ')',
+            backgroundSize: '100%',
+            height: '30%',
+            'max-height': '200px'
           }"
           three-line
         >
@@ -15,7 +18,7 @@
               v-bind:style="{
                 color: vendor_object.vendor.theme.css_header_text_color
               }"
-              class="headline mb-1"
+              class="headline mb-1 font-weight-bold"
             >
               {{ vendor_object.vendor.name }}
             </v-list-item-title>
@@ -23,10 +26,17 @@
               v-bind:style="{
                 color: vendor_object.vendor.theme.css_header_text_color
               }"
-              >Hi</v-list-item-subtitle
+              >{{ vendor_object.vendor.email }}</v-list-item-subtitle
             >
           </v-list-item-content>
-          <v-list-item-avatar tile size="80" color="white"></v-list-item-avatar>
+          <v-list-item-avatar tile size="80" color="white">
+            <v-img
+              :lazy-src="vendor_object.vendor.theme.logo"
+              max-height="150"
+              max-width="250"
+              :src="vendor_object.vendor.theme.logo"
+            ></v-img>
+          </v-list-item-avatar>
         </v-list-item>
 
         <v-card tile>
@@ -65,27 +75,30 @@
             <v-tab>Contact Details</v-tab>
             <v-tab>Delivery charges</v-tab>
             <v-tab-item>
-              <v-card tile>
+              <v-card tile flat>
                 <span
                   v-html="vendor_object.vendor.vendor_details.about_us"
                 ></span>
               </v-card>
             </v-tab-item>
             <v-tab-item>
-              <v-card tile>
+              <v-card tile flat>
                 <span
                   v-html="vendor_object.vendor.vendor_details.contact_details"
                 ></span>
               </v-card>
             </v-tab-item>
             <v-tab-item>
-              <v-card tile>
+              <v-card tile flat>
                 <span
                   v-html="vendor_object.vendor.vendor_details.delivery_charges"
                 ></span>
               </v-card>
             </v-tab-item>
           </v-tabs>
+        </v-card>
+        <v-card tile>
+          <v-card-title>Ratings</v-card-title>
         </v-card>
       </v-card>
       <BottomOrderSheet :selected_item="selected_item"></BottomOrderSheet>

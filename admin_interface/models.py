@@ -111,7 +111,7 @@ class Theme(models.Model):
         upload_to='logo-assets/',
         blank=True,
         help_text=_('Leave blank to use the default logo'),
-        verbose_name=_('logo'),
+        verbose_name=_('background image'),
     )
     logo_color = ColorField(
         blank=True,

@@ -44,7 +44,21 @@
       <NavBarButton link="/" title="home" icon="mdi-home" />
       <NavBarButton link="/orders" title="orders" icon="mdi-bag-checked" />
       <NavBarButton link="/favourites" title="Favourites" icon="mdi-heart" />
-      <NavBarButton link="/account" icon="mdi-account" title="Account" />
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn text class="" v-bind="attrs" v-on="on">
+            <v-icon left style="color:dimgrey">mdi-account</v-icon>
+            Account
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item v-for="(item, index) in items" :key="index">
+            <v-list-item-title @click="selectedAction(item.title)">{{
+              item.title
+            }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
 
       <template v-slot:extension>
         <!--        <v-divider></v-divider>-->
@@ -67,7 +81,29 @@
 import NavBarButton from "./NavBarButton";
 export default {
   name: "NavBar",
-  components: { NavBarButton }
+  components: { NavBarButton },
+  data() {
+    return {
+      items: [{ title: "Reset password" }, { title: "Logout" }],
+      selected: null
+    };
+  },
+  methods: {
+    selectedAction(event) {
+      this.selected = event;
+      switch (this.selected) {
+        case "Logout": {
+          console.log(this.selected);
+          window.location = "/accounts/logout/";
+          break;
+        }
+        case "Reset password": {
+          window.location = "/accounts/password_reset/";
+          break;
+        }
+      }
+    }
+  }
 };
 </script>
 

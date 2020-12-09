@@ -68,12 +68,28 @@ export default {
         });
       })
       .then(() => {
+           this.orders.sort((a, b) => {
+          // console.log(new Date(a.created_at) - new Date(b.created_at));
+          return new Date(b.created_at) - new Date(a.created_at) ;
+        })
+        })
+      .then(() => {
         this.active_orders = this.orders.filter(order => {
           return order.status === "WAITING_FOR_LIMIT";
         });
         this.executed_orders_waiting = this.orders.filter(order => {
           return order.status === "OPEN";
         });
+        // for(let i=0; i<this.executed_orders_waiting.length; i++) {
+        //   console.log(this.executed_orders_waiting[i]);
+        // }
+        this.executed_orders_waiting.sort((a, b) => {
+          // console.log(new Date(a.created_at) - new Date(b.created_at));
+          return new Date(b.created_at) - new Date(a.created_at) ;
+        })
+        // for(let i=0; i<this.executed_orders_waiting.length; i++) {
+        //   console.log(this.executed_orders_waiting[i]);
+        // }
         this.executed_orders_confirmed = this.orders.filter(order => {
           return order.status === "EXECUTED";
         });

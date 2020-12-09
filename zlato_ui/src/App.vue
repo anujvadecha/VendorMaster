@@ -86,16 +86,6 @@ export default {
               }
             }
           }
-          // instruments = instruments.map(instrument => {
-          //   for (let i = 0; i < favourites.length; i++) {
-          //     if (favourites[i] === instrument.instrument_id) {
-          //       instrument.is_favourite = true;
-          //     } else {
-          //       instrument.is_favourite = false;
-          //     }
-          //     return instrument;
-          //   }
-          // });
           console.log(favourites);
           console.log(instruments);
           store.dispatch("push_instruments", instruments);

@@ -56,6 +56,7 @@ class Vendor(BaseModel):
     promoter_name = models.CharField(max_length=200, blank=True)
     reference_1 = models.CharField(max_length=500, blank=True)
     reference_2 = models.CharField(max_length=500, blank=True)
+    # phone_number=models.CharField(max_length=12,blank=True)
     def __str__(self):
         return self.name.__str__();
 
