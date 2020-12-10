@@ -1,7 +1,7 @@
 <template>
-  <v-bottom-sheet persistent v-model="get_set_sheet" inset>
-    <v-sheet style>
-      <v-card dark tile color="#FF8F00">
+  <v-dialog max-width="700px" persistent v-model="get_set_sheet" inset>
+    <v-sheet v-model="get_set_sheet" style>
+      <v-card dark tile color="light-blue">
         <v-container fluid>
           <div v-if="selected_item">
             <v-row>
@@ -21,13 +21,13 @@
               </v-col>
             </v-row>
             <v-row no-gutters>
-              <v-switch
-                v-model="order_switch"
-                style=""
-                :label="get_order_side"
-                color="white"
-                dark
-              ></v-switch>
+              <!--              <v-switch-->
+              <!--                v-model="order_switch"-->
+              <!--                style=""-->
+              <!--                :label="get_order_side"-->
+              <!--                color="white"-->
+              <!--                dark-->
+              <!--              ></v-switch>-->
               <!--              <su-switch-->
               <!--                class="mt-2 text-right"-->
               <!--                v-model="order"-->
@@ -64,7 +64,7 @@
         </v-tabs>
       </v-card>
     </v-sheet>
-  </v-bottom-sheet>
+  </v-dialog>
 </template>
 
 <script>

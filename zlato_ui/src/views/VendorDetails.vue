@@ -8,7 +8,8 @@
               'url(' + vendor_object.vendor.theme.background_image + ')',
             backgroundSize: '100%',
             height: '30%',
-            'max-height': '200px'
+            'max-height': '200px',
+            backgroundColor: vendor_object.vendor.theme.css_header__color
           }"
           three-line
         >
@@ -29,13 +30,12 @@
               >{{ vendor_object.vendor.email }}</v-list-item-subtitle
             >
           </v-list-item-content>
-          <v-list-item-avatar tile size="80" color="white">
-            <v-img
-              :lazy-src="vendor_object.vendor.theme.logo"
+          <v-list-item-avatar tile size="80">
+            <img
               max-height="150"
               max-width="250"
               :src="vendor_object.vendor.theme.logo"
-            ></v-img>
+            />
           </v-list-item-avatar>
         </v-list-item>
 
@@ -75,20 +75,20 @@
             <v-tab>Contact Details</v-tab>
             <v-tab>Delivery charges</v-tab>
             <v-tab-item>
-              <v-card tile flat>
+              <v-card tile flat class="ma-2">
                 <span
                   v-html="vendor_object.vendor.vendor_details.about_us"
                 ></span>
               </v-card>
             </v-tab-item>
             <v-tab-item>
-              <v-card tile flat>
+              <v-card tile flat class="ma-2">
                 <span
                   v-html="vendor_object.vendor.vendor_details.contact_details"
                 ></span>
               </v-card>
             </v-tab-item>
-            <v-tab-item>
+            <v-tab-item class="ma-2">
               <v-card tile flat>
                 <span
                   v-html="vendor_object.vendor.vendor_details.delivery_charges"
@@ -101,8 +101,8 @@
           <v-card-title>Ratings</v-card-title>
         </v-card>
       </v-card>
-      <BottomOrderSheet :selected_item="selected_item"></BottomOrderSheet>
     </v-container>
+    <BottomOrderSheet :selected_item="selected_item"></BottomOrderSheet>
   </div>
 </template>
 

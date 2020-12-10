@@ -4,6 +4,9 @@ from admin_interface.models import Theme
 
 import django
 from django.contrib import admin
+
+from vendorbase.models import Vendor
+
 if django.VERSION < (2, 0):
     from django.utils.translation import ugettext_lazy as _
 else:
@@ -16,7 +19,7 @@ class ThemeAdmin(admin.ModelAdmin):
         if(request.user.username==settings.ADMIN_USER):
             return qs
         else:
-            return qs.filter(vendor=request.user)
+            return qs.filter(vendor=Vendor.objects.filter(user_id=request.user).first())
 
     list_display = ('name', 'active', )
     list_editable = ('active', )

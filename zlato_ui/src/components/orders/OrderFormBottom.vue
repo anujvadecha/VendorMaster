@@ -61,10 +61,8 @@
         <v-row no-gutters>
           <v-col cols="12" class="text-right">
             <!--            <v-btn outlined :color="get_color()">{{ side }}</v-btn>-->
-            <v-btn dark elevation="0px" class="ml-2" color="orange"
-              >Place</v-btn
-            >
-            <v-btn outlined @click="set_sheet()" class="ml-2" color="orange"
+            <v-btn dark elevation="0px" class="ml-2" color="blue">Place</v-btn>
+            <v-btn outlined @click="set_sheet()" class="ml-2" color="blue"
               >Cancel</v-btn
             >
           </v-col>

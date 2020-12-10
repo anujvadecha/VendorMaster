@@ -94,8 +94,9 @@ class OpenOrderAdmin(admin.ModelAdmin,OrderAdminBase):
         return my_urls+urls
 
     def confirm_payment(self,request,order_id):
-        order=Order.objects.filter(order_id=order_id)
-        order.update(status=OrderStatus.EXECUTED)
+        order=Order.objects.filter(order_id=order_id).first()
+        order.status=OrderStatus.EXECUTED
+        order.save()
         #     obj.status=OrderStatus.EXECUTED
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     def approve_payment(self,obj):

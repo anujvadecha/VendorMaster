@@ -35,18 +35,6 @@ class TickConsumer(WebsocketConsumer):
             self.channel_name
         )
 
-    # #Not used anymore
-    # def send_gold_ticks(self,ticks):
-    #         async_to_sync(self.channel_layer.group_send)(
-    #             self.room_group_name,
-    #             {
-    #                 'type':"tick",
-    #                 "gold_tick":ticks
-    #             }
-    #         )
-    #         time.sleep(0.5)
-    # noinspection PyMethodOverriding
-
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
         type=text_data_json['type']
@@ -71,7 +59,14 @@ class TickConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps(data, cls=UUIDEncoder))
 
     def order_update(self,data):
-        pass
+        if(data["user"]==self.user.id):
+            self.send(text_data=
+                      json.dumps({
+                          "type":"order_update",
+                          "order_update":data["order_update"]
+                          },cls=UUIDEncoder))
+        else:
+            print("not this user")
 
     def premium_update(self,data):
         print(f" Premium has been updated for {data}")

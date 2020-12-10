@@ -1,19 +1,11 @@
 <template>
   <v-app>
-    <!--    <v-system-bar-->
-    <!--  height="33"-->
-    <!--  color="blue"-->
-    <!--    > Prices Gold:50999 </v-system-bar>-->
-
     <NavBar> </NavBar>
     <v-main>
       <v-container>
         <router-view />
       </v-container>
     </v-main>
-    <!--    <v-footer app>-->
-    <!--      Built with love and dedication from DeltaCap Bullion-->
-    <!--    </v-footer>-->
   </v-app>
 </template>
 <script>
@@ -33,9 +25,9 @@ export default {
 
   components: { NavBar },
 
-  data: () => ({
-    snackbar: false
-  }),
+  // data: () => ({
+  //   snackbar: false
+  // }),
   methods: {
     successToast: function(message) {
       this.$toast.success({
@@ -49,6 +41,7 @@ export default {
     this.successToast(
       "Welcome to zlato . You are connected to high speed data feeds"
     );
+    console.log(store);
     function connect() {
       const url = "ws://" + window.location.host + "/ws/" + "ticker" + "/";
       const symbolsocket = new WebSocket(url);
@@ -108,6 +101,9 @@ export default {
             return vendor;
           });
           store.dispatch("push_vendors", vendors);
+        }
+        if (message["order_update"]) {
+          console.log(message);
         }
       };
       symbolsocket.onclose = function(event) {

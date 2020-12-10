@@ -64,9 +64,15 @@ class Vendor(BaseModel):
 class VendorDetails(BaseModel):
     vendor=models.ForeignKey(Vendor,on_delete=models.DO_NOTHING,null=True)
     contact_details=models.TextField()
-    about_us=models.TextField()
-    messages=models.TextField()
-    delivery_charges=models.TextField()
+    office_address=models.TextField(blank=True)
+    collection_address=models.TextField(blank=True)
+    mobile_number_1=models.CharField(max_length=13,blank=True)
+    mobile_number_2=models.CharField(max_length=13,blank=True)
+    bank_details=models.TextField(blank=True)
+    gst_details=models.TextField(blank=True)
+    about_us=models.TextField(blank=True)
+    messages=models.TextField(blank=True)
+    delivery_charges=models.TextField(blank=True)
 
 class BankDetails(BaseModel):
     vendor = models.ForeignKey(Vendor, on_delete=models.DO_NOTHING)

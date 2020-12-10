@@ -34,14 +34,15 @@ def create_update_symbol(sender,instance,created,**kwargs):
 def create_update_order(sender, instance, created, **kwargs):
     print("order update received from orderManagement")
     channel_layer = get_channel_layer()
-    if instance.status == OrderStatus.WAITING_FOR_LIMIT and instance.type == OrderType.LIMIT:
-        async_to_sync(channel_layer.group_send)(
-            settings.SOCKET_GROUP,
-            {
-                "type": "order_update",
-                "order_update": json.dumps(OrderSerializer(instance).data,cls=UUIDEncoder)
-            }
-        )
+    # if instance.status == OrderStatus.WAITING_FOR_LIMIT and instance.type == OrderType.LIMIT:
+    async_to_sync(channel_layer.group_send)(
+        settings.SOCKET_GROUP,
+        {
+            "type": "order_update",
+            "user": instance.user_id.id,
+            "order_update": json.dumps(OrderSerializer(instance).data,cls=UUIDEncoder)
+        }
+    )
 
     # if created:
     #     NormalUser.objects.create(user=instance)
