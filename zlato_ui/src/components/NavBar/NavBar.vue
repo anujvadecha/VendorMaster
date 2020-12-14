@@ -27,7 +27,9 @@
         <template v-slot:activator="{ on, attrs }">
           <v-btn text class="" v-bind="attrs" v-on="on">
             <v-icon left style="color:dimgrey">mdi-account</v-icon>
-            <span class="hidden-sm-and-down">Account</span>
+            <span class="hidden-sm-and-down" style="color:dimgrey"
+              >Account</span
+            >
           </v-btn>
         </template>
         <v-list>
@@ -38,7 +40,6 @@
           </v-list-item>
         </v-list>
       </v-menu>
-
       <template v-slot:extension>
         <v-spacer></v-spacer>
         <v-icon>mdi-gold</v-icon>

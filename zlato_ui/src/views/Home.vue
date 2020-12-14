@@ -1,15 +1,15 @@
 <template>
   <div class="home">
-    <v-img
-      alt="Zlato Marketing"
-      class=" mr-2"
-      contain
-      src="@/assets/marketing.png"
-      transition="scale-transition"
-      max-height="150px"
-    />
-
-    <v-card>
+    <!--    <v-img-->
+    <!--      alt="Zlato Marketing"-->
+    <!--      class=" mr-2"-->
+    <!--      contain-->
+    <!--      src="@/assets/marketing.png"-->
+    <!--      transition="scale-transition"-->
+    <!--      max-height="150px"-->
+    <!--    />-->
+    <TopVendors :vendors="vendors_computed"></TopVendors>
+    <v-card outlined>
       <v-card-title>
         Ticker Prices
         <v-spacer></v-spacer>
@@ -19,6 +19,7 @@
           label="Search"
           single-line
           hide-details
+          style="width: 50px"
         ></v-text-field>
       </v-card-title>
       <v-chip-group mandatory active-class="primary--text">
@@ -91,10 +92,11 @@
 import { apiService } from "@/common/api.service";
 import { add_to_favourites, remove_from_favourites } from "@/common/api_calls";
 import BottomOrderSheet from "@/components/orders/BottomOrderSheet";
+import TopVendors from "@/components/home/TopVendors";
 
 export default {
   name: "Home",
-  components: { BottomOrderSheet },
+  components: { TopVendors, BottomOrderSheet },
   data() {
     return {
       isVisible: false,
@@ -123,6 +125,9 @@ export default {
     },
     bottom_sheet: function() {
       return this.$store.getters.get_sheet;
+    },
+    vendors_computed: function() {
+      return this.$store.getters.get_all_vendors;
     }
   },
   methods: {

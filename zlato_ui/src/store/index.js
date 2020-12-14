@@ -87,6 +87,10 @@ export default new Vuex.Store({
         instrument => instrument.instrument_id === instrument_id
       );
     },
+    get_all_vendors: state => {
+      // console.log("get all vendors");
+      return state.vendors;
+    },
     get_vendor_instruments: state => vendor_id => {
       var vendor_object = {};
       vendor_object.instruments = state.instruments.filter(

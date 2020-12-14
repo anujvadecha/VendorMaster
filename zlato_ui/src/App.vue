@@ -19,6 +19,7 @@ import store from "@/store";
 import NavBar from "./components/NavBar/NavBar";
 import SlimUI from "slim-ui";
 import Vue from "vue";
+import { base_url } from "@/common/api_calls";
 Vue.use(SlimUI);
 export default {
   name: "App",
@@ -43,7 +44,7 @@ export default {
     );
     console.log(store);
     function connect() {
-      const url = "ws://" + window.location.host + "/ws/" + "ticker" + "/";
+      const url = "ws://" + base_url + "/ws/" + "ticker" + "/";
       const symbolsocket = new WebSocket(url);
       symbolsocket.onopen = function() {
         symbolsocket.send(

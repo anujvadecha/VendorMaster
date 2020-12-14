@@ -1,0 +1,14 @@
+{% load render_bundle from webpack_loader %}
+<link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Zlato HomePage</title>
+</head>
+<body>
+<noscript>This website will not work with javascript disabled</noscript>
+    <div id="app"></div>
+{% render_bundle 'app'  %}
+</body>
+</html>

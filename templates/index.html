@@ -1,14 +1,16 @@
-{% load render_bundle from webpack_loader %}
-<link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Zlato HomePage</title>
-</head>
-<body>
-<noscript>This website will not work with javascript disabled</noscript>
-    <div id="app"></div>
-{% render_bundle 'app'  %}
-</body>
-</html>
+{#{% extends "base.html" %}#}
+{#<link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">#}
+{% load static %}
+{% block style %}
+    <link type="text/css" href="{% static 'bundle.css' %}">
+    <script>console.log("css loaded")</script>
+{% endblock %}
+{% block content %}
+<noscript>
+    <strong>We're sorry but frontend doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+</noscript>
+<div id="app"></div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript" src="{% static 'bundle.js' %}"></script>
+{% endblock %}

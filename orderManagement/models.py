@@ -21,7 +21,7 @@ class OrderSide(DjangoChoices):
     SELL=ChoiceItem("SELL")
 
 class Order(BaseModel):
-    order_id  = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    order_id  = models.UUIDField(primary_key=True, default=uuid.uuid4,editable=False)
     instrument_id = models.ForeignKey(Symbol,on_delete=models.DO_NOTHING)
     quantity = models.IntegerField()
     user_id = models.ForeignKey(NormalUser,on_delete=models.DO_NOTHING,blank=True)
@@ -29,6 +29,7 @@ class Order(BaseModel):
     type = models.CharField(max_length=200, choices=OrderType, default=OrderType.MARKET)
     status = models.CharField(max_length=100,choices=OrderStatus,default=OrderStatus.OPEN)
     side = models.CharField( default=OrderSide.BUY,max_length=200 ,choices=OrderSide)
+
     def vendor(self):
         return self.instrument_id.vendor_id
 

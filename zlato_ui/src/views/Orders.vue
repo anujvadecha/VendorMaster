@@ -58,6 +58,7 @@ export default {
     get_orders()
       .then(res => {
         this.orders = res;
+        console.log(res);
       })
       .then(() => {
         console.log(this.orders);
@@ -68,11 +69,11 @@ export default {
         });
       })
       .then(() => {
-           this.orders.sort((a, b) => {
+        this.orders.sort((a, b) => {
           // console.log(new Date(a.created_at) - new Date(b.created_at));
-          return new Date(b.created_at) - new Date(a.created_at) ;
-        })
-        })
+          return new Date(b.created_at) - new Date(a.created_at);
+        });
+      })
       .then(() => {
         this.active_orders = this.orders.filter(order => {
           return order.status === "WAITING_FOR_LIMIT";
@@ -85,8 +86,8 @@ export default {
         // }
         this.executed_orders_waiting.sort((a, b) => {
           // console.log(new Date(a.created_at) - new Date(b.created_at));
-          return new Date(b.created_at) - new Date(a.created_at) ;
-        })
+          return new Date(b.created_at) - new Date(a.created_at);
+        });
         // for(let i=0; i<this.executed_orders_waiting.length; i++) {
         //   console.log(this.executed_orders_waiting[i]);
         // }

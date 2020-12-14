@@ -22,7 +22,7 @@ class TickConsumer(WebsocketConsumer):
     room_group_name=settings.SOCKET_GROUP
 
     def connect(self):
-        self.user = self.scope["user"]
+        # self.user = self.scope["user"]
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
             self.channel_name

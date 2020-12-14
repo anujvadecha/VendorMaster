@@ -8,7 +8,12 @@
     </v-data-table> -->
     <v-card>
       <v-card-title>Favourites</v-card-title>
-      <v-data-table :headers="headers" :items="favourite_items">
+      <v-data-table
+        :headers="headers"
+        :items="favourite_items"
+        hide-default-footer
+        disable-sort
+      >
         <template v-slot:body="props">
           <draggable :list="props.items" tag="tbody">
             <tr v-for="(user, index) in props.items" :key="index">

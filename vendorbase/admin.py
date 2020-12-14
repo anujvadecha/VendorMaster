@@ -9,6 +9,7 @@ from django.utils.html import format_html
 
 from base.models import BaseModel
 from orderManagement.models import Order, OrderStatus, OpenOrder, ExecutedOrder, ClosedOrder, LimitOrderPending
+from orderManagement.utils import otp_hash
 from userBase.models import NormalUser
 from vendorbase.models import Symbol, Vendor, Group, City, GlobalPremium, Favourite, VendorDetails
 
@@ -122,8 +123,7 @@ class ExecutedOrderAdmin(admin.ModelAdmin,OrderAdminBase):
         return my_urls+urls
 
     def verify_otp(self,request,otp,order_id):
-        print(hash(hash(order_id)))
-        if(otp=="234"):
+        if(str(otp)==str(otp_hash(order_id))):
             Order.objects.filter(order_id=order_id).update(status=OrderStatus.CLOSED)
         else:
             messages.error(request,"INCORRECT OTP")

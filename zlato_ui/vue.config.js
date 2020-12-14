@@ -25,5 +25,11 @@ module.exports = {
       .disableHostCheck(true)
       .headers({ "Access-Control-Allow-Origin": ["*"] });
   },
-  transpileDependencies: ["vuetify"]
+  transpileDependencies: ["vuetify"],
+  css: {
+    extract: {
+      filename: "bundle.css",
+      chunkFilename: "bundle.css"
+    }
+  }
 };
