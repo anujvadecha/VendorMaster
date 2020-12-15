@@ -1,7 +1,7 @@
 <template>
   <div>
   <TopVendors  :vendors="vendors_computed"></TopVendors>
-    <TickerPriceTable :instruments_to_render="instruments_to_render"></TickerPriceTable>
+    <TickerPriceTable :instruments_to_render="instruments_to_render" ></TickerPriceTable>
   </div>
 </template>
 

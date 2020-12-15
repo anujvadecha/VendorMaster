@@ -40,6 +40,28 @@
           <router-link to="Account" style="text-decoration: None;color: white">
           <q-icon class="lt-md"  size="md" name="mdi-account"></q-icon>
             </router-link></q-btn>
+
+        <q-btn-dropdown
+          flat
+          label="Account">
+          <div class="q-pa-md">
+            <div class="justify-center full-height full-width text-center">
+              <q-avatar size="72px">
+                <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+              </q-avatar>
+
+              <div class="text-subtitle1 q-mt-md q-mb-xs">John Doe</div>
+
+              <q-btn
+                color="primary"
+                label="Logout"
+                size="sm"
+                v-close-popup
+              />
+            </div>
+          </div>
+        </q-btn-dropdown>
+
           </span>
         </div>
       </q-toolbar>

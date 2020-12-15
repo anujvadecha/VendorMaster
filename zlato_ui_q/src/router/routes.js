@@ -3,6 +3,7 @@ import Favourites from 'pages/Favourites'
 import Home from 'pages/Home'
 import Account from 'pages/Account'
 import VendorDetails from 'pages/VendorDetails'
+// import Login from '../access/Login'
 
 const routes = [
   {
@@ -11,6 +12,8 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/Index.vue') }
     ]
+    // name: 'Login',
+    // component: Login
   },
   {
     path: '/orders',

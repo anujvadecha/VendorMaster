@@ -1,18 +1,26 @@
 <template>
-  <div id="q-app">
-    {{state_get}}
-    <MainLayout></MainLayout>
-    <BottomOrderDialog></BottomOrderDialog>
+  <div>
+    <div v-if="this.$store.state.token" id="q-app">
+      {{state_get}}
+      <MainLayout></MainLayout>
+      <BottomOrderDialog></BottomOrderDialog>
+    </div>
+    <div v-else>
+      <Login />
+    </div>
   </div>
 </template>
+
 <script>
+
 import MainLayout from 'layouts/MainLayout'
+import Login from './access/Login'
 import BottomOrderDialog from 'components/BottomOrderDialog'
 // import { base_url } from 'common/api_calls'
 export default {
   name: 'App',
   base_url: '127.0.0.1:8000',
-  components: { BottomOrderDialog, MainLayout },
+  components: { BottomOrderDialog, MainLayout, Login },
   computed: {
     state_get: function () {
       console.log(this.$store.state)
@@ -29,15 +37,15 @@ export default {
     const store = this.$store
     function connect_jwt () {
       var axios = require('axios')
-      var data = JSON.stringify({ username: 'deltacapbullion', password: 'Abfc1234!' })
+      // var data = JSON.stringify({ username: 'vansh', password: 'vansh' })
       var config = {
         method: 'post',
         url: 'http://127.0.0.1:8000/api/rest-auth/login/',
         headers: {
           'Content-Type': 'application/json',
           Cookie: 'csrftoken=qY3htpK0KxfhuDlT7E47PB3qqrxG7rkF5EHi7YcvteLej7mJYd3Tx6pReQTwsoGP; sessionid=hcvf8yblipbwwzdjp2aw8djgu4ovr4g4'
-        },
-        data: data
+        }
+        // data: data
       }
       axios(config)
         .then(function (response) {
