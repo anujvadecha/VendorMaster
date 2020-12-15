@@ -33,7 +33,7 @@ const routes = [
     component: Account
   },
   {
-    path: '/vendor/:vendor',
+    path: '/vendor',
     name: 'Vendor',
     component: VendorDetails,
     props: true

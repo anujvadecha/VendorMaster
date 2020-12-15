@@ -8,7 +8,8 @@ from django.views.generic import TemplateView
 class IndexTemplateView(LoginRequiredMixin,TemplateView):
 
     def get_template_names(self):
-        if  settings.DEBUG:
+        if settings.DEBUG:
+            print("running dev")
             template_name = "index-dev.html"
         else:
             print("Running prod file")

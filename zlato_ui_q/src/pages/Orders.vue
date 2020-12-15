@@ -18,7 +18,6 @@
         <q-separator />
         <q-tab-panels swipeable v-model="tab" animated>
           <q-tab-panel name="executed">
-<!--            <div class="text-h6">Mails</div>-->
             <ExecutedOrders></ExecutedOrders>
           </q-tab-panel>
           <q-tab-panel name="pending">

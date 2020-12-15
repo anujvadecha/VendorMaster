@@ -160,6 +160,7 @@ export default {
       this.isVisible = false;
     },
     open_order_sheet: function(item) {
+      this.$store.dispatch("set_order_item", item);
       this.$store.dispatch("set_sheet", true);
       this.selected_item = item;
     },

@@ -156,7 +156,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "zlato_ui/dist"),
 ]
-# STATIC_ROOT = "static"
+STATIC_ROOT = "static"
 
 ADMIN_USER="admin"
 REST_FRAMEWORK = {

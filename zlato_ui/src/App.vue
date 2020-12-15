@@ -74,7 +74,7 @@ export default {
           });
           for (let i = 0; i < instruments.length; i++) {
             for (let j = 0; j < favourites.length; j++) {
-              if (favourites[j] == instruments[i].instrument_id) {
+              if (favourites[j] === instruments[i].instrument_id) {
                 console.log("setting instrument");
                 instruments[i].is_favourite = true;
               }

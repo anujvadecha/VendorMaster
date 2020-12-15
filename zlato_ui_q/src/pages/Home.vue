@@ -1,86 +1,70 @@
 <template>
   <div>
-  <TopVendors class="mobile-hide"></TopVendors>
-  <div class="q-pa-md">
-    <q-card bordered>
-    <q-tabs
-          v-model="tab"
-
-          class="text-grey"
-          active-color="primary"
-          indicator-color="primary"
-          align="justify"
-          narrow-indicator
-          swipable
-        >
-          <q-tab name="All" label="All" />
-          <q-tab name="gold 999" label="Gold 999" />
-          <q-tab name="gold 999 1kg" label="gold 999 1kg" />
-          <q-tab name="gold 995" label="Gold 995" />
-          <q-tab name="gold 995 1kg" label="Gold 995 1kg" />
-        </q-tabs>
-    <q-separator />
-        <q-tab-panels swipeable v-model="tab" animated keep-alive>
-          <q-tab-panel name="All">
-            <div class="text-h6">Mails</div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </q-tab-panel>
-          <q-tab-panel name="gold 999">
-            <div class="text-h6">Mails</div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </q-tab-panel>
-          <q-tab-panel name="gold 999 1kg">
-            <div class="text-h6">Alarms</div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </q-tab-panel>
-          <q-tab-panel name="gold 995">
-            <div class="text-h6">Movies</div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </q-tab-panel>
-
-          <q-tab-panel name="gold 995 1kg">
-            <div class="text-h6">Movies</div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </q-tab-panel>
-        </q-tab-panels>
-</q-card>
-
-<!--    <q-table-->
-<!--      title="Ticker Prices"-->
-<!--      :data="data"-->
-<!--      :columns="columns"-->
-<!--      row-key="id"-->
-<!--      :pagination.sync="pagination"-->
-<!--      :loading="loading"-->
-<!--      :filter="filter"-->
-<!--      @request="onRequest"-->
-<!--      binary-state-sort-->
-<!--    >-->
-<!--      <template v-slot:top-right>-->
-<!--        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">-->
-<!--          <template v-slot:append>-->
-<!--            <q-icon name="search" />-->
-<!--          </template>-->
-<!--        </q-input>-->
-<!--      </template>-->
-<!---->
-<!--    </q-table>-->
-  </div>
-
+  <TopVendors  :vendors="vendors_computed"></TopVendors>
+    <TickerPriceTable :instruments_to_render="instruments_to_render"></TickerPriceTable>
   </div>
 </template>
 
 <script>
 import TopVendors from 'components/home/TopVendors'
+import TickerPriceTable from 'components/TickerPriceTable'
+// import { add_to_favourites, remove_from_favourites } from '@/common/api_calls'
 export default {
   name: 'Home',
-  components: { TopVendors },
+  components: { TickerPriceTable, TopVendors },
+
   data () {
     return {
-      tab: 'All'
+      tab: 'All',
+      headers: [
+        { name: 'Vendor', align: 'start', field: 'vendor', label: 'Vendor' },
+        { name: 'Symbol', align: 'start', field: 'name', label: 'Symbol' },
+        { name: 'Bid', align: 'start', field: 'bid', filterable: true, label: 'Bid' },
+        { name: 'Ask', align: 'start', field: 'ask', filterable: true, label: 'Ask' },
+        { name: 'High', align: 'start', field: 'high', filterable: true, label: 'High' },
+        { name: 'Low', align: 'start', field: 'low', filterable: true, label: 'Low' },
+        { name: 'favourite', align: 'start', field: 'is_favourite', label: '' }
+      ]
+    }
+  },
+  computed: {
+    instruments_to_render: function () {
+      return this.$store.getters.get_instruments
+    },
+    bottom_sheet: function () {
+      return this.$store.getters.get_sheet
+    },
+    vendors_computed: function () {
+      return this.$store.getters.get_all_vendors
+    }
+  },
+  methods: {
+    toggleFavourite: function (item) {
+      console.log('toggle fav for item' + item)
+      item.is_favourite = !item.is_favourite
+      // if (item.is_favourite === false) {
+      //   remove_from_favourites(item.instrument_id).then(res => {
+      //     console.log(res)
+      //   })
+      //   this.errorToast(
+      //     'Removed ' + item.vendor + ' ' + item.name + ' from favourites'
+      //   )
+      // } else {
+      //   add_to_favourites(item).then(res => {
+      //     console.log(res)
+      //   })
+      //   this.successToast(
+      //     'Added ' + item.vendor + ' ' + item.name + ' from favourites'
+      //   )
+    },
+    open_order_sheet: function (item) {
+      console.log('open order sheet called')
+      this.$store.dispatch('set_order_item', item)
+      this.$store.dispatch('set_sheet', true)
     }
   }
 }
+
 </script>
 
 <style scoped>

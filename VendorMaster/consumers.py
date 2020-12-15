@@ -7,6 +7,7 @@ from channels.generic.websocket import WebsocketConsumer
 from VendorMaster import settings
 from orderManagement.api.serializers import OrderSerializer
 from orderManagement.models import Order, OrderStatus, OrderType
+from userBase.models import NormalUser
 from vendorbase.api.serializers import SymbolSerializer, GlobalPremiumSerializer, VendorSerializer, FavouriteSerializer
 from vendorbase.models import Symbol, GlobalPremium, Vendor, Favourite
 import time
@@ -22,7 +23,8 @@ class TickConsumer(WebsocketConsumer):
     room_group_name=settings.SOCKET_GROUP
 
     def connect(self):
-        # self.user = self.scope["user"]
+        self.user=self.scope["user"]
+        print(self.user)
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
             self.channel_name

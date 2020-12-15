@@ -14,12 +14,13 @@ from channels.http import AsgiHandler
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 import VendorMaster.routing
+from VendorMaster.TokenAuthMiddleware import QueryAuthMiddleware
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'VendorMaster.settings')
 
 application = ProtocolTypeRouter({
   "http": AsgiHandler(),
-  "websocket": AuthMiddlewareStack(
+  "websocket": QueryAuthMiddleware(
         URLRouter(
             VendorMaster.routing.websocket_urlpatterns
         )

@@ -20,6 +20,8 @@ from django.contrib import admin
 from django.conf.urls import url
 from django.core.cache import cache
 from django.urls import include, path, re_path
+from rest_framework_jwt.views import obtain_jwt_token
+
 from VendorMaster import settings
 from userBase.forms import CustomUserForm
 from django_registration.backends.one_step.views import RegistrationView
@@ -43,6 +45,7 @@ urlpatterns = [
     path("",IndexTemplateView.as_view(),name="entry-point"),
     path("api/favourites/",FavouritesView.as_view(),name="favourite"),
     # url(r'^.*$',fallback_404,name="404 fallback")
+    url(r'^api-token-auth/', obtain_jwt_token),
 ]
 
 if settings.DEBUG:
