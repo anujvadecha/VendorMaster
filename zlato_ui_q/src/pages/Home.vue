@@ -1,7 +1,39 @@
 <template>
   <div>
   <TopVendors class="mobile-hide"  :vendors="vendors_computed"></TopVendors>
-    <TickerPriceTable :instruments_to_render="instruments_to_render"></TickerPriceTable>
+    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments'>All</q-chip>
+    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments("gold 999")'>Gold 999</q-chip>
+    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments("gold 999 1kg")'>Gold 999 1kg</q-chip>
+    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments("gold 995")'>Gold 995</q-chip>
+    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments("gold 995 1kg")'>Gold 995 1kg</q-chip>
+
+    <q-carousel
+      v-model="slide"
+      transition-prev="scale"
+      transition-next="scale"
+      swipeable
+      animated
+      control-color="purple"
+      navigation
+      padding
+      arrows
+    >
+      <q-carousel-slide name="All" >
+        <TickerPriceTable :instruments_to_render="instruments_to_render"></TickerPriceTable>
+      </q-carousel-slide>
+      <q-carousel-slide name="gold 999" >
+        <TickerPriceTable :instruments_to_render="g99instruments"></TickerPriceTable>
+      </q-carousel-slide>
+      <q-carousel-slide name="gold 999 1kg" >
+        <TickerPriceTable :instruments_to_render="g991instruments"></TickerPriceTable>
+      </q-carousel-slide>
+      <q-carousel-slide name="gold 995" >
+        <TickerPriceTable :instruments_to_render="g95instruments"></TickerPriceTable>
+      </q-carousel-slide>
+      <q-carousel-slide name="gold 995 1kg" >
+        <TickerPriceTable :instruments_to_render="g951instruments"></TickerPriceTable>
+      </q-carousel-slide>
+    </q-carousel>
   </div>
 </template>
 
@@ -16,6 +48,11 @@ export default {
   components: { TickerPriceTable, TopVendors },
   data () {
     return {
+      slide: 'gold 999',
+      g99instruments: [],
+      g991instruments: [],
+      g95instruments: [],
+      g951instruments: [],
       tab: 'All',
       headers: [
         { name: 'Vendor', align: 'start', field: 'vendor', label: 'Vendor' },
@@ -66,11 +103,32 @@ export default {
       this.$store.dispatch('set_order_item', item)
       this.$store.dispatch('set_sheet', true)
     }
+  },
+  created () {
+    const instruments = this.$store.getters.get_instruments
+    this.g99instruments = instruments.filter(instrument => {
+      return instrument.type === 'gold 999'
+    })
+    console.log(this.g99instruments)
+    this.g991instruments = instruments.filter(instrument => {
+      return instrument.type === 'gold 999 1kg'
+    })
+    this.g95instruments = instruments.filter(instrument => {
+      return instrument.type === 'gold 995'
+    })
+    this.g951instruments = instruments.filter(instrument => {
+      return instrument.type === 'gold 995 1kg'
+    })
   }
 }
 
 </script>
 
 <style scoped>
+
+  /* .table-chips{
+    background-color:"deep-purple-7";
+    color: "white";
+  } */
 
 </style>

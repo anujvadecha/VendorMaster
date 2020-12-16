@@ -3,6 +3,7 @@
       title="Ticker Prices"
       :data="instruments_to_render"
       :columns="headers"
+      :filter="filter"
       row-key="name"
       bordered flat
     >
@@ -32,6 +33,13 @@
           <q-th>
           </q-th>
         </q-tr>
+      </template>
+      <template v-slot:top-right>
+        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
       </template>
       <template v-slot:body="props">
         <q-tr :props="props">
@@ -110,6 +118,7 @@ export default {
   props: ['instruments_to_render'],
   data () {
     return {
+      filter: '',
       headers: [
         { name: 'Vendor', align: 'start', field: 'vendor', label: 'Vendor' },
         { name: 'Symbol', align: 'start', field: 'name', label: 'Symbol' },

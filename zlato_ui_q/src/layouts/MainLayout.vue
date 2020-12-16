@@ -14,6 +14,12 @@
 <!--        <q-img width="50px" src="/src/assets/quasar-logo-full.png"></q-img>-->
         <q-toolbar-title class="font-bold">
           <span v-if="currentRouteName==='Home'||''||'/'">
+            <q-img
+            :src="imageSrc"
+            transition="scale-transition"
+            width="8%"
+            height="8%"
+            />
             Zlato
           </span>
           <span v-else>
@@ -172,6 +178,7 @@ export default {
   components: { EssentialLink },
   data () {
     return {
+      imageSrc: '/logo.png',
       leftDrawerOpen: false,
       essentialLinks: linksData
     }
