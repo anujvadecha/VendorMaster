@@ -18,15 +18,13 @@
         <q-separator />
         <q-tab-panels swipeable v-model="tab" animated>
           <q-tab-panel name="executed">
-            <ExecutedOrders></ExecutedOrders>
+            <ExecutedOrders :waiting="executed_orders_waiting" :confirmed="executed_orders_confirmed"></ExecutedOrders>
           </q-tab-panel>
           <q-tab-panel name="pending">
-<!--            <div class="text-h6">Alarms</div>-->
-            <PendingOrders></PendingOrders>
+            <PendingOrders :pending="active_orders"></PendingOrders>
           </q-tab-panel>
           <q-tab-panel name="closed">
-<!--            <div class="text-h6">Movies</div>-->
-            <ClosedOrders></ClosedOrders>
+            <ClosedOrders :closed="closed_orders"></ClosedOrders>
           </q-tab-panel>
         </q-tab-panels>
       </q-card>
@@ -39,13 +37,56 @@
 import ExecutedOrders from 'components/home/ExecutedOrders'
 import PendingOrders from 'components/home/PendingOrders'
 import ClosedOrders from 'components/home/ClosedOrders'
+import { get_orders } from 'src/common/api_calls'
 export default {
   name: 'Orders',
   components: { ClosedOrders, PendingOrders, ExecutedOrders },
   data () {
     return {
-      tab: 'executed'
+      tab: 'executed',
+      orders: [],
+      active_orders: [],
+      executed_orders_confirmed: [],
+      executed_orders_waiting: [],
+      closed_orders: []
     }
+  },
+  created () {
+    get_orders().then(res => {
+      this.orders = res
+    })
+      .then(() => {
+        this.orders = this.orders.map(order => {
+          order.instrument = this.$store.getters.get_instrument(
+            order.instrument_id
+          )
+          console.log(order.instrument)
+          return order
+        })
+      })
+      .then(() => {
+        this.orders.sort((a, b) => {
+          // console.log(new Date(a.created_at) - new Date(b.created_at));
+          return new Date(b.created_at) - new Date(a.created_at)
+        })
+      })
+      .then(() => {
+        this.active_orders = this.orders.filter(order => {
+          return order.status === 'WAITING_FOR_LIMIT'
+        })
+        this.executed_orders_waiting = this.orders.filter(order => {
+          return order.status === 'OPEN'
+        })
+        this.executed_orders_waiting.sort((a, b) => {
+          return new Date(b.created_at) - new Date(a.created_at)
+        })
+        this.executed_orders_confirmed = this.orders.filter(order => {
+          return order.status === 'EXECUTED'
+        })
+        this.closed_orders = this.orders.filter(order => {
+          return order.status === 'CLOSED'
+        })
+      })
   }
 }
 </script>

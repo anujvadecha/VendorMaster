@@ -1,6 +1,6 @@
 <template>
   <div>
-  <TopVendors  :vendors="vendors_computed"></TopVendors>
+  <TopVendors class="mobile-hide"  :vendors="vendors_computed"></TopVendors>
     <TickerPriceTable :instruments_to_render="instruments_to_render"></TickerPriceTable>
   </div>
 </template>
@@ -8,11 +8,12 @@
 <script>
 import TopVendors from 'components/home/TopVendors'
 import TickerPriceTable from 'components/TickerPriceTable'
+import { add_to_favourites, remove_from_favourites } from 'src/common/api_calls'
+import { Notify } from 'quasar'
 // import { add_to_favourites, remove_from_favourites } from '@/common/api_calls'
 export default {
   name: 'Home',
   components: { TickerPriceTable, TopVendors },
-
   data () {
     return {
       tab: 'All',
@@ -40,22 +41,25 @@ export default {
   },
   methods: {
     toggleFavourite: function (item) {
-      console.log('toggle fav for item' + item)
+      console.log(item)
       item.is_favourite = !item.is_favourite
-      // if (item.is_favourite === false) {
-      //   remove_from_favourites(item.instrument_id).then(res => {
-      //     console.log(res)
-      //   })
-      //   this.errorToast(
-      //     'Removed ' + item.vendor + ' ' + item.name + ' from favourites'
-      //   )
-      // } else {
-      //   add_to_favourites(item).then(res => {
-      //     console.log(res)
-      //   })
-      //   this.successToast(
-      //     'Added ' + item.vendor + ' ' + item.name + ' from favourites'
-      //   )
+      if (item.is_favourite === false) {
+        remove_from_favourites(item.instrument_id).then(res => {
+          console.log(res)
+        })
+        Notify.create('Removed', {
+          message: 'Removed ' + item.vendor + ' ' + item.name + ' from favourites',
+          color: 'purple'
+        })
+      } else {
+        add_to_favourites(item).then(res => {
+          console.log(res)
+        })
+        Notify.create({
+          message: 'Added ' + item.vendor + ' ' + item.name + ' from favourites',
+          color: 'purple'
+        })
+      }
     },
     open_order_sheet: function (item) {
       console.log('open order sheet called')

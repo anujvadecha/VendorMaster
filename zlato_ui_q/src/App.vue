@@ -1,7 +1,46 @@
 <template>
   <div id="q-app">
     {{state_get}}
-    <MainLayout></MainLayout>
+    <div v-if="logged_in">
+      <MainLayout></MainLayout>
+    </div>
+    <div v-else
+    class="window-height window-width row justify-center items-center"
+       style=""
+    >
+    <div class="column q-pa-lg">
+      <div class="row">
+        <q-card square class="shadow-24" style="width:300px;height:485px;">
+          <q-card-section class="bg-deep-purple-7">
+            <h4 class="text-h5 text-white q-my-md">Zlato</h4>
+            <div class="absolute-bottom-right q-pr-md" style="transform: translateY(50%);">
+              <q-btn fab icon="add" color="purple-4" />
+            </div>
+          </q-card-section>
+          <q-card-section>
+            <q-form class="q-px-sm q-pt-xl">
+              <q-input square clearable v-model="email" type="email" label="Email">
+                <template v-slot:prepend>
+                  <q-icon name="email" />
+                </template>
+              </q-input>
+              <q-input square clearable v-model="password" type="password" label="Password">
+                <template v-slot:prepend>
+                  <q-icon name="lock" />
+                </template>
+              </q-input>
+            </q-form>
+          </q-card-section>
+          <q-card-actions class="q-px-lg">
+            <q-btn @click="login_action()" unelevated size="lg" color="purple-4" class="full-width text-white" label="Sign In" />
+          </q-card-actions>
+          <q-card-section class="text-center q-pa-sm">
+            <p class="text-grey-6">Forgot your password?</p>
+          </q-card-section>
+        </q-card>
+      </div>
+    </div>
+    </div>
     <BottomOrderDialog></BottomOrderDialog>
   </div>
 </template>
@@ -17,39 +56,18 @@ export default {
     state_get: function () {
       console.log(this.$store.state)
       return ''
+    },
+    logged_in: function () {
+      return this.$store.state.token !== ''
     }
   },
   methods: {
     set_token: function (token) {
       // console.log('setting token' + token)
       this.$store.state.token = token
-    }
-  },
-  created () {
-    const store = this.$store
-    function connect_jwt () {
-      var axios = require('axios')
-      var data = JSON.stringify({ username: 'deltacapbullion', password: 'Abfc1234!' })
-      var config = {
-        method: 'post',
-        url: 'http://127.0.0.1:8000/api/rest-auth/login/',
-        headers: {
-          'Content-Type': 'application/json',
-          Cookie: 'csrftoken=qY3htpK0KxfhuDlT7E47PB3qqrxG7rkF5EHi7YcvteLej7mJYd3Tx6pReQTwsoGP; sessionid=hcvf8yblipbwwzdjp2aw8djgu4ovr4g4'
-        },
-        data: data
-      }
-      axios(config)
-        .then(function (response) {
-          store.dispatch('set_token', response.data.key)
-          console.log(JSON.stringify(response.data))
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-    }
-
-    function connect_websocket () {
+    },
+    connect_websocket: function () {
+      const store = this.$store
       document.cookie = 'authorization=' + store.state.token + ';'
       const url = 'ws://' + '127.0.0.1:8000' + '/ws/' + 'ticker' + '/' + '?' + store.state.token
       const symbolsocket = new WebSocket(url)
@@ -117,13 +135,46 @@ export default {
       symbolsocket.onclose = function (event) {
         console.log(event)
         setTimeout(function () {
-          connect_jwt()
-          connect_websocket()
+          this.connect_jwt()
         }, 2000)
       }
+    },
+    connect_jwt: function () {
+      const store = this.$store
+      var axios = require('axios')
+      var data = JSON.stringify({ username: this.email, password: this.password })
+      var config = {
+        method: 'post',
+        url: 'http://127.0.0.1:8000/api/rest-auth/login/',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: data
+      }
+      const connect = this.connect_websocket
+      axios(config)
+        .then(function (response) {
+          store.dispatch('set_token', response.data.key)
+          console.log(JSON.stringify(response.data))
+          connect()
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    login_action: function () {
+      console.log(this.email + this.password)
+      this.connect_jwt()
     }
-    connect_jwt()
-    connect_websocket()
+  },
+  data () {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+  created () {
+
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-<div class="row q-pa-md" style="width: 100%">
+<div class="row q-pa-md" style="background-color:#f4e8ff;">
   <div v-for="vendor in vendors" :key="vendor.vendor_id">
   <q-card
   @click="open_vendor_dialog(vendor.vendor_id)"

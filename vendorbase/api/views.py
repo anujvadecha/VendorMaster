@@ -41,7 +41,7 @@ class FavouritesView(APIView):
     def post(self,request):
         print(request.user)
         print(request.data)
-        data=request.data
+        data = request.data
         # Favourite(user_id=request.user, instrument_id=request.data["instrument_id"]).save()
         favourite = FavouriteSerializer(data={"user_id":request.user.id, "instrument_id": request.data["instrument_id"]})
         if favourite.is_valid():
@@ -50,8 +50,6 @@ class FavouritesView(APIView):
         else:
             return Response(favourite.errors)
 
-    def delete(self, request):
-        print(request.user)
-        print(request.data)
-        Favourite.objects.filter(user_id=request.user, instrument_id=request.data).delete()
+    def delete(self,request):
+        Favourite.objects.filter(user_id=request.user, instrument_id=request.data['instrument_id']).delete()
         return Response("Instrument has been deleted from favourites")

@@ -1,12 +1,17 @@
 <template>
   <div class="row">
-    Closed Orders
+    <div v-for="order in closed" :key="order.order_id">
+      <OrderItem :order="order"></OrderItem>
+    </div>
   </div>
 </template>
 
 <script>
+import OrderItem from 'components/OrderItem'
 export default {
-  name: 'ClosedOrders'
+  name: 'ClosedOrders',
+  components: { OrderItem },
+  props: ['closed']
 }
 </script>
 
