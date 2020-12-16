@@ -1,5 +1,5 @@
 <template>
-  <router-link style="text-decoration: none; color:darkorange" :to="title">
+  <router-link style="text-decoration: none; color:rebeccapurple" :to="title">
 
   <q-item
     clickable

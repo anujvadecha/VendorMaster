@@ -1,8 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header style="background-color:white; color: white;" elevated bordered  >
-      <q-toolbar style="background-color: darkorange"
-      >
+    <q-header class="bg-deep-purple-7" style=" color: white;" elevated bordered  >
+      <q-toolbar style="">
         <q-btn
           class="mobile-only"
           flat
@@ -12,6 +11,7 @@
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
+<!--        <q-img width="50px" src="/src/assets/quasar-logo-full.png"></q-img>-->
         <q-toolbar-title class="font-bold">
           <span v-if="currentRouteName==='Home'||''||'/'">
             Zlato
@@ -64,8 +64,28 @@
 
           </span>
         </div>
+<!--        <q-btn-dropdown-->
+<!--          flat-->
+<!--          label="Account">-->
+<!--          <div class="q-pa-md">-->
+<!--            <div class="justify-center full-height full-width text-center">-->
+<!--              <q-avatar size="72px">-->
+<!--                <img src="https://cdn.quasar.dev/img/boy-avatar.png">-->
+<!--              </q-avatar>-->
+<!--&lt;!&ndash;&ndash;&gt;-->
+<!--              <div class="text-subtitle1 q-mt-md q-mb-xs">John Doe</div>-->
+<!--&lt;!&ndash;&ndash;&gt;-->
+<!--              <q-btn-->
+<!--                color="primary"-->
+<!--                label="Logout"-->
+<!--                size="sm"-->
+<!--                v-close-popup-->
+<!--              />-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </q-btn-dropdown>-->
       </q-toolbar>
-      <q-toolbar inset style="background-color: orange">
+      <q-toolbar inset style="">
       <q-space></q-space>
         <q-icon name="mdi-gold"></q-icon>
         <span>1270</span>

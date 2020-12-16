@@ -58,10 +58,8 @@ export default {
     get_orders()
       .then(res => {
         this.orders = res;
-        console.log(res);
       })
       .then(() => {
-        console.log(this.orders);
         this.orders.map(order => {
           order.instrument = this.$store.getters.get_instrument(
             order.instrument_id

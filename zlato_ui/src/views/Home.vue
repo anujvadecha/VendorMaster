@@ -189,19 +189,20 @@ export default {
     toggleFavourite(item) {
       item.is_favourite = !item.is_favourite;
       if (item.is_favourite === false) {
+        console.log(item);
         remove_from_favourites(item.instrument_id).then(res => {
           console.log(res);
         });
-        this.errorToast(
-          "Removed " + item.vendor + " " + item.name + " from favourites"
-        );
+        // this.errorToast(
+        //   "Removed " + item.vendor + " " + item.name + " from favourites"
+        // );
       } else {
         add_to_favourites(item).then(res => {
           console.log(res);
         });
-        this.successToast(
-          "Added " + item.vendor + " " + item.name + " from favourites"
-        );
+        // this.successToast(
+        //   "Added " + item.vendor + " " + item.name + " from favourites"
+        // );
       }
     }
   }

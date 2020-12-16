@@ -7,11 +7,11 @@
       bordered flat
     >
       <template v-slot:header="props">
-        <q-tr :props="props">
-          <q-th>
+        <q-tr class="text-left"  :props="props">
+          <q-th  v-if="!$q.platform.is.mobile">
             Vendor
           </q-th>
-          <q-th>
+          <q-th >
             Symbol
           </q-th>
           <q-th>
@@ -35,11 +35,23 @@
       </template>
       <template v-slot:body="props">
         <q-tr :props="props">
-          <q-td key="Vendor" :props="props">
+          <q-td class="vendor_link" @click="open_vendor_dialog(props.row.vendor_id)" v-if="!$q.platform.is.mobile" key="Vendor" :props="props">
             {{ props.row.vendor }}
           </q-td>
-          <q-td key="Symbol" :props="props">
+          <q-td @click="open_vendor_dialog(props.row.vendor_id)" key="Symbol" :props="props">
+            <div v-if="$q.platform.is.mobile">
+              <div class="col">
+                <div class="row vendor_link" >
+                   <span style="font-size:small"> {{ props.row.vendor }}</span>
+                </div>
+                <div class="row">
+                  <span style="font-size:small">{{props.row.name}}</span>
+                </div>
+              </div>
+            </div>
+            <div v-else>
               {{ props.row.name }}
+            </div>
           </q-td>
           <q-td @click="open_order_sheet(props.row)" key="Bid" :props="props">
             <div v-if="$q.platform.is.mobile">
@@ -91,6 +103,8 @@
 </template>
 
 <script>
+import { add_to_favourites, remove_from_favourites } from 'src/common/api_calls'
+
 export default {
   name: 'TickerPriceTable',
   props: ['instruments_to_render'],
@@ -109,32 +123,48 @@ export default {
   },
   methods: {
     toggleFavourite: function (item) {
-      console.log('toggle fav for item' + item)
+      console.log(item)
       item.is_favourite = !item.is_favourite
-      // if (item.is_favourite === false) {
-      //   remove_from_favourites(item.instrument_id).then(res => {
-      //     console.log(res)
-      //   })
-      //   this.errorToast(
-      //     'Removed ' + item.vendor + ' ' + item.name + ' from favourites'
-      //   )
-      // } else {
-      //   add_to_favourites(item).then(res => {
-      //     console.log(res)
-      //   })
-      //   this.successToast(
-      //     'Added ' + item.vendor + ' ' + item.name + ' from favourites'
-      //   )
+      if (item.is_favourite === false) {
+        remove_from_favourites(item.instrument_id).then(res => {
+          console.log(res)
+        })
+        // this.errorToast(
+        //   'Removed ' + item.vendor + ' ' + item.name + ' from favourites'
+        // )
+      } else {
+        add_to_favourites(item).then(res => {
+          console.log(res)
+        })
+        // this.successToast(
+        //   'Added ' + item.vendor + ' ' + item.name + ' from favourites'
+        // )
+      }
     },
     open_order_sheet: function (item) {
       console.log('open order sheet called')
       this.$store.dispatch('set_order_item', item)
       this.$store.dispatch('set_sheet', true)
+    },
+    open_vendor_dialog: function (vendor_id) {
+      console.log('open vendor called')
+      var selected_vendor_item = this.$store.getters.get_vendor_instruments(
+        vendor_id
+      )
+      this.$router.push({
+        name: 'Vendor',
+        params: {
+          vendor_object: selected_vendor_item
+        }
+      })
     }
   }
+
 }
 </script>
 
 <style scoped>
-
+  .vendor_link{
+    color: darkblue;
+  }
 </style>

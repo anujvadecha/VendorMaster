@@ -8,6 +8,7 @@ function add_to_favourites(instrument_id) {
 
 function remove_from_favourites(instrument_id) {
   let endpoint = base_url + "/api/favourites/";
+  console.log(instrument_id);
   return apiService(endpoint, "DELETE", instrument_id);
 }
 

@@ -1,12 +1,17 @@
 <template>
-<div class="row">
-  Pending Orders
-</div>
+  <div class="row">
+    <div v-for="order in pending" :key="order.order_id">
+      <OrderItem :order="order"></OrderItem>
+    </div>
+  </div>
 </template>
 
 <script>
+import OrderItem from 'components/OrderItem'
 export default {
-  name: 'PendingOrders'
+  name: 'PendingOrders',
+  components: { OrderItem },
+  props: ['pending']
 }
 </script>
 
