@@ -1,5 +1,5 @@
 // import { CSRF_TOKEN } from './csrf_token.js'
-import store from 'src/store/index'
+import { LocalStorage } from 'quasar'
 
 function handleResponse (response) {
   if (response.status === 204) {
@@ -31,7 +31,7 @@ function apiService (endpoint, method, data) {
     method: method || 'GET',
     url: endpoint,
     headers: {
-      Authorization: 'Token ' + store.state.token,
+      Authorization: 'Token ' + LocalStorage.getItem('token'),
       'Content-Type': 'application/json'
     },
     data: data

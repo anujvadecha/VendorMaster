@@ -1,17 +1,16 @@
 <template>
-<q-dialog v-model="this.get_set_sheet" @hide="set_sheet_close()"  persistent position="bottom">
+<q-dialog style="width: 50%" v-model="this.get_set_sheet" @hide="set_sheet_close()"  persistent position="bottom">
     <q-card class="" style="">
-      <q-card-section style="background-color: purple; color: white" >
+      <q-card-section class="bg-primary" style=" color: white" >
       <div class="q-pa-md">
         <span class="text-h6">{{order_item.vendor}}</span>
         <span class="q-ml-md font-bold">{{order_item.name}}</span>
         <div class="row">
           <span class=" text-right q-ml-sm">B:{{order_item.bid}}</span>
-          <span class=" text-right q-ml-sm">A:{{order_item.ask}}</span>
+          <span class="text-right q-ml-sm">A:{{order_item.ask}}</span>
         </div>
       </div>
         </q-card-section>
-    <q-card-section style="background-color: white" >
     <q-tabs
           v-model="tab"
           class="text-grey"
@@ -26,24 +25,30 @@
       <q-separator></q-separator>
         <q-tab-panels swipeable v-model="tab" animated>
           <q-tab-panel name="MARKET">
-            <q-input type="number" standout="text-white" v-model="quantity" label="Quantity" />
-            <q-input type="number" readonly v-model="price" :label="order_item.ask" />
+          <div class="row">
+            <q-input class="" type="number" standout="text-white" v-model="quantity" label="Quantity" />
+            <q-input  class="q-ml-lg" type="number" readonly v-model="price" :label="order_item.ask" />
+          </div>
           </q-tab-panel>
           <q-tab-panel name="LIMIT">
+            <div class="row">
             <q-input type="number"  standout="text-white" v-model="quantity" label="Quantity" />
-            <q-input type="number"  v-model="price" :label="order_item.ask" />
+            <q-input type="number" class="q-ml-lg"  v-model="price" :label="order_item.ask" />
+          </div>
           </q-tab-panel>
         </q-tab-panels>
-    </q-card-section>
+
     <q-card-section style="background-color: white" >
-      <q-btn outline color="purple" @click="set_sheet_close()">Buy</q-btn>
-      <q-btn outline class="q-ml-md" @click="set_sheet_close()">Close</q-btn>
+      <q-btn class="btn-primary" @click="place_order()">Buy</q-btn>
+      <q-btn class="q-ml-md btn-danger" @click="set_sheet_close()">Close</q-btn>
     </q-card-section>
     </q-card>
 </q-dialog>
 </template>
 
 <script>
+import { place_order } from 'src/common/api_calls'
+
 export default {
   name: 'BottomOrderDialog',
   computed: {
@@ -57,6 +62,61 @@ export default {
   methods: {
     set_sheet_close: function () {
       this.$store.state.bottom_sheet = false
+    },
+    place_order: function () {
+      console.log('placing order for ' + this.order_item.instrument_id + this.quantity + this.price + this.tab + 'BUY')
+      this.$store.state.bottom_sheet = false
+      if (this.tab === 'MARKET') {
+        var order = {
+          side: 'BUY',
+          instrument_id: this.order_item.instrument_id,
+          quantity: this.quantity,
+          price: this.order_item.ask,
+          type: this.tab,
+          status: 'OPEN'
+        }
+      } else {
+        order = {
+          side: 'BUY',
+          instrument_id: this.order_item.instrument_id,
+          quantity: this.quantity,
+          price: this.price,
+          type: this.tab,
+          status: 'WAITING_FOR_LIMIT'
+        }
+      }
+      place_order(order).then(res => {
+        console.log(res)
+        const notif = this.$q.notify({
+          spinner: true,
+          group: false,
+          message: 'Please wait...',
+          timeout: 2000,
+          position: 'top-right',
+          color: 'primary'
+        })
+        if (res.order_id) {
+          notif({
+            spinner: false,
+            html: true,
+            message: '<h6> Order has been placed </h6>',
+            caption: 'Please check orders for details',
+            position: 'top-right',
+            color: 'positive'
+          })
+        } else {
+          notif({
+            spinner: false,
+            html: true,
+            message: 'Order could not be placed due to :',
+            caption: '<h6>' + res.status + '<h6>',
+            position: 'top-right',
+            color: 'negative',
+            timeout: 10000
+          })
+          // TODO DO SOMETHING BITCHES WE GOT BUSINESS
+        }
+      })
     }
   },
   data () {

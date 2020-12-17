@@ -1,6 +1,6 @@
 <template>
   <div class="Favourites">
-      <TickerPriceTable :instruments_to_render="favourite_items" />
+      <TickerPriceTable title="Favourites" :instruments_to_render="favourite_items" />
   </div>
 </template>
 

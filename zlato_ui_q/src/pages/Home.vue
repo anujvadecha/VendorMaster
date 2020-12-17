@@ -1,39 +1,38 @@
 <template>
   <div>
   <TopVendors class="mobile-hide"  :vendors="vendors_computed"></TopVendors>
-    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments'>All</q-chip>
-    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments("gold 999")'>Gold 999</q-chip>
-    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments("gold 999 1kg")'>Gold 999 1kg</q-chip>
-    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments("gold 995")'>Gold 995</q-chip>
-    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments("gold 995 1kg")'>Gold 995 1kg</q-chip>
-
-    <q-carousel
-      v-model="slide"
-      transition-prev="scale"
-      transition-next="scale"
-      swipeable
-      animated
-      control-color="purple"
-      navigation
-      padding
-      arrows
-    >
-      <q-carousel-slide name="All" >
-        <TickerPriceTable :instruments_to_render="instruments_to_render"></TickerPriceTable>
-      </q-carousel-slide>
-      <q-carousel-slide name="gold 999" >
-        <TickerPriceTable :instruments_to_render="g99instruments"></TickerPriceTable>
-      </q-carousel-slide>
-      <q-carousel-slide name="gold 999 1kg" >
-        <TickerPriceTable :instruments_to_render="g991instruments"></TickerPriceTable>
-      </q-carousel-slide>
-      <q-carousel-slide name="gold 995" >
-        <TickerPriceTable :instruments_to_render="g95instruments"></TickerPriceTable>
-      </q-carousel-slide>
-      <q-carousel-slide name="gold 995 1kg" >
-        <TickerPriceTable :instruments_to_render="g951instruments"></TickerPriceTable>
-      </q-carousel-slide>
-    </q-carousel>
+<!--    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments'>All</q-chip>-->
+<!--    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments("gold 999")'>Gold 999</q-chip>-->
+<!--    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments("gold 999 1kg")'>Gold 999 1kg</q-chip>-->
+<!--    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments("gold 995")'>Gold 995</q-chip>-->
+<!--    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments("gold 995 1kg")'>Gold 995 1kg</q-chip>-->
+<!--    <q-carousel-->
+<!--      v-model="slide"-->
+<!--      transition-prev="scale"-->
+<!--      transition-next="scale"-->
+<!--      swipeable-->
+<!--      animated-->
+<!--      control-color="purple"-->
+<!--      navigation-->
+<!--      padding-->
+<!--      arrows-->
+<!--    >-->
+<!--      <q-carousel-slide name="All" >-->
+        <TickerPriceTable title="Ticker prices" :instruments_to_render="instruments_to_render"></TickerPriceTable>
+<!--      </q-carousel-slide>-->
+<!--      <q-carousel-slide name="gold 999" >-->
+<!--        <TickerPriceTable :instruments_to_render="g99instruments"></TickerPriceTable>-->
+<!--      </q-carousel-slide>-->
+<!--      <q-carousel-slide name="gold 999 1kg" >-->
+<!--        <TickerPriceTable :instruments_to_render="g991instruments"></TickerPriceTable>-->
+<!--      </q-carousel-slide>-->
+<!--      <q-carousel-slide name="gold 995" >-->
+<!--        <TickerPriceTable :instruments_to_render="g95instruments"></TickerPriceTable>-->
+<!--      </q-carousel-slide>-->
+<!--      <q-carousel-slide name="gold 995 1kg" >-->
+<!--        <TickerPriceTable :instruments_to_render="g951instruments"></TickerPriceTable>-->
+<!--      </q-carousel-slide>-->
+<!--    </q-carousel>-->
   </div>
 </template>
 
@@ -78,11 +77,9 @@ export default {
   },
   methods: {
     toggleFavourite: function (item) {
-      console.log(item)
       item.is_favourite = !item.is_favourite
       if (item.is_favourite === false) {
         remove_from_favourites(item.instrument_id).then(res => {
-          console.log(res)
         })
         Notify.create('Removed', {
           message: 'Removed ' + item.vendor + ' ' + item.name + ' from favourites',
@@ -105,20 +102,6 @@ export default {
     }
   },
   created () {
-    const instruments = this.$store.getters.get_instruments
-    this.g99instruments = instruments.filter(instrument => {
-      return instrument.type === 'gold 999'
-    })
-    console.log(this.g99instruments)
-    this.g991instruments = instruments.filter(instrument => {
-      return instrument.type === 'gold 999 1kg'
-    })
-    this.g95instruments = instruments.filter(instrument => {
-      return instrument.type === 'gold 995'
-    })
-    this.g951instruments = instruments.filter(instrument => {
-      return instrument.type === 'gold 995 1kg'
-    })
   }
 }
 

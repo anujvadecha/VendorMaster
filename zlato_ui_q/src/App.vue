@@ -6,8 +6,7 @@
     </div>
     <div v-else
     class="window-height window-width row justify-center items-center"
-       style=""
-    >
+       style="">
     <div class="column q-pa-lg">
       <div class="row">
         <q-card square class="shadow-24" style="width:300px;height:485px;">
@@ -58,7 +57,17 @@ export default {
       return ''
     },
     logged_in: function () {
-      return this.$store.state.token !== ''
+      console.log('logged in is' + this.$q.localStorage.getItem('token'))
+      const token = this.$q.localStorage.getItem('token')
+      console.log(token)
+      if (token === '' || token === null || token === 'null') {
+        console.log('returning false')
+        return false
+      } else {
+        console.log('returning true')
+        return true
+      }
+      // return this.$q.localStorage.getItem('token') !== null
     }
   },
   methods: {
@@ -68,8 +77,8 @@ export default {
     },
     connect_websocket: function () {
       const store = this.$store
-      document.cookie = 'authorization=' + store.state.token + ';'
-      const url = 'ws://' + '127.0.0.1:8000' + '/ws/' + 'ticker' + '/' + '?' + store.state.token
+      document.cookie = 'authorization=' + this.$q.localStorage.getItem('token') + ';'
+      const url = 'ws://' + '127.0.0.1:8000' + '/ws/' + 'ticker' + '/' + '?' + this.$q.localStorage.getItem('token')
       const symbolsocket = new WebSocket(url)
       symbolsocket.onopen = function () {
         symbolsocket.send(
@@ -142,7 +151,7 @@ export default {
     connect_jwt: function () {
       const store = this.$store
       var axios = require('axios')
-      var data = JSON.stringify({ username: this.email, password: this.password })
+      var data = { username: this.email, password: this.password }
       var config = {
         method: 'post',
         url: 'http://127.0.0.1:8000/api/rest-auth/login/',
@@ -152,10 +161,13 @@ export default {
         data: data
       }
       const connect = this.connect_websocket
+      const quasar_q = this.$q
       axios(config)
         .then(function (response) {
+          console.log(quasar_q.localStorage.getItem('token'))
           store.dispatch('set_token', response.data.key)
-          console.log(JSON.stringify(response.data))
+          console.log('before checking' + quasar_q.localStorage.getItem('token'))
+          quasar_q.localStorage.set('token', response.data.key)
           connect()
         })
         .catch(function (error) {
@@ -174,7 +186,7 @@ export default {
     }
   },
   created () {
-
+    this.connect_websocket()
   }
 }
 </script>

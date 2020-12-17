@@ -7,7 +7,7 @@
           <div class="text-subtitle2">{{ vendor_object.vendor.email }}</div>
         </div>
       </q-img>
-      <TickerPriceTable :instruments_to_render="vendor_object.instruments"></TickerPriceTable>
+      <TickerPriceTable :title="'Our'+' symbols'" :instruments_to_render="vendor_object.instruments"></TickerPriceTable>
       <q-card flat bordered>
         <div class="q-ma-md text-h6">Messages from {{ vendor_object.vendor.name }}</div>
         <div class="q-ma-md">

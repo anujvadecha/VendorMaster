@@ -1,6 +1,6 @@
 <template>
-  <router-link style="text-decoration: none; color:rebeccapurple" :to="title">
-
+<!--  color:rebeccapurple-->
+  <router-link style="text-decoration: none; " :to="title">
   <q-item
     clickable
     tag="a"
@@ -10,14 +10,10 @@
       v-if="icon"
       avatar
     >
-      <q-icon :name="icon" />
+    <q-icon class="text-primary" :name="icon" />
     </q-item-section>
-    <q-item-section>
+    <q-item-section class="text-primary" >
       {{ title }}
-<!--      <q-item-label caption>-->
-<!--        {{ caption }}-->
-<!--      </q-item-label>-->
-
     </q-item-section>
   </q-item>
     </router-link>

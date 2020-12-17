@@ -17,4 +17,21 @@ function get_orders () {
   return apiService(endpoint, 'GET', null)
 }
 
-export { base_url, add_to_favourites, remove_from_favourites, get_orders }
+function place_order (order) {
+  const endpoint = base_url + '/order/api/orders'
+  return apiService(endpoint, 'POST', order)
+}
+
+function cancel_order (order) {
+  const endpoint = base_url + '/order/api/orders'
+  return apiService(endpoint, 'DELETE', order)
+}
+
+export {
+  base_url,
+  add_to_favourites,
+  remove_from_favourites,
+  get_orders,
+  place_order,
+  cancel_order
+}

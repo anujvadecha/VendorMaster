@@ -1,5 +1,5 @@
 <template>
-  <div class=" q-ma-sm">
+  <div class="q-ma-sm">
     <q-card square style="min-width: 400px" class="my-card" flat bordered>
       <q-card-actions align="right" class="">
         <div v-if="order.status==='EXECUTED'">
@@ -11,6 +11,7 @@
         </div>
         <div v-if="order.status==='WAITING_FOR_LIMIT'">
           <q-chip outline  color="blue" dense >Limit Order waiting</q-chip>
+          <q-btn @click="cancel_limit_order()" outline  color="black" dense >CANCEL</q-btn>
         </div>
         <div v-if="order.status==='CLOSED'">
           <q-chip outline  color="green" dense >Closed</q-chip>
@@ -39,9 +40,17 @@
 </template>
 
 <script>
+import { cancel_order } from 'src/common/api_calls'
+
 export default {
   name: 'OrderItem',
-  props: ['order']
+  props: ['order'],
+  methods: {
+    cancel_limit_order () {
+      console.log('limit order cancellation request for' + this.order)
+      cancel_order({ order_id: this.order.order_id })
+    }
+  }
 }
 </script>
 

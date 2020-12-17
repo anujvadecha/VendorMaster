@@ -1,7 +1,8 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header class="bg-deep-purple-7" style=" color: white;" elevated bordered  >
-      <q-toolbar style="">
+<!--    bg-deep-purple-7-->
+    <q-header class="bg-white text-dark" style="" elevated bordered  >
+      <q-toolbar style="" class="shadow-2">
         <q-btn
           class="mobile-only"
           flat
@@ -17,10 +18,9 @@
             <q-img
             :src="imageSrc"
             transition="scale-transition"
-            width="8%"
-            height="8%"
+            width="40px"
             />
-            Zlato
+            <span class="font-bold text-h6">Zlato</span>
           </span>
           <span v-else>
             {{currentRouteName}}
@@ -29,26 +29,27 @@
         <div>
         <span class="color:grey mobile-hide">
         <q-btn flat >
-          <router-link to="Home" style="text-decoration: None;color: white">
+          <router-link class="text-primary" to="Home" style="text-decoration: None;">
           <q-icon class="lt-md" size="md" name="mdi-home" ></q-icon>
          </router-link>
         </q-btn>
         <q-btn flat>
-          <router-link to="Orders" style="text-decoration: None;color: white">
+          <router-link class="text-primary" to="Orders" style="text-decoration: None;">
           <q-icon class="lt-md" size="md" name="mdi-bag-checked" ></q-icon>
            </router-link>
         </q-btn>
         <q-btn flat>
-          <router-link to="Favourites" style="text-decoration: None;color: white">
+          <router-link class="text-primary" to="Favourites" style="text-decoration: None;">
           <q-icon class="lt-md" size="md" name="mdi-heart"></q-icon>
             </router-link></q-btn>
         <q-btn flat>
-          <router-link to="Account" style="text-decoration: None;color: white">
+          <router-link class="text-primary" to="Account" style="text-decoration: None;">
           <q-icon class="lt-md"  size="md" name="mdi-account"></q-icon>
-            </router-link></q-btn>
+        </router-link></q-btn>
 
         <q-btn-dropdown
           flat
+          class="lt-md text-primary"
           label="Account">
           <div class="q-pa-md">
             <div class="justify-center full-height full-width text-center">
@@ -59,6 +60,7 @@
               <div class="text-subtitle1 q-mt-md q-mb-xs">John Doe</div>
 
               <q-btn
+                @click="logout()"
                 color="primary"
                 label="Logout"
                 size="sm"
@@ -91,16 +93,16 @@
 <!--          </div>-->
 <!--        </q-btn-dropdown>-->
       </q-toolbar>
-      <q-toolbar inset style="">
+      <q-toolbar class="text-primary bg-white" inset style="">
       <q-space></q-space>
-        <q-icon name="mdi-gold"></q-icon>
-        <span>1270</span>
+<!--        <q-icon name="mdi-gold"></q-icon>-->
+        <span>Gold : 1270</span>
         <q-space></q-space>
-        <q-icon name="mdi-silverware-clean"></q-icon>
-        <span>128392</span>
+<!--        <q-icon name="mdi-silverware-clean"></q-icon>-->
+        <span>Silver: 128392</span>
         <q-space></q-space>
-        <q-icon name="mdi-gold"></q-icon>
-        <span>78.9</span>
+<!--        <q-icon name="mdi-gold"></q-icon>-->
+        <span>Dollar: 78.9</span>
         <q-space></q-space>
       </q-toolbar>
     </q-header>
@@ -181,6 +183,15 @@ export default {
       imageSrc: '/logo.png',
       leftDrawerOpen: false,
       essentialLinks: linksData
+    }
+  },
+  methods: {
+    logout () {
+      console.log('logout called')
+      this.$q.localStorage.set('token', '')
+      // this.$router.push({
+      //   name: 'Home'
+      // })
     }
   },
   computed: {

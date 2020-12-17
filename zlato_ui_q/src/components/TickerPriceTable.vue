@@ -1,12 +1,47 @@
 <template>
-<q-table
+  <div>
+    <div class="q-ma-md row text-h6" style="">
+      <div class="col">
+        <div v-if="title==null">
+            Watchlist
+          </div>
+      <div v-else>
+        {{title}}
+      </div>
+      </div>
+      <div class="col">
+      <q-input class="q-ml-lg" borderless dense debounce="300" v-model="filter" placeholder="Search">
+            <q-icon name="mdi-magnify" />
+        </q-input>
+        </div>
+    </div>
+    <div>
+      <q-tabs
+        mobile-arrows
+        v-model="tab"
+        no-caps
+        dense
+        style="width: available"
+      >
+        <div v-for="type in types" :key="type">
+          <q-tab :name="type" :label="type" />
+        </div>
+    </q-tabs>
+      </div>
+  <q-table
       title="Ticker Prices"
-      :data="instruments_to_render"
+      :data="data_render"
       :columns="headers"
       :filter="filter"
-      row-key="name"
+      row-key="instrument_id"
       bordered flat
+      v-touch-swipe.mouse="handleSwipe"
+      virtual-scroll
+      :pagination="pagination"
     >
+    <template v-slot:top>
+
+    </template>
       <template v-slot:header="props">
         <q-tr class="text-left"  :props="props">
           <q-th  v-if="!$q.platform.is.mobile">
@@ -33,13 +68,6 @@
           <q-th>
           </q-th>
         </q-tr>
-      </template>
-      <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
       </template>
       <template v-slot:body="props">
         <q-tr :props="props">
@@ -108,6 +136,7 @@
         </q-tr>
       </template>
     </q-table>
+    </div>
 </template>
 
 <script>
@@ -115,22 +144,47 @@ import { add_to_favourites, remove_from_favourites } from 'src/common/api_calls'
 
 export default {
   name: 'TickerPriceTable',
-  props: ['instruments_to_render'],
+  props: ['instruments_to_render', 'title'],
+  computed: {
+    data_render: function () {
+      var type = ''
+      if (this.tab !== 'All') { type = this.tab.toLowerCase() } else {
+        return this.instruments_to_render
+      }
+      return this.instruments_to_render.filter(instrument => {
+        return instrument.type === type
+      })
+    }
+  },
   data () {
     return {
+      pagination: {
+        rowsPerPage: 0
+      },
       filter: '',
+      tab: 'All',
+      types: ['All', 'Gold 999', 'Gold 99 1kg', 'Gold 995', 'Gold 995 1kg'],
       headers: [
         { name: 'Vendor', align: 'start', field: 'vendor', label: 'Vendor' },
         { name: 'Symbol', align: 'start', field: 'name', label: 'Symbol' },
-        { name: 'Bid', align: 'start', field: 'bid', filterable: true, label: 'Bid' },
-        { name: 'Ask', align: 'start', field: 'ask', filterable: true, label: 'Ask' },
-        { name: 'High', align: 'start', field: 'high', filterable: true, label: 'High' },
-        { name: 'Low', align: 'start', field: 'low', filterable: true, label: 'Low' },
+        { name: 'Bid', align: 'start', field: 'bid', filterable: true, label: 'Bid', sortable: true },
+        { name: 'Ask', align: 'start', field: 'ask', filterable: true, label: 'Ask', sortable: true },
+        { name: 'High', align: 'start', field: 'high', filterable: true, label: 'High', sortable: true },
+        { name: 'Low', align: 'start', field: 'low', filterable: true, label: 'Low', sortable: true },
         { name: 'favourite', align: 'start', field: 'is_favourite', label: '' }
       ]
     }
   },
   methods: {
+    handleSwipe ({ evt, ...info }) {
+      if (info.direction === 'right') {
+        console.log('right')
+        // TODO WRITE LOGIC HERE
+      } else {
+        console.log('left')
+        // TODO WRITE LOGIC HERE
+      }
+    },
     toggleFavourite: function (item) {
       console.log(item)
       item.is_favourite = !item.is_favourite
@@ -138,20 +192,12 @@ export default {
         remove_from_favourites(item.instrument_id).then(res => {
           console.log(res)
         })
-        // this.errorToast(
-        //   'Removed ' + item.vendor + ' ' + item.name + ' from favourites'
-        // )
       } else {
         add_to_favourites(item).then(res => {
-          console.log(res)
         })
-        // this.successToast(
-        //   'Added ' + item.vendor + ' ' + item.name + ' from favourites'
-        // )
       }
     },
     open_order_sheet: function (item) {
-      console.log('open order sheet called')
       this.$store.dispatch('set_order_item', item)
       this.$store.dispatch('set_sheet', true)
     },
