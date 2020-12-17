@@ -109,7 +109,7 @@ export default {
             spinner: false,
             html: true,
             message: 'Order could not be placed due to :',
-            caption: '<h6>' + res.status + '<h6>',
+            caption: '<h6>' + res + '<h6>',
             position: 'top-right',
             color: 'negative',
             timeout: 10000

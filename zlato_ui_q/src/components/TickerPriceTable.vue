@@ -10,7 +10,7 @@
       </div>
       </div>
       <div class="col">
-      <q-input class="q-ml-lg" borderless dense debounce="300" v-model="filter" placeholder="Search">
+      <q-input class="q-ml-lg" outlined dense debounce="300" v-model="filter" placeholder="Search">
             <q-icon name="mdi-magnify" />
         </q-input>
         </div>
@@ -163,7 +163,7 @@ export default {
       },
       filter: '',
       tab: 'All',
-      types: ['All', 'Gold 999', 'Gold 99 1kg', 'Gold 995', 'Gold 995 1kg'],
+      types: ['All', 'Gold 999', 'Gold 999 1kg', 'Gold 995', 'Gold 995 1kg'],
       headers: [
         { name: 'Vendor', align: 'start', field: 'vendor', label: 'Vendor' },
         { name: 'Symbol', align: 'start', field: 'name', label: 'Symbol' },

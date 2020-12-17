@@ -33,7 +33,6 @@
         <div class="col"><q-chip dense outline color="orange">{{order.side}} </q-chip> {{order.quantity}}
             </div>
                 <span class="q-ml-sm" style="color: grey"> B:{{order.instrument.bid}} A:{{order.instrument.ask}}</span>
-
       </div>
     </q-card>
   </div>

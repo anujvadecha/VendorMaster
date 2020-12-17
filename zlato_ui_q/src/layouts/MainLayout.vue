@@ -69,34 +69,13 @@
             </div>
           </div>
         </q-btn-dropdown>
-
           </span>
         </div>
-<!--        <q-btn-dropdown-->
-<!--          flat-->
-<!--          label="Account">-->
-<!--          <div class="q-pa-md">-->
-<!--            <div class="justify-center full-height full-width text-center">-->
-<!--              <q-avatar size="72px">-->
-<!--                <img src="https://cdn.quasar.dev/img/boy-avatar.png">-->
-<!--              </q-avatar>-->
-<!--&lt;!&ndash;&ndash;&gt;-->
-<!--              <div class="text-subtitle1 q-mt-md q-mb-xs">John Doe</div>-->
-<!--&lt;!&ndash;&ndash;&gt;-->
-<!--              <q-btn-->
-<!--                color="primary"-->
-<!--                label="Logout"-->
-<!--                size="sm"-->
-<!--                v-close-popup-->
-<!--              />-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </q-btn-dropdown>-->
       </q-toolbar>
-      <q-toolbar class="text-primary bg-white" inset style="">
+      <q-toolbar class="text-dark bg-white" inset style="font-weight: bold">
       <q-space></q-space>
 <!--        <q-icon name="mdi-gold"></q-icon>-->
-        <span>Gold : 1270</span>
+        <span class="" style="">Gold : 1270</span>
         <q-space></q-space>
 <!--        <q-icon name="mdi-silverware-clean"></q-icon>-->
         <span>Silver: 128392</span>
