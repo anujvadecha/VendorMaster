@@ -40,7 +40,6 @@
 
 <script>
 import { cancel_order } from 'src/common/api_calls'
-
 export default {
   name: 'OrderItem',
   props: ['order'],

@@ -1,30 +1,36 @@
 <template>
-<div class="bg-primary row q-pa-md">
+  <div>
+  <span class="q-ma-md row text-h6">Our favourite vendors</span>
+  <div class=" row q-pa-md">
+    <div v-for="i in 2" :key="i">
   <div v-for="vendor in vendors" :key="vendor.vendor_id">
-  <q-card
-  @click="open_vendor_dialog(vendor.vendor_id)"
-  >
+  <q-card class="q-ml-md" @click="open_vendor_dialog(vendor.vendor_id)">
     <q-card-section
       v-bind:style="{
               backgroundColor: vendor.theme.css_header_background_color,
               height:'150px',
               width:'120px'
             }">
-      <q-img :src="base_url+vendor.theme.logo" :alt="vendor.name"/>
+      <q-img :src="base_url+vendor.theme.logo" :alt="vendor.name+i"/>
+      <span class="text-white" style="font-weight: bold">{{ vendor.name }}</span>
     </q-card-section>
-    <div class="q-ma-sm" style="max-width: 120px">{{ vendor.name }}</div>
+<!--    <div class="q-ma-sm" style="max-width: 120px"></div>-->
   </q-card>
   </div>
+      </div>
+
 </div>
+    </div>
 </template>
 
 <script>
+import { base_url } from 'src/common/api_calls'
 export default {
   name: 'TopVendors',
   props: ['vendors'],
   data () {
     return {
-      base_url: this.$store.state.base_url
+      base_url: base_url
     }
   },
   methods: {

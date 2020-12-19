@@ -33,10 +33,9 @@ from vendorbase.views import IndexTemplateView, fallback_404
 urlpatterns = [
     url('admin/', admin.site.urls),
     url('order/', include("orderManagement.urls")),
-    path("accounts/register/",
-         RegistrationView.as_view(form_class=CustomUserForm,success_url="/",),name="django_registration_register"),
+    path("accounts/register/",RegistrationView.as_view(form_class=CustomUserForm,success_url="/",),name="django_registration_register"),
     path('accounts/',include('allauth.urls')),
-    # path("account/",include("django_registration.backends.one_step.urls")),
+    #path("account/",include("django_registration.backends.one_step.urls")),
     path("accounts/",include("django.contrib.auth.urls")),
     url('api/', include("api.urls")),
     path('api-auth/', include("rest_framework.urls")),
@@ -44,7 +43,7 @@ urlpatterns = [
     path("api/rest-auth/registration",include("rest_auth.registration.urls")),
     path("",IndexTemplateView.as_view(),name="entry-point"),
     path("api/favourites/",FavouritesView.as_view(),name="favourite"),
-    # url(r'^.*$',fallback_404,name="404 fallback")
+    #url(r'^.*$',fallback_404,name="404 fallback")
     url(r'^api-token-auth/', obtain_jwt_token),
 ]
 

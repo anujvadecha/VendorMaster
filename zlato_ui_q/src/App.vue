@@ -1,56 +1,154 @@
 <template>
   <div id="q-app">
-    {{state_get}}
-    <div v-if="logged_in">
-      <MainLayout></MainLayout>
-    </div>
-    <div v-else
-    class="window-height window-width row justify-center items-center"
-       style="">
-    <div class="column q-pa-lg">
-      <div class="row">
-        <q-card square class="shadow-24" style="width:300px;height:485px;">
-          <q-card-section class="bg-deep-purple-7">
-            <h4 class="text-h5 text-white q-my-md">Zlato</h4>
-            <div class="absolute-bottom-right q-pr-md" style="transform: translateY(50%);">
-              <q-btn fab icon="add" color="purple-4" />
+    <q-layout view="lHh Lpr lFf">
+      <q-header class="bg-white text-dark" style="" elevated bordered  >
+      <q-toolbar style="" class="shadow-2">
+        <q-btn class="mobile-only" flat dense round icon="menu" aria-label="Menu" @click="leftDrawerOpen = !leftDrawerOpen"/>
+        <q-toolbar-title class="font-bold">
+          <span v-if="currentRouteName==='Home'||''||'/'">
+            <q-img
+            :src="imageSrc"
+            transition="scale-transition"
+            width="40px"
+            />
+            <span class="font-bold text-h6">Zlato</span>
+          </span>
+          <span v-else>
+            {{currentRouteName}}
+          </span>
+        </q-toolbar-title>
+        <div>
+        <span class="color:grey mobile-hide">
+        <q-btn flat >
+          <router-link class="text-primary" to="Home" style="text-decoration: None;">
+          <q-icon class="lt-md" size="md" name="mdi-home" ></q-icon>
+         </router-link>
+        </q-btn>
+        <q-btn flat>
+          <router-link class="text-primary" to="Orders" style="text-decoration: None;">
+          <q-icon class="lt-md" size="md" name="mdi-bag-checked" ></q-icon>
+           </router-link>
+        </q-btn>
+        <q-btn flat>
+          <router-link class="text-primary" to="Favourites" style="text-decoration: None;">
+          <q-icon class="lt-md" size="md" name="mdi-heart"></q-icon>
+            </router-link></q-btn>
+        <q-btn flat>
+          <router-link class="text-primary" to="Account" style="text-decoration: None;">
+          <q-icon class="lt-md"  size="md" name="mdi-account"></q-icon>
+        </router-link></q-btn>
+        <q-btn-dropdown
+          flat
+          class="lt-md text-primary"
+          label="Account">
+          <div class="q-pa-md">
+            <div class="justify-center full-height full-width text-center">
+              <q-avatar size="72px">
+                <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+              </q-avatar>
+              <div class="text-subtitle1 q-mt-md q-mb-xs">John Doe</div>
+              <q-btn
+                @click="logout()"
+                color="primary"
+                label="Logout"
+                size="sm"
+                v-close-popup
+              />
             </div>
-          </q-card-section>
-          <q-card-section>
-            <q-form class="q-px-sm q-pt-xl">
-              <q-input square clearable v-model="email" type="email" label="Email">
-                <template v-slot:prepend>
-                  <q-icon name="email" />
-                </template>
-              </q-input>
-              <q-input square clearable v-model="password" type="password" label="Password">
-                <template v-slot:prepend>
-                  <q-icon name="lock" />
-                </template>
-              </q-input>
-            </q-form>
-          </q-card-section>
-          <q-card-actions class="q-px-lg">
-            <q-btn @click="login_action()" unelevated size="lg" color="purple-4" class="full-width text-white" label="Sign In" />
-          </q-card-actions>
-          <q-card-section class="text-center q-pa-sm">
-            <p class="text-grey-6">Forgot your password?</p>
-          </q-card-section>
-        </q-card>
-      </div>
-    </div>
-    </div>
+          </div>
+        </q-btn-dropdown>
+          </span>
+        </div>
+      </q-toolbar>
+      <q-toolbar class="text-dark bg-white" inset style="font-weight: bold">
+      <q-space></q-space>
+<!--        <q-icon name="mdi-gold"></q-icon>-->
+        <span class="" style="">Gold : 1270</span>
+        <q-space></q-space>
+<!--        <q-icon name="mdi-silverware-clean"></q-icon>-->
+        <span>Silver: 128392</span>
+        <q-space></q-space>
+<!--        <q-icon name="mdi-gold"></q-icon>-->
+        <span>Dollar: 78.9</span>
+        <q-space></q-space>
+      </q-toolbar>
+    </q-header>
+<!--    <span class="mobile-only ">-->
+    <q-drawer
+      v-model="leftDrawerOpen"
+      show-if-above
+      bordered
+      content-class="bg-grey-1"
+    >
+      <q-img class="absolute-top" src="https://images.livemint.com/img/2020/05/02/600x338/73342ce6-87d6-11ea-9881-602785b14c14_1587970192680_1588398410207.jpg" style="height: 150px;">
+          <div class="absolute-bottom bg-transparent">
+            <q-avatar size="56px" class="q-mb-sm">
+              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+            </q-avatar>
+            <div class="text-weight-bold">Deltacap devs</div>
+            <div>@deltacap devs</div>
+          </div>
+        </q-img>
+      <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
+      <q-list>
+<!--        <q-item-label-->
+<!--          header-->
+<!--          class="text-grey-8"-->
+<!--        >-->
+<!--          Links-->
+<!--        </q-item-label>-->
+        <EssentialLink
+          v-for="link in essentialLinks"
+          :key="link.title"
+          v-bind="link"
+        />
+      </q-list>
+      </q-scroll-area>
+    </q-drawer>
+    <q-page-container>
+      <router-view />
+    </q-page-container>
+  </q-layout>
     <BottomOrderDialog></BottomOrderDialog>
   </div>
 </template>
 <script>
-import MainLayout from 'layouts/MainLayout'
 import BottomOrderDialog from 'components/BottomOrderDialog'
+import { NotifySuccess } from 'src/common/api_calls'
+// import MainLayout from 'layouts/MainLayout'
+
+import EssentialLink from 'components/EssentialLink.vue'
+const linksData = [
+  {
+    title: 'Home',
+    caption: 'HomePage',
+    icon: 'mdi-home',
+    link: 'https://quasar.dev'
+  },
+  {
+    title: 'Orders',
+    caption: 'See your orders',
+    icon: 'mdi-bag-checked',
+    link: 'https://github.com/quasarframework'
+  },
+  {
+    title: 'Favourites',
+    caption: 'See your favourites and compare',
+    icon: 'mdi-heart',
+    link: 'https://chat.quasar.dev'
+  },
+  {
+    title: 'Account',
+    caption: 'Settings for your account',
+    icon: 'mdi-account',
+    link: 'https://forum.quasar.dev'
+  }
+]
+
 // import { base_url } from 'common/api_calls'
 export default {
   name: 'App',
-  base_url: '127.0.0.1:8000',
-  components: { BottomOrderDialog, MainLayout },
+  components: { EssentialLink, BottomOrderDialog },
   computed: {
     state_get: function () {
       console.log(this.$store.state)
@@ -67,10 +165,16 @@ export default {
         console.log('returning true')
         return true
       }
-      // return this.$q.localStorage.getItem('token') !== null
     }
   },
   methods: {
+    logout () {
+      console.log('logout called')
+      this.$q.localStorage.set('token', '')
+      this.$router.push({
+        name: 'Login'
+      })
+    },
     set_token: function (token) {
       // console.log('setting token' + token)
       this.$store.state.token = token
@@ -139,6 +243,7 @@ export default {
         }
         if (message.order_update) {
           console.log(message)
+          NotifySuccess({ message: 'this is order update' })
         }
       }
       symbolsocket.onclose = function (event) {
@@ -171,7 +276,7 @@ export default {
           connect()
         })
         .catch(function (error) {
-          console.log(error)
+          quasar_q.$q.notify(error)
         })
     },
     login_action: function () {
@@ -182,11 +287,20 @@ export default {
   data () {
     return {
       email: '',
-      password: ''
+      password: ',',
+      essentialLinks: linksData,
+      imageSrc: '/logo.png',
+      leftDrawerOpen: false
     }
   },
   created () {
-    this.connect_websocket()
+    // this.connect_websocket()
+    this.$q.localStorage.set('token', '')
+    if (this.logged_in) {
+      console.log('logged in')
+    } else {
+      this.$router.push('Login')
+    }
   }
 }
 </script>

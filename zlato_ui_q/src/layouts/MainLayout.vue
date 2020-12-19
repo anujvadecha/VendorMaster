@@ -1,7 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-<!--    bg-deep-purple-7-->
-    <q-header class="bg-white text-dark" style="" elevated bordered  >
+      <q-header class="bg-white text-dark" style="" elevated bordered  >
       <q-toolbar style="" class="shadow-2">
         <q-btn
           class="mobile-only"
@@ -12,7 +11,6 @@
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
-<!--        <q-img width="50px" src="/src/assets/quasar-logo-full.png"></q-img>-->
         <q-toolbar-title class="font-bold">
           <span v-if="currentRouteName==='Home'||''||'/'">
             <q-img
@@ -46,7 +44,6 @@
           <router-link class="text-primary" to="Account" style="text-decoration: None;">
           <q-icon class="lt-md"  size="md" name="mdi-account"></q-icon>
         </router-link></q-btn>
-
         <q-btn-dropdown
           flat
           class="lt-md text-primary"
@@ -56,9 +53,7 @@
               <q-avatar size="72px">
                 <img src="https://cdn.quasar.dev/img/boy-avatar.png">
               </q-avatar>
-
               <div class="text-subtitle1 q-mt-md q-mb-xs">John Doe</div>
-
               <q-btn
                 @click="logout()"
                 color="primary"
@@ -103,12 +98,12 @@
         </q-img>
       <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
       <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
-          Links
-        </q-item-label>
+<!--        <q-item-label-->
+<!--          header-->
+<!--          class="text-grey-8"-->
+<!--        >-->
+<!--          Links-->
+<!--        </q-item-label>-->
         <EssentialLink
           v-for="link in essentialLinks"
           :key="link.title"
@@ -117,7 +112,6 @@
       </q-list>
       </q-scroll-area>
     </q-drawer>
-<!--      </span>-->
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -126,7 +120,6 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
-
 const linksData = [
   {
     title: 'Home',
@@ -168,14 +161,29 @@ export default {
     logout () {
       console.log('logout called')
       this.$q.localStorage.set('token', '')
-      // this.$router.push({
-      //   name: 'Home'
-      // })
+      this.$router.push({
+        name: 'Login'
+      })
     }
+  },
+  created () {
+    this.$q.notify({ message: 'hello' })
   },
   computed: {
     currentRouteName () {
       return this.$route.name
+    },
+    logged_in: function () {
+      console.log('logged in is' + this.$q.localStorage.getItem('token'))
+      const token = this.$q.localStorage.getItem('token')
+      console.log(token)
+      if (token === '' || token === null || token === 'null') {
+        console.log('returning false')
+        return false
+      } else {
+        console.log('returning true')
+        return true
+      }
     }
   }
 }

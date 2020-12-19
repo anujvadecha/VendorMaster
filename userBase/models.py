@@ -16,7 +16,8 @@ class NormalUser(AbstractUser):
     phone_number = models.CharField(blank=True, max_length=14)
     profile_picture = models.ImageField(blank=True)
     pan_card = models.ImageField(blank=True)
-    # margin_available = models.FloatField(blank=True, default=0, max_length=200)
-
+    # is_activated=models.BooleanField(blank=True,default=False)
+    #
     def get_phone_number(self):
         return self.phone_number
+

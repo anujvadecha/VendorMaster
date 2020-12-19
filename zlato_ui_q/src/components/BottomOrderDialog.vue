@@ -27,17 +27,16 @@
           <q-tab-panel name="MARKET">
           <div class="row">
             <q-input class="" type="number" standout="text-white" v-model="quantity" label="Quantity" />
-            <q-input  class="q-ml-lg" type="number" readonly v-model="price" :label="order_item.ask" />
+            <q-input  class="q-ml-lg" type="number" readonly v-model="price" :label="order_item.ask.toString()" />
           </div>
           </q-tab-panel>
           <q-tab-panel name="LIMIT">
             <div class="row">
             <q-input type="number"  standout="text-white" v-model="quantity" label="Quantity" />
-            <q-input type="number" class="q-ml-lg"  v-model="price" :label="order_item.ask" />
+            <q-input type="number" class="q-ml-lg"  v-model="price" :label="order_item.ask.toString()" />
           </div>
           </q-tab-panel>
         </q-tab-panels>
-
     <q-card-section style="background-color: white" >
       <q-btn class="btn-primary" @click="place_order()">Buy</q-btn>
       <q-btn class="q-ml-md btn-danger" @click="set_sheet_close()">Close</q-btn>
@@ -48,6 +47,32 @@
 
 <script>
 import { place_order } from 'src/common/api_calls'
+const linksData = [
+  {
+    title: 'Home',
+    caption: 'HomePage',
+    icon: 'mdi-home',
+    link: 'https://quasar.dev'
+  },
+  {
+    title: 'Orders',
+    caption: 'See your orders',
+    icon: 'mdi-bag-checked',
+    link: 'https://github.com/quasarframework'
+  },
+  {
+    title: 'Favourites',
+    caption: 'See your favourites and compare',
+    icon: 'mdi-heart',
+    link: 'https://chat.quasar.dev'
+  },
+  {
+    title: 'Account',
+    caption: 'Settings for your account',
+    icon: 'mdi-account',
+    link: 'https://forum.quasar.dev'
+  }
+]
 
 export default {
   name: 'BottomOrderDialog',
@@ -123,7 +148,10 @@ export default {
     return {
       tab: 'MARKET',
       quantity: 0,
-      price: ''
+      price: '',
+      imageSrc: '/logo.png',
+      leftDrawerOpen: false,
+      essentialLinks: linksData
     }
   }
 }

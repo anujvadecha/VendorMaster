@@ -1,38 +1,7 @@
 <template>
   <div>
   <TopVendors class="mobile-hide"  :vendors="vendors_computed"></TopVendors>
-<!--    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments'>All</q-chip>-->
-<!--    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments("gold 999")'>Gold 999</q-chip>-->
-<!--    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments("gold 999 1kg")'>Gold 999 1kg</q-chip>-->
-<!--    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments("gold 995")'>Gold 995</q-chip>-->
-<!--    <q-chip color="deep-purple-3" text-color="white" @click='filterInstruments("gold 995 1kg")'>Gold 995 1kg</q-chip>-->
-<!--    <q-carousel-->
-<!--      v-model="slide"-->
-<!--      transition-prev="scale"-->
-<!--      transition-next="scale"-->
-<!--      swipeable-->
-<!--      animated-->
-<!--      control-color="purple"-->
-<!--      navigation-->
-<!--      padding-->
-<!--      arrows-->
-<!--    >-->
-<!--      <q-carousel-slide name="All" >-->
-        <TickerPriceTable title="Ticker prices" :instruments_to_render="instruments_to_render"></TickerPriceTable>
-<!--      </q-carousel-slide>-->
-<!--      <q-carousel-slide name="gold 999" >-->
-<!--        <TickerPriceTable :instruments_to_render="g99instruments"></TickerPriceTable>-->
-<!--      </q-carousel-slide>-->
-<!--      <q-carousel-slide name="gold 999 1kg" >-->
-<!--        <TickerPriceTable :instruments_to_render="g991instruments"></TickerPriceTable>-->
-<!--      </q-carousel-slide>-->
-<!--      <q-carousel-slide name="gold 995" >-->
-<!--        <TickerPriceTable :instruments_to_render="g95instruments"></TickerPriceTable>-->
-<!--      </q-carousel-slide>-->
-<!--      <q-carousel-slide name="gold 995 1kg" >-->
-<!--        <TickerPriceTable :instruments_to_render="g951instruments"></TickerPriceTable>-->
-<!--      </q-carousel-slide>-->
-<!--    </q-carousel>-->
+  <TickerPriceTable title="Ticker prices" :instruments_to_render="instruments_to_render"></TickerPriceTable>
   </div>
 </template>
 
@@ -40,7 +9,6 @@
 import TopVendors from 'components/home/TopVendors'
 import TickerPriceTable from 'components/TickerPriceTable'
 import { add_to_favourites, remove_from_favourites } from 'src/common/api_calls'
-import { Notify } from 'quasar'
 // import { add_to_favourites, remove_from_favourites } from '@/common/api_calls'
 export default {
   name: 'Home',
@@ -80,18 +48,22 @@ export default {
       item.is_favourite = !item.is_favourite
       if (item.is_favourite === false) {
         remove_from_favourites(item.instrument_id).then(res => {
-        })
-        Notify.create('Removed', {
-          message: 'Removed ' + item.vendor + ' ' + item.name + ' from favourites',
-          color: 'purple'
+          this.$q.notify({
+            message: 'Removed ' + item.vendor + ' ' + item.name + ' from favourites',
+            timeout: 2000,
+            position: 'top-right',
+            color: 'primary'
+          })
         })
       } else {
         add_to_favourites(item).then(res => {
           console.log(res)
-        })
-        Notify.create({
-          message: 'Added ' + item.vendor + ' ' + item.name + ' from favourites',
-          color: 'purple'
+          this.$q.notify({
+            message: 'Added ' + item.vendor + ' ' + item.name + ' from favourites',
+            timeout: 2000,
+            position: 'top-right',
+            color: 'primary'
+          })
         })
       }
     },
