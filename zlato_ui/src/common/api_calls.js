@@ -1,6 +1,6 @@
 import { apiService } from "./api.service";
 const base_url = "127.0.0.1:8000";
-
+import { Notify } from "quasar";
 function add_to_favourites(instrument_id) {
   let endpoint = base_url + "/api/favourites/";
   return apiService(endpoint, "POST", instrument_id);
@@ -17,4 +17,13 @@ function get_orders() {
   return apiService(endpoint);
 }
 
-export { base_url, add_to_favourites, remove_from_favourites, get_orders };
+function NotifySuccess(object) {
+  Notify.create(object);
+}
+export {
+  base_url,
+  add_to_favourites,
+  remove_from_favourites,
+  get_orders,
+  NotifySuccess
+};

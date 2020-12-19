@@ -63,7 +63,6 @@
             Low
           </q-th>
           <q-th>
-            Favourite
           </q-th>
           <q-th>
           </q-th>

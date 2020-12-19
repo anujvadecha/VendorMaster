@@ -34,7 +34,6 @@ export default new Vuex.Store({
     snackbar_message: '',
     snackbar: false,
     token: '',
-    base_url: '127.0.0.1:8000',
     order_item: null
   },
 
