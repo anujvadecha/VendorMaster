@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from djchoices import DjangoChoices, ChoiceItem
 from base.models import BaseModel
+from orderManagement.utils import unique_transaction_id_generator
 from userBase.models import NormalUser
 from vendorbase.models import Vendor, Symbol
 
@@ -22,6 +23,7 @@ class OrderSide(DjangoChoices):
 
 class Order(BaseModel):
     order_id  = models.UUIDField(primary_key=True, default=uuid.uuid4,editable=False)
+    transaction_id = models.CharField(max_length=120, default=unique_transaction_id_generator, blank=True)
     instrument_id = models.ForeignKey(Symbol,on_delete=models.DO_NOTHING)
     quantity = models.IntegerField()
     user_id = models.ForeignKey(NormalUser,on_delete=models.DO_NOTHING,blank=True)
@@ -35,6 +37,7 @@ class Order(BaseModel):
 
     def __str__(self):
         return self.user_id.__str__();
+
 
 class OpenOrder(Order):
     class Meta:

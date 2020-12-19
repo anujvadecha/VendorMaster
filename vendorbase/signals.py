@@ -13,6 +13,8 @@ from orderManagement.models import Order, LimitOrderPending, OpenOrder, Executed
 from vendorbase.api.serializers import SymbolSerializer
 from vendorbase.models import Symbol
 from django.core.cache import cache
+import random
+import string
 
 @receiver(post_save,sender=Symbol)
 def create_update_symbol(sender,instance,created,**kwargs):
@@ -46,3 +48,10 @@ def create_update_order(sender, instance, created, **kwargs):
 
     # if created:
     #     NormalUser.objects.create(user=instance)
+
+
+# @receiver(pre_save, sender=Order)
+# def pre_save_create_transaction_id(sender, instance, *args, **kwargs):
+#     try:
+#         if not instance.transaction_id:
+#             instance.transaction_id = unique_transactio_id_generator(instance)
