@@ -17,7 +17,6 @@
               <q-btn fab icon="add" color="primary" />
             </div>
           </q-card-section>
-          <q-></q->
           <q-card-section>
             <q-form class="q-px-sm q-pt-xl">
               <q-input square clearable v-model="email" type="email" label="Email">
@@ -146,7 +145,7 @@ export default {
         },
         data: data
       }
-      const connect = this.connect_websocket
+      // const connect = this.connect_websocket
       const quasar_q = this.$q
       axios(config)
         .then(function (response) {
@@ -155,8 +154,8 @@ export default {
           console.log('before checking' + quasar_q.localStorage.getItem('token'))
           quasar_q.localStorage.set('token', response.data.key)
           console.log('pushing to home')
-          router.push('Home')
-          connect()
+          router.push('/')
+          // connect()
         })
         .catch(function (error) {
           console.log(error)

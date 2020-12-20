@@ -1,5 +1,11 @@
 <template>
   <div>
+<!--        <q-item-label-->
+<!--          header-->
+<!--          class="text-grey-8"-->
+<!--        >-->
+<!--          Links-->
+<!--        </q-item-label>-->
   <TopVendors class="mobile-hide"  :vendors="vendors_computed"></TopVendors>
   <TickerPriceTable title="Ticker prices" :instruments_to_render="instruments_to_render"></TickerPriceTable>
   </div>
@@ -10,6 +16,7 @@ import TopVendors from 'components/home/TopVendors'
 import TickerPriceTable from 'components/TickerPriceTable'
 import { add_to_favourites, remove_from_favourites } from 'src/common/api_calls'
 // import { add_to_favourites, remove_from_favourites } from '@/common/api_calls'
+
 export default {
   name: 'Home',
   components: { TickerPriceTable, TopVendors },
