@@ -3,7 +3,6 @@ import json
 from asgiref.sync import async_to_sync
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
 from VendorMaster import settings
 from VendorMaster.consumers import UUIDEncoder
 from orderManagement.api.serializers import OrderSerializer

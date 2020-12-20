@@ -142,6 +142,11 @@ const linksData = [
     caption: 'Settings for your account',
     icon: 'mdi-account',
     link: 'https://forum.quasar.dev'
+  },
+  {
+    title: 'Margins',
+    caption: 'Margins for you',
+    icon: 'mdi-account'
   }
 ]
 

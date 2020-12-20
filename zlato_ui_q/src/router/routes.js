@@ -4,6 +4,7 @@ import Home from 'pages/Home'
 import Account from 'pages/Account'
 import VendorDetails from 'pages/VendorDetails'
 import Login from 'pages/Login'
+import UserMargins from 'pages/UserMargins'
 
 // import Login from 'pages/Login'
 
@@ -46,6 +47,11 @@ const routes = [
     name: 'Vendor',
     component: VendorDetails,
     props: true
+  },
+  {
+    path: '/margins',
+    name: 'Margins',
+    component: UserMargins
   },
   {
     path: '*',

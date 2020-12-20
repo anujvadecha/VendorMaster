@@ -58,7 +58,7 @@ class Theme(models.Model):
         objs_manager = Theme.objects
         objs_active_qs=None
         if(user):
-            objs_active_qs = objs_manager.filter(name=user.username)
+            objs_active_qs = objs_manager.filter(vendor__user_id=user)
         if(not objs_active_qs):
             objs_active_qs = objs_manager.filter(active=True)
         if(len(objs_active_qs)==0):

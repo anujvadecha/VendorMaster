@@ -11,7 +11,7 @@ from base.models import BaseModel
 from orderManagement.models import Order, OrderStatus, OpenOrder, ExecutedOrder, ClosedOrder, LimitOrderPending
 from orderManagement.utils import otp_hash
 from userBase.models import NormalUser
-from vendorbase.models import Symbol, Vendor, Group, City, GlobalPremium, Favourite, VendorDetails
+from vendorbase.models import Symbol, Vendor, Group, City, GlobalPremium, Favourite, VendorDetails, VendorMargin
 
 
 @admin.register(Symbol)
@@ -62,8 +62,13 @@ def get_vendor_order_queryset(request=None,queryset=None):
     if (request.user.is_superuser):
         return queryset
     else:
-        return queryset.filter(instrument_id__vendor_id__user_id=request.user)
+        return queryset.filter(instrument_id__vendor_id__user_id = request.user)
 
+def get_vendor_margin_queryset(request=None,queryset=None):
+    if (request.user.is_superuser):
+        return queryset
+    else:
+        return queryset.filter(user = request.user)
 
 @admin.register(LimitOrderPending)
 class LimitOrderPendingAdmin(admin.ModelAdmin,OrderAdminBase):
@@ -188,10 +193,18 @@ class FavouriteAdmin(admin.ModelAdmin):
 @admin.register(VendorDetails)
 class VendorDetailAdmin(admin.ModelAdmin):
     pass
-# @admin.register(OrderEngine_Pool)
-# class OrderEngineAdmin(admin.ModelAdmin):
-#     change_list_template = "StartOrderEngine.html"
-#     def get_urls(self):
-#         urls = super(OrderEngineAdmin, self).get_urls()
-#         my_urls = [url(r"^startOrderEngine/$",startOrderEngine)]
-#         return my_urls + urls
+
+@admin.register(VendorMargin)
+class VendorMargin(admin.ModelAdmin):
+    def get_queryset(self, request):
+        queryset = self.model.objects.all()
+        return get_vendor_margin_queryset(request=request, queryset=queryset)
+    list_display = ('user','margin',)
+    list_editable = ('margin',)
+    list_display_links = ('user',)
+
+    def get_readonly_fields(self, request, obj=None):
+        if(request.user.is_superuser):
+            return ()
+        else:
+            return ('user','vendor')

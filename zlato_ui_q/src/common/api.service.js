@@ -26,6 +26,7 @@ function apiService (endpoint, method, data) {
   // return fetch(endpoint, config)
   //   .then(handleResponse)
   //   .catch(error => console.log(error))
+  console.log('requesting with token' + LocalStorage.getItem('token'))
   var axios = require('axios')
   var config = {
     method: method || 'GET',

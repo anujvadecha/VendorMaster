@@ -1,16 +1,12 @@
 <template>
-  <div class="row">
-    <div v-for="order in closed" :key="order.order_id">
-      <OrderItem :order="order"></OrderItem>
-    </div>
-  </div>
+  <OrderItemTable :orders="closed"></OrderItemTable>
 </template>
 
 <script>
-import OrderItem from 'components/OrderItem'
+import OrderItemTable from 'components/OrderItemTable'
 export default {
   name: 'ClosedOrders',
-  components: { OrderItem },
+  components: { OrderItemTable },
   props: ['closed']
 }
 </script>

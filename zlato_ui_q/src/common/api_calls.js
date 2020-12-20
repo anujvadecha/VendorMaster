@@ -27,11 +27,17 @@ function cancel_order (order) {
   return apiService(endpoint, 'DELETE', order)
 }
 
+function get_user_margins () {
+  const endpoint = base_url + '/order/api/usermargins'
+  return apiService(endpoint, 'GET', null)
+}
+
 export {
   base_url,
   add_to_favourites,
   remove_from_favourites,
   get_orders,
   place_order,
-  cancel_order
+  cancel_order,
+  get_user_margins
 }

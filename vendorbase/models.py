@@ -39,7 +39,7 @@ class SymbolType(DjangoChoices):
 
 
 class Vendor(BaseModel):
-    user_id = models.ForeignKey(NormalUser, blank=True, on_delete=models.CASCADE,)
+    user_id = models.ForeignKey(NormalUser, blank=True, on_delete=models.CASCADE, )
     vendor_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     enabled = models.BooleanField(default=True)
     name = models.CharField(max_length=500)
@@ -56,23 +56,26 @@ class Vendor(BaseModel):
     promoter_name = models.CharField(max_length=200, blank=True)
     reference_1 = models.CharField(max_length=500, blank=True)
     reference_2 = models.CharField(max_length=500, blank=True)
+    default_margin=models.IntegerField(default=500)
+
     # phone_number=models.CharField(max_length=12,blank=True)
     def __str__(self):
         return self.name.__str__();
 
 
 class VendorDetails(BaseModel):
-    vendor=models.ForeignKey(Vendor,on_delete=models.DO_NOTHING,null=True)
-    contact_details=models.TextField()
-    office_address=models.TextField(blank=True)
-    collection_address=models.TextField(blank=True)
-    mobile_number_1=models.CharField(max_length=13,blank=True)
-    mobile_number_2=models.CharField(max_length=13,blank=True)
-    bank_details=models.TextField(blank=True)
-    gst_details=models.TextField(blank=True)
-    about_us=models.TextField(blank=True)
-    messages=models.TextField(blank=True)
-    delivery_charges=models.TextField(blank=True)
+    vendor = models.ForeignKey(Vendor, on_delete=models.DO_NOTHING, null=True)
+    contact_details = models.TextField(blank=True)
+    office_address = models.TextField(blank=True)
+    collection_address = models.TextField(blank=True)
+    mobile_number_1 = models.CharField(max_length=13, blank=True)
+    mobile_number_2 = models.CharField(max_length=13, blank=True)
+    bank_details = models.TextField(blank=True)
+    gst_details = models.TextField(blank=True)
+    about_us = models.TextField(blank=True)
+    messages = models.TextField(blank=True)
+    delivery_charges = models.TextField(blank=True)
+
 
 class BankDetails(BaseModel):
     vendor = models.ForeignKey(Vendor, on_delete=models.DO_NOTHING)
@@ -120,15 +123,13 @@ class Symbol(BaseModel):
     source_symbol = models.CharField(max_length=200, choices=SourceSymbol)
     buy_premium = models.FloatField()
     sell_premium = models.FloatField()
-
     # def get_bid_price_from_tick(self,tick):
     #     return self.buy_premium+tick["bid"]+GlobalPremium.objects.first().buy_premium
     #
     # def get_sell_price_from_tick(self,tick):
     #     return self.sell_premium + tick["ask"]+GlobalPremium.objects.first().sell_premium
-
     def __str__(self):
-        return str(self.name)+"_"+str(self.vendor_id);
+        return str(self.name) + "_" + str(self.vendor_id);
 
     @classmethod
     def update_cache(cls):
@@ -143,7 +144,17 @@ class Symbol(BaseModel):
             to_store["ask"] = 0
             cache.set(symbol.instrument_id, to_store)
 
-
 class Favourite(models.Model):
     user_id = models.ForeignKey(NormalUser, on_delete=models.DO_NOTHING)
     instrument_id = models.ForeignKey(Symbol, on_delete=models.DO_NOTHING)
+
+class VendorMargin(BaseModel):
+    user = models.ForeignKey(NormalUser, on_delete=models.DO_NOTHING)
+    vendor = models.ForeignKey(Vendor, on_delete=models.DO_NOTHING,)
+    margin = models.IntegerField(default=0)
+    margin_available = models.IntegerField(default=500)
+    def __str__(self):
+        return self.user.__str__();
+    class Meta:
+        verbose_name = 'User margin'
+        verbose_name_plural = 'User margins'

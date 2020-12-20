@@ -3,9 +3,10 @@ from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from orderManagement.api.serializers import OrderSerializer
 from orderManagement.models import Order
+from vendorbase.api.serializers import UserMarginsSerializer
+from vendorbase.models import VendorMargin
 
 
 @api_view(["POST"])
@@ -26,11 +27,11 @@ def getOrderDetails(request):
         return Response(OrderSerializer(orders,many=True).data)
 
 class OrderView(APIView):
-
     permission_classes = [IsAuthenticated]
 
     def get(self,request):
         orders = Order.objects.all()
+        print(request.user)
         return Response(OrderSerializer(orders, many=True).data)
 
     def post(self,request):
@@ -41,7 +42,16 @@ class OrderView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
     def delete(self,request):
         print(request.data)
         Order.objects.filter(order_id=request.data["order_id"]).delete()
         return Response(status=status.HTTP_200_OK)
+
+class UserMarginsView(APIView):
+    def get(self,request):
+        print(request.user)
+        objects = VendorMargin.objects.filter(user=request.user.id)
+        print(objects)
+        return Response(UserMarginsSerializer(objects,many=True).data,status=status.HTTP_200_OK)
+

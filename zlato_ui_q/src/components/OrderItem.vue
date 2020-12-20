@@ -1,9 +1,9 @@
 <template>
-  <div class="q-ma-sm">
-    <q-card square style="min-width: 400px" class="my-card" flat bordered>
+  <div class="">
+    <q-card square style="" class="my-card" flat bordered>
       <q-card-actions align="right" class="">
         <div v-if="order.status==='EXECUTED'">
-          <q-chip outline  color="green" dense >Payment confirmed</q-chip>
+          <q-chip outline size="md" color="green" dense >Payment confirmed</q-chip>
           <q-chip outline color="blue" dense >OTP:{{order.otp}}</q-chip>
         </div>
         <div v-if="order.status==='OPEN'">
@@ -20,8 +20,9 @@
       <q-separator/>
       <div class="row q-ma-sm">
           <div class="col">
-            <span style=" font-weight: bold;color:darkblue;font-size: large">{{order.instrument.vendor}}</span>
-            <span class="font-bold q-ml-xs-sm " style="font-size: large"> {{order.instrument.name}}</span>
+<!--            <span style=" font-weight: bold;color:darkblue;font-size: large">{{order.instrument.vendor}}</span>-->
+        <strong>{{order.instrument.vendor}}</strong>
+            <span class="font-bold q-ml-xs-sm " style=""> {{order.instrument.name}}</span>
           </div>
           <div class="col">
             <div class="text-right align-right">

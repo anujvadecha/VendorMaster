@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="q-ma-md row text-h6" style="">
+    <div class="q-ml-md q-mr-md q-mt-md row text-h6" style="">
       <div class="col">
         <div v-if="title==null">
             Watchlist
@@ -10,11 +10,15 @@
       </div>
       </div>
       <div class="col">
+
       <q-input class="q-ml-lg" outlined dense debounce="300" v-model="filter" placeholder="Search">
             <q-icon name="mdi-magnify" />
         </q-input>
         </div>
     </div>
+    <div class="row q-ml-md">
+          Please click on Bid/Ask to place orders
+      </div>
     <div>
       <q-tabs
         mobile-arrows
@@ -162,6 +166,7 @@ export default {
       },
       filter: '',
       tab: 'All',
+      tabIndex: 0,
       types: ['All', 'Gold 999', 'Gold 999 1kg', 'Gold 995', 'Gold 995 1kg'],
       headers: [
         { name: 'Vendor', align: 'start', field: 'vendor', label: 'Vendor' },
@@ -178,9 +183,14 @@ export default {
     handleSwipe ({ evt, ...info }) {
       if (info.direction === 'right') {
         console.log('right')
+        this.tabIndex -= 1
+        this.tab = this.types[Math.min(this.tabIndex, this.types.length - 1)]
         // TODO WRITE LOGIC HERE
       } else {
         console.log('left')
+        this.tabIndex += 1
+        if (this.tabIndex < 0) { this.tabIndex = 0 }
+        this.tab = this.types[Math.max(this.tabIndex, 0)]
         // TODO WRITE LOGIC HERE
       }
     },

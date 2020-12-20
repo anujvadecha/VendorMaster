@@ -17,7 +17,6 @@ class NormalUser(AbstractUser):
     profile_picture = models.ImageField(blank=True)
     pan_card = models.ImageField(blank=True)
     # is_activated=models.BooleanField(blank=True,default=False)
-    #
     def get_phone_number(self):
         return self.phone_number
 

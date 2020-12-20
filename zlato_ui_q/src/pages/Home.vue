@@ -4,7 +4,6 @@
   <TickerPriceTable title="Ticker prices" :instruments_to_render="instruments_to_render"></TickerPriceTable>
   </div>
 </template>
-
 <script>
 import TopVendors from 'components/home/TopVendors'
 import TickerPriceTable from 'components/TickerPriceTable'

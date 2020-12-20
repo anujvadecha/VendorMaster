@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-card class="q-ma-md" style="height: 100%;">
-      <q-img style="max-height: 200px" src="https://cdn.quasar.dev/img/parallax2.jpg">
+      <q-img style="max-height: 200px" :src="get_vendor_background_image(vendor_object.vendor.theme.background_image)">
         <div class="absolute-bottom">
           <div class="text-h6">{{ vendor_object.vendor.name }}</div>
           <div class="text-subtitle2">{{ vendor_object.vendor.email }}</div>
@@ -53,6 +53,7 @@
 
 <script>
 import TickerPriceTable from 'components/TickerPriceTable'
+import { base_url } from 'src/common/api_calls'
 
 export default {
   name: 'VendorDetails',
@@ -72,6 +73,9 @@ export default {
     }
   },
   methods: {
+    get_vendor_background_image (url) {
+      return base_url.concat(url)
+    }
     // open_order_sheet: function(item) {
     //   this.$store.dispatch("set_sheet", true);
     //   this.selected_item = item;

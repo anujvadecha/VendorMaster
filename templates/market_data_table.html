@@ -9,9 +9,10 @@
     var instruments;
     var globalPremiumBuy=0;
     var globalPremiumSell=0;
+    const user = {{ request.user.id }};
+
     function connect() {
         var instruments;
-
         const url='ws://'
             + window.location.host
             + '/ws/'
@@ -20,10 +21,8 @@
         const tickerSocket = new WebSocket(
             url
         );
-
         tickerSocket.onmessage = function (e) {
             const data = JSON.parse(e.data);
-
             if (data["instruments"]) {
                 instruments=data["instruments"]
                 renderTablesOnInstruments(instruments)
@@ -52,7 +51,8 @@
             console.log("tickerSocket opened");
             tickerSocket.send(JSON.stringify({
                 "type": "ticker_request",
-                'message': "Please send ticks! I beg you my lord"
+                'message': "Please send ticks!",
+                'user':user,
             }));
         }
     }
@@ -70,7 +70,6 @@
             {#"    <th>Low</th>\n" +#}
             "  </tr>";
         instruments.forEach(function(item){
-            console.log(item)
                 const bidprice = item["buy_premium"] + tickpriceBuy + globalPremiumBuy
                 const askprice = item["sell_premium"] + tickpriceSell + globalPremiumSell
                 var row = '<tr>';

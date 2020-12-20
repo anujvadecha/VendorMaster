@@ -142,13 +142,11 @@ class VendorConsumer(WebsocketConsumer):
 
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
+        print(text_data_json)
         type = text_data_json['type']
         if (type == "ticker_request"):
             self.send(json.dumps({
-                'instruments': json.dumps(SymbolSerializer(Symbol.objects.filter(vendor_id__user_id=self.user), many=True).data, cls=UUIDEncoder),
-                'global_premium': GlobalPremiumSerializer(GlobalPremium.objects.all().first()).data,
-                'favourites': json.dumps(
-                    FavouriteSerializer(Favourite.objects.filter(user_id=self.user), many=True).data, cls=UUIDEncoder)
+                'instruments': json.dumps(SymbolSerializer(Symbol.objects.filter(vendor_id__user_id=text_data_json['user']), many=True).data, cls=UUIDEncoder),
             }))
         if (type == "vendor_request"):
             self.send(json.dumps({

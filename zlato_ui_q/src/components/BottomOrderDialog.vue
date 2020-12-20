@@ -26,14 +26,17 @@
         <q-tab-panels swipeable v-model="tab" animated>
           <q-tab-panel name="MARKET">
           <div class="row">
-            <q-input class="" type="number" standout="text-white" v-model="quantity" label="Quantity" />
+            <q-input class="" type="number" standout="text-white" v-model="quantity" label="Quantity"
+            :rules="quantity_rules"
+            />
             <q-input  class="q-ml-lg" type="number" readonly v-model="price" :label="order_item.ask.toString()" />
           </div>
           </q-tab-panel>
           <q-tab-panel name="LIMIT">
             <div class="row">
-            <q-input type="number"  standout="text-white" v-model="quantity" label="Quantity" />
-            <q-input type="number" class="q-ml-lg"  v-model="price" :label="order_item.ask.toString()" />
+            <q-input type="number"  standout="text-white" v-model="quantity" label="Quantity"
+            :rules="quantity_rules"/>
+            <q-input type="number" class="q-ml-md"  v-model="price" :label="order_item.ask.toString()" />
           </div>
           </q-tab-panel>
         </q-tab-panels>
@@ -151,7 +154,11 @@ export default {
       price: '',
       imageSrc: '/logo.png',
       leftDrawerOpen: false,
-      essentialLinks: linksData
+      essentialLinks: linksData,
+      quantity_rules: [
+        val => !!val || '* Required',
+        val => parseInt(val) % 100 === 0 || 'Should be multiple of 100gms'
+      ]
     }
   }
 }

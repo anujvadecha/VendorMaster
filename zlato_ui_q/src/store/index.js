@@ -147,6 +147,12 @@ export default new Vuex.Store({
     },
     get_sheet: state => {
       return state.bottom_sheet
+    },
+    get_vendor_from_id: state => vendor_id => {
+      const vendor = state.vendors.find(
+        vendor => vendor.vendor_id === vendor_id
+      )
+      return vendor
     }
   }
 })

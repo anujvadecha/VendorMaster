@@ -6,7 +6,7 @@ from rest_framework import serializers
 
 from admin_interface.models import Theme
 from userBase.models import NormalUser
-from vendorbase.models import Symbol, GlobalPremium, Vendor, Favourite, VendorDetails
+from vendorbase.models import Symbol, GlobalPremium, Vendor, Favourite, VendorDetails, VendorMargin
 
 
 #NormalUserSerializer
@@ -74,7 +74,6 @@ class SymbolSerializer(serializers.ModelSerializer):
     low = serializers.SerializerMethodField()
     bid = serializers.SerializerMethodField()
     ask = serializers.SerializerMethodField()
-
     def get_high(self,obj):
         if(cache.get(obj.instrument_id)==None):
             return 0
@@ -106,4 +105,8 @@ class GlobalPremiumSerializer(serializers.ModelSerializer):
 class FavouriteSerializer(serializers.ModelSerializer):
     class Meta:
         model=Favourite
+        fields="__all__"
+class UserMarginsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VendorMargin
         fields="__all__"

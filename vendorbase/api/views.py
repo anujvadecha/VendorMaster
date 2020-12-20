@@ -4,8 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from userBase.models import NormalUser
-from vendorbase.api.serializers import NormalUserSerializer, FavouriteSerializer
-from vendorbase.models import Favourite
+from vendorbase.api.serializers import NormalUserSerializer, FavouriteSerializer, UserMarginsSerializer
+from vendorbase.models import Favourite, VendorMargin
 from vendorbase.models import Symbol
 from vendorbase.api.serializers import NormalUserSerializer, SymbolSerializer
 
@@ -39,8 +39,6 @@ class FavouritesView(APIView):
         return Response(FavouriteSerializer(favourites,many=True).data,status=status.HTTP_200_OK)
 
     def post(self,request):
-        print(request.user)
-        print(request.data)
         data = request.data
         # Favourite(user_id=request.user, instrument_id=request.data["instrument_id"]).save()
         favourite = FavouriteSerializer(data={"user_id":request.user.id, "instrument_id": request.data["instrument_id"]})
@@ -53,3 +51,10 @@ class FavouritesView(APIView):
     def delete(self,request):
         Favourite.objects.filter(user_id=request.user, instrument_id=request.data['instrument_id']).delete()
         return Response("Instrument has been deleted from favourites")
+
+class UserMarginView(APIView):
+    # permission_classes = [IsAuthenticated]
+    def get(self,request):
+        print(request.user)
+        objects = VendorMargin.objects.filter(user=request.user.id)
+        return Response(UserMarginsSerializer(objects,many=True).data)

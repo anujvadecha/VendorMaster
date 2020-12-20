@@ -25,7 +25,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 from VendorMaster import settings
 from userBase.forms import CustomUserForm
 from django_registration.backends.one_step.views import RegistrationView
-from vendorbase.api.views import FavouritesView
+from vendorbase.api.views import FavouritesView, UserMarginView
 from vendorbase.models import Symbol
 from vendorbase.views import IndexTemplateView, fallback_404
 
@@ -43,6 +43,7 @@ urlpatterns = [
     path("api/rest-auth/registration",include("rest_auth.registration.urls")),
     path("",IndexTemplateView.as_view(),name="entry-point"),
     path("api/favourites/",FavouritesView.as_view(),name="favourite"),
+    path("api/margins/",UserMarginView.as_view(),name="usermarginview"),
     #url(r'^.*$',fallback_404,name="404 fallback")
     url(r'^api-token-auth/', obtain_jwt_token),
 ]
