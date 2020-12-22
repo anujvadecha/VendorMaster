@@ -1,6 +1,6 @@
 <template>
   <div>
-  <div v-if="waiting.length>0 && confirmed.length>0">
+  <div v-if="waiting.length>0 || confirmed.length>0">
     <div class="">
       <OrderItemTable :orders="confirmed" title="Confirmed"></OrderItemTable>
       <OrderItemTable :orders="waiting" title="Waiting"></OrderItemTable>
@@ -27,6 +27,8 @@ export default {
   props: ['confirmed', 'waiting'],
   components: { OrderItemTable },
   created () {
+    console.log(this.waiting.length)
+    console.log(this.confirmed.length)
   }
 }
 </script>
