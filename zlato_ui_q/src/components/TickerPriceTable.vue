@@ -12,9 +12,9 @@
       <div class="col">
 
       <q-input class="q-ml-lg" outlined dense debounce="300" v-model="filter" placeholder="Search">
-            <q-icon name="mdi-magnify" />
+<!--            <q-icon name="mdi-magnify" />-->
         </q-input>
-        </div>
+      </div>
     </div>
     <div class="row q-ml-md">
           Please click on Bid/Ask to place orders
@@ -25,8 +25,7 @@
         v-model="tab"
         no-caps
         dense
-        style="width: available"
-      >
+        style="width: available">
         <div v-for="type in types" :key="type">
           <q-tab :name="type" :label="type" />
         </div>
@@ -40,12 +39,77 @@
       row-key="instrument_id"
       bordered flat
       v-touch-swipe.mouse="handleSwipe"
-      virtual-scroll
       :pagination="pagination"
     >
     <template v-slot:top>
 
     </template>
+<!--   / <template v-slot:top-row style="">-->
+<!--        <q-tr class="bg-black text-white" >-->
+<!--            <q-td style="" class="vendor_link" @click="open_vendor_dialog(lowest.vendor_id)" v-if="!$q.platform.is.mobile" key="Vendor" >-->
+<!--            {{ lowest.vendor }}-->
+<!--            </q-td>-->
+<!--            <q-td @click="open_vendor_dialog(lowest.vendor_id)" key="Symbol" >-->
+<!--            <div v-if="$q.platform.is.mobile">-->
+<!--              <div class="col">-->
+<!--                <div class="row vendor_link" >-->
+<!--                   <span style="font-size:small"> {{ lowest.vendor }}</span>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--                  <span style="font-size:small">{{lowest.name}}</span>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div v-else>-->
+<!--              {{ lowest.name }}-->
+<!--            </div>-->
+<!--          </q-td>-->
+<!--          <q-td @click="open_order_sheet(lowest)" key="Bid" >-->
+<!--            <div v-if="$q.platform.is.mobile">-->
+<!--              <div class="col">-->
+<!--                <div class="row">-->
+<!--                   <span style="font-size:large"> {{ lowest.bid }}</span>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--                  <span style="font-size:small">L:{{lowest.low}}</span>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div v-else>-->
+<!--              {{ lowest.bid }}-->
+<!--            </div>-->
+<!--          </q-td>-->
+<!--          <q-td @click="open_order_sheet(lowest)" key="Ask" >-->
+<!--            <div v-if="$q.platform.is.mobile">-->
+<!--              <div class="col">-->
+<!--                <div class="row">-->
+<!--                   <span style="font-size:large"> {{ lowest.ask }}</span>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--                  <span style="font-size:small">H:{{lowest.high}}</span>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div v-else>-->
+<!--              {{ lowest.ask }}-->
+<!--              </div>-->
+<!--          </q-td>-->
+<!--          <q-td v-if="!$q.platform.is.mobile" key="High" >-->
+<!--              {{ lowest.high }}-->
+<!--          </q-td>-->
+<!--          <q-td v-if="!$q.platform.is.mobile" key="Low" >-->
+<!--              {{ lowest.low }}-->
+<!--          </q-td>-->
+<!--          <q-td @click ="toggleFavourite(lowest)" key='favourite' >-->
+<!--            <div v-if="lowest.is_favourite">-->
+<!--              <q-icon size="sm" name="mdi-star"/>-->
+<!--            </div>-->
+<!--            <div v-else>-->
+<!--              <q-icon size="sm" name="mdi-star-outline"/>-->
+<!--            </div>-->
+<!--          </q-td>-->
+<!--        </q-tr>-->
+<!--    </template>-->
       <template v-slot:header="props">
         <q-tr class="text-left"  :props="props">
           <q-th  v-if="!$q.platform.is.mobile">
@@ -72,6 +136,7 @@
           </q-th>
         </q-tr>
       </template>
+<!---->
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td class="vendor_link" @click="open_vendor_dialog(props.row.vendor_id)" v-if="!$q.platform.is.mobile" key="Vendor" :props="props">
@@ -144,6 +209,7 @@
 
 <script>
 import { add_to_favourites, remove_from_favourites } from 'src/common/api_calls'
+import { Notify } from 'quasar'
 
 export default {
   name: 'TickerPriceTable',
@@ -157,6 +223,9 @@ export default {
       return this.instruments_to_render.filter(instrument => {
         return instrument.type === type
       })
+    },
+    lowest: function () {
+      return this.instruments_to_render.filter(e => e.ask === Math.min(...this.instruments_to_render.map(f => f.ask)))[0]
     }
   },
   data () {
@@ -200,9 +269,17 @@ export default {
       if (item.is_favourite === false) {
         remove_from_favourites(item.instrument_id).then(res => {
           console.log(res)
+          Notify.create({
+            message: 'Removed from favourites ',
+            position: 'top-right'
+          })
         })
       } else {
         add_to_favourites(item).then(res => {
+          Notify.create({
+            message: 'Added to favourites ',
+            position: 'top-right'
+          })
         })
       }
     },

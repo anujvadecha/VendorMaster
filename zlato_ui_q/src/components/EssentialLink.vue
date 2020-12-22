@@ -6,17 +6,14 @@
     tag="a"
     target="_blank"
   >
-    <q-item-section
-      v-if="icon"
-      avatar
-    >
+    <q-item-section v-if="icon" avatar>
     <q-icon class="text-primary" :name="icon" />
     </q-item-section>
     <q-item-section class="text-primary" >
       {{ title }}
     </q-item-section>
   </q-item>
-    </router-link>
+  </router-link>
 </template>
 
 <script>

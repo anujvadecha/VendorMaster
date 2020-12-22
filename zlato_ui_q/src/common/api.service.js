@@ -3,9 +3,9 @@ import { LocalStorage } from 'quasar'
 
 function handleResponse (response) {
   if (response.status === 204) {
-    return ''
+    return response
   } else if (response.status === 404) {
-    return null
+    return response
   } else {
     return response.data
   }

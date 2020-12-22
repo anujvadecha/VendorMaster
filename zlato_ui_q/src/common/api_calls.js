@@ -6,6 +6,11 @@ function add_to_favourites (instrument_id) {
   return apiService(endpoint, 'POST', instrument_id)
 }
 
+function support_request (data) {
+  const endpoint = base_url + '/api/support/'
+  return apiService(endpoint, 'POST', data)
+}
+
 function remove_from_favourites (instrument_id) {
   const endpoint = base_url + '/api/favourites/'
   var instrument = { instrument_id: instrument_id }
@@ -39,5 +44,6 @@ export {
   get_orders,
   place_order,
   cancel_order,
-  get_user_margins
+  get_user_margins,
+  support_request
 }

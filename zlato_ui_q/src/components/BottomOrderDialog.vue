@@ -119,18 +119,19 @@ export default {
           spinner: true,
           group: false,
           message: 'Please wait...',
-          timeout: 2000,
+          timeout: 10000,
           position: 'top-right',
           color: 'primary'
         })
-        if (res.order_id) {
+        if (res.order_id !== undefined) {
           notif({
             spinner: false,
             html: true,
             message: '<h6> Order has been placed </h6>',
             caption: 'Please check orders for details',
             position: 'top-right',
-            color: 'positive'
+            color: 'positive',
+            timeout: 2000
           })
         } else {
           notif({
@@ -142,7 +143,6 @@ export default {
             color: 'negative',
             timeout: 10000
           })
-          // TODO DO SOMETHING BITCHES WE GOT BUSINESS
         }
       })
     }

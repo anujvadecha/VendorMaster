@@ -1,7 +1,10 @@
 <template>
   <div class="">
     <q-card square style="" class="my-card" flat bordered>
-      <q-card-actions align="right" class="">
+      <q-card-actions align="right">
+         <div class="justify-start">
+           <q-chip outline color="black" dense >Order : {{order.transaction_id}}</q-chip>
+        </div>
         <div v-if="order.status==='EXECUTED'">
           <q-chip outline size="md" color="green" dense >Payment confirmed</q-chip>
           <q-chip outline color="blue" dense >OTP:{{order.otp}}</q-chip>
@@ -17,6 +20,7 @@
           <q-chip outline  color="green" dense >Closed</q-chip>
         </div>
         </q-card-actions>
+
       <q-separator/>
       <div class="row q-ma-sm">
           <div class="col">

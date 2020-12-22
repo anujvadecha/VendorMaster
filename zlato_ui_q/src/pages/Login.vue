@@ -1,22 +1,18 @@
 <template>
 <div>
-<div
-    class="window-height window-width row justify-center items-center"
-       style="">
+<div class="window-height window-width row justify-center items-center" style="">
     <div class="column q-pa-lg">
-      <div class="row">
-        <q-card square class="shadow-24" style="width:300px;height:485px;">
-          <q-card-section style="background-color: lightgrey">
+          <q-card-section style="">
+            <div class="row">
             <q-img
             :src="imageSrc"
             transition="scale-transition"
-            width="40px"
+            width="50px"
             />
-<!--            <h4 class="text-h5 text-white  q-my-md">Zlato</h4>-->
-            <div class="absolute-bottom-right q-pr-md" style="transform: translateY(50%);">
-              <q-btn fab icon="add" color="primary" />
+             <strong class="text-h6 q-ml-md q-my-md">Zlato</strong>
             </div>
           </q-card-section>
+          <q-separator color="orange" size="5px"></q-separator>
           <q-card-section>
             <q-form class="q-px-sm q-pt-xl">
               <q-input square clearable v-model="email" type="email" label="Email">
@@ -37,14 +33,15 @@
           <q-card-section class="text-center q-pa-sm">
             <p class="text-grey-6"> Forgot your password? </p>
           </q-card-section>
-        </q-card>
-      </div>
+
     </div>
     </div>
 </div>
 </template>
 
 <script>
+import { Notify } from 'quasar'
+
 export default {
   name: 'Login',
   data () {
@@ -135,6 +132,8 @@ export default {
     connect_jwt: function () {
       const store = this.$store
       const router = this.$router
+      // router.push('Home')
+      console.log(store)
       var axios = require('axios')
       var data = { username: this.email, password: this.password }
       var config = {
@@ -145,7 +144,6 @@ export default {
         },
         data: data
       }
-      // const connect = this.connect_websocket
       const quasar_q = this.$q
       axios(config)
         .then(function (response) {
@@ -154,11 +152,14 @@ export default {
           console.log('before checking' + quasar_q.localStorage.getItem('token'))
           quasar_q.localStorage.set('token', response.data.key)
           console.log('pushing to home')
-          router.push('/')
-          // connect()
-        })
-        .catch(function (error) {
+          router.push('Home')
+        }).catch(function (error) {
           console.log(error)
+          Notify.create({
+            message: error.toString(),
+            position: 'top',
+            timeout: 5000
+          })
         })
     }
   }

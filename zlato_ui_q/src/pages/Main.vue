@@ -20,7 +20,7 @@
         <div>
         <span class="color:grey mobile-hide">
         <q-btn flat >
-          <router-link class="text-primary" to="" style="text-decoration: None;">
+          <router-link class="text-primary" to="Home" style="text-decoration: None;">
           <q-icon class="lt-md" size="md" name="mdi-home" ></q-icon>
          </router-link>
         </q-btn>
@@ -37,26 +37,6 @@
           <router-link class="text-primary" to="Account" style="text-decoration: None;">
           <q-icon class="lt-md"  size="md" name="mdi-account"></q-icon>
         </router-link></q-btn>
-        <q-btn-dropdown
-          flat
-          class="lt-md text-primary"
-          label="Account">
-          <div class="q-pa-md">
-            <div class="justify-center full-height full-width text-center">
-              <q-avatar size="72px">
-                <img src="https://cdn.quasar.dev/img/boy-avatar.png">
-              </q-avatar>
-              <div class="text-subtitle1 q-mt-md q-mb-xs">John Doe</div>
-              <q-btn
-                @click="logout()"
-                color="primary"
-                label="Logout"
-                size="sm"
-                v-close-popup
-              />
-            </div>
-          </div>
-        </q-btn-dropdown>
           </span>
         </div>
       </q-toolbar>
@@ -74,12 +54,7 @@
       </q-toolbar>
     </q-header>
 <!--    <span class="mobile-only ">-->
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      content-class="bg-grey-1"
-    >
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-1">
       <q-img class="absolute-top" src="https://images.livemint.com/img/2020/05/02/600x338/73342ce6-87d6-11ea-9881-602785b14c14_1587970192680_1588398410207.jpg" style="height: 150px;">
           <div class="absolute-bottom bg-transparent">
             <q-avatar size="56px" class="q-mb-sm">
@@ -102,6 +77,17 @@
           :key="link.title"
           v-bind="link"
         />
+<!--      <q-tree-->
+<!--          :nodes="account_actions"-->
+<!--          node-key="label"-->
+<!--          default-expand-all>-->
+<!--          <template v-slot:default-header="prop">-->
+<!--            <div class="row items-center">-->
+<!--              <q-icon :name="prop.node.icon || 'share'" color="orange" size="28px" class="q-mr-sm" />-->
+<!--              <div class="text-weight-bold text-primary">{{ prop.node.label }}</div>-->
+<!--            </div>-->
+<!--          </template>-->
+<!--      </q-tree>-->
       </q-list>
       </q-scroll-area>
     </q-drawer>
@@ -118,33 +104,63 @@ import BottomOrderDialog from 'components/BottomOrderDialog'
 // import MainLayout from 'layouts/MainLayout'
 
 import EssentialLink from 'components/EssentialLink.vue'
+import { Notify } from 'quasar'
 const linksData = [
   {
     title: 'Home',
-    caption: 'HomePage',
     icon: 'mdi-home',
     link: 'https://quasar.dev'
   },
   {
     title: 'Orders',
-    caption: 'See your orders',
     icon: 'mdi-bag-checked',
     link: 'https://github.com/quasarframework'
   },
   {
     title: 'Favourites',
-    caption: 'See your favourites and compare',
     icon: 'mdi-heart',
     link: 'https://chat.quasar.dev'
   },
   {
     title: 'Account',
-    caption: 'Settings for your account',
     icon: 'mdi-account',
     link: 'https://forum.quasar.dev'
   }
+  // {
+  //   title: 'Margins',
+  //   icon: 'mdi-account',
+  //   link: 'https://forum.quasar.dev'
+  // }
 ]
 
+const account_details_tree = [
+  {
+    label: 'Account details',
+    header: 'root',
+    icon: 'mdi-account',
+    children: [
+      {
+        title: 'Margin',
+        link: 'https://forum.quasar.dev',
+        label: 'Good food',
+        icon: 'mdi-account',
+        header: 'generic'
+      }
+    ]
+  }
+]
+// const account_actions_list = [
+//   {
+//     title: 'Margin',
+//     icon: 'mdi-account',
+//     link: 'https://forum.quasar.dev'
+//   },
+//   {
+//     title: 'Logout',
+//     icon: 'mdi-account',
+//     link: 'https://forum.quasar.dev'
+//   }
+// ]
 // import { base_url } from 'common/api_calls'
 export default {
   name: 'Main',
@@ -165,6 +181,9 @@ export default {
         console.log('returning true')
         return true
       }
+    },
+    currentRouteName: function () {
+      return this.$router.name
     }
   },
   methods: {
@@ -174,10 +193,16 @@ export default {
     },
     connect_websocket: function () {
       const store = this.$store
+      const router = this.$router
       document.cookie = 'authorization=' + this.$q.localStorage.getItem('token') + ';'
       const url = 'ws://' + '127.0.0.1:8000' + '/ws/' + 'ticker' + '/' + '?' + this.$q.localStorage.getItem('token')
       const symbolsocket = new WebSocket(url)
       symbolsocket.onopen = function () {
+        Notify.create({
+          message: 'Connected to high speed market data ',
+          position: 'top-right',
+          timeout: 1000
+        })
         symbolsocket.send(
           JSON.stringify({
             type: 'ticker_request',
@@ -235,13 +260,17 @@ export default {
           store.dispatch('push_vendors', vendors)
         }
         if (message.order_update) {
-          console.log(message)
+          const order = JSON.parse(message.order_update)
+          Notify.create({
+            message: 'order update recieved ' + order.status,
+            position: 'top-right'
+          })
         }
       }
       symbolsocket.onclose = function (event) {
         console.log(event)
         setTimeout(function () {
-          this.connect_jwt()
+          router.push('Login')
         }, 2000)
       }
     },
@@ -281,17 +310,18 @@ export default {
       password: ',',
       essentialLinks: linksData,
       imageSrc: '/logo.png',
-      leftDrawerOpen: false
+      leftDrawerOpen: false,
+      account_actions: account_details_tree
     }
   },
   created () {
-    this.connect_websocket()
-  //    this.$q.localStorage.set('token', '')
-  //     if (this.logged_in) {
-  //       console.log('logged in')
-  //     } else {
-  //       this.$router.push('Login')
-  //     }
+    console.log('created')
+    if (this.logged_in) {
+      this.connect_websocket()
+      this.$router.push('Home')
+    } else {
+      this.$router.push('Login')
+    }
   }
 
 }
