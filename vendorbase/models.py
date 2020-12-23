@@ -112,7 +112,7 @@ class SourceSymbol(DjangoChoices):
 
 
 class Symbol(BaseModel):
-    instrument_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    instrument_id = models.UUIDField(primary_key=True, default=uuid.uuid4,editable=False)
     vendor_id = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     enabled = models.BooleanField(default=True)
     type = models.CharField(max_length=200, choices=SymbolType.choices, default=SymbolType.gold_999)

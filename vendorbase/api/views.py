@@ -4,7 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from userBase.models import NormalUser
-from vendorbase.api.serializers import NormalUserSerializer, FavouriteSerializer, UserMarginsSerializer
+from vendorbase.api.serializers import NormalUserSerializer, FavouriteSerializer, UserMarginsSerializer, \
+    SupportSerializer
 from vendorbase.models import Favourite, VendorMargin
 from vendorbase.models import Symbol
 from vendorbase.api.serializers import NormalUserSerializer, SymbolSerializer
@@ -52,9 +53,14 @@ class FavouritesView(APIView):
         Favourite.objects.filter(user_id=request.user, instrument_id=request.data['instrument_id']).delete()
         return Response("Instrument has been deleted from favourites")
 
-class UserMarginView(APIView):
-    # permission_classes = [IsAuthenticated]
-    def get(self,request):
-        print(request.user)
-        objects = VendorMargin.objects.filter(user=request.user.id)
-        return Response(UserMarginsSerializer(objects,many=True).data)
+class SupportView(APIView):
+    permission_classes=[IsAuthenticated]
+    def post(self,request):
+        request.data['user_id']=request.user.id
+        support = SupportSerializer(data=request.data)
+        if(support.is_valid()):
+            support.save()
+            return Response("success",status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+

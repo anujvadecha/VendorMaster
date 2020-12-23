@@ -1,7 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
 // import { version } from "vuex/dist/vuex";
-
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -12,7 +11,6 @@ export default new Vuex.Store({
     snackbar_message: "",
     snackbar: false
   },
-
   mutations: {
     push_instruments(state, instruments) {
       state.instruments = instruments;
@@ -34,13 +32,12 @@ export default new Vuex.Store({
         return instrument;
       });
     },
-
     set_sheet(state, boolean) {
       state.bottom_sheet = boolean;
     },
     update_instrument(state, instrument) {
       for (var i = 0; i < state.instruments.length; i++) {
-        if (state.instruments[i].instrument_id == instrument.instrument_id) {
+        if (state.instruments[i].instrument_id === instrument.instrument_id) {
           state.instruments[i] = instrument;
           console.log("updating instrument");
         }
@@ -56,9 +53,6 @@ export default new Vuex.Store({
   },
   actions: {
     push_instruments({ commit }, instruments) {
-      // instruments = instruments.map(function(instrument) {
-      //   return instrument;
-      // });
       commit("push_instruments", instruments);
     },
     update_prices({ commit }, tick) {
@@ -96,15 +90,12 @@ export default new Vuex.Store({
       vendor_object.instruments = state.instruments.filter(
         instrument => instrument.vendor_id === vendor_id
       );
-      console.log(vendor_id);
-      console.log(state.vendors);
       vendor_object.vendor = state.vendors.find(
         vendor => vendor.vendor_id === vendor_id
       );
       return vendor_object;
     },
     get_favourite_instruments: state => {
-      //TODO
       console.log(state);
     },
     get_sheet: state => {

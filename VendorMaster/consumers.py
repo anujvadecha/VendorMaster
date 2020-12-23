@@ -11,6 +11,8 @@ from userBase.models import NormalUser
 from vendorbase.api.serializers import SymbolSerializer, GlobalPremiumSerializer, VendorSerializer, FavouriteSerializer
 from vendorbase.models import Symbol, GlobalPremium, Vendor, Favourite
 import time
+import logging
+logger=logging.getLogger(__name__)
 
 class UUIDEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -23,6 +25,7 @@ class TickConsumer(WebsocketConsumer):
     room_group_name=settings.SOCKET_GROUP
 
     def connect(self):
+        logger.info(f"{self.scope['user']} connected")
         self.user=self.scope["user"]
         print(self.user)
         async_to_sync(self.channel_layer.group_add)(

@@ -13,6 +13,8 @@ import pathlib
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from VendorMaster.logging_config import get_config
+
 BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -179,21 +181,24 @@ SITE_ID=1
 ACCOUNT_EMAIL_VERIFICATION="none"
 ACCOUNT_EMAIL_REQUIRED="true"
 ASGI_APPLICATION = 'VendorMaster.asgi.application'
-# CHANNEL_LAYERS = {
-#     'default': {
-#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-#         'CONFIG': {
-#             "hosts": [('127.0.0.1', 6379)],
-#         },
-#     },
-# }
-
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
-    }
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
 }
+import os
 
+
+LOGGING = get_config(env('LOG_DIR', default=BASE_DIR))
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels.layers.InMemoryChannelLayer"
+#     }
+# }
 # BROKER_URL = 'redis://localhost:6379'
 # CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']

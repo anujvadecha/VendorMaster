@@ -5,7 +5,7 @@ from django.core.cache import cache
 from rest_framework import serializers
 
 from admin_interface.models import Theme
-from userBase.models import NormalUser
+from userBase.models import NormalUser, Support
 from vendorbase.models import Symbol, GlobalPremium, Vendor, Favourite, VendorDetails, VendorMargin
 
 
@@ -109,4 +109,8 @@ class FavouriteSerializer(serializers.ModelSerializer):
 class UserMarginsSerializer(serializers.ModelSerializer):
     class Meta:
         model = VendorMargin
+        fields="__all__"
+class SupportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Support
         fields="__all__"

@@ -18,6 +18,7 @@ class OrderSerializer(serializers.ModelSerializer):
         fields=[
         "order_id",
         "instrument_id",
+        'transaction_id',
         "quantity",
         "user_id",
         "price",

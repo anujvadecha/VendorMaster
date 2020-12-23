@@ -8,7 +8,7 @@
             placeholder="Quantity"
             label="Quantity in gms"
             type="number"
-            class="ml-2 "
+            class="ml-2"
             outlined
           ></v-text-field>
         </v-col>

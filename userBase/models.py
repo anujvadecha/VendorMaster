@@ -16,7 +16,13 @@ class NormalUser(AbstractUser):
     phone_number = models.CharField(blank=True, max_length=14)
     profile_picture = models.ImageField(blank=True)
     pan_card = models.ImageField(blank=True)
+
     # is_activated=models.BooleanField(blank=True,default=False)
     def get_phone_number(self):
         return self.phone_number
 
+
+class Support(BaseModel):
+    user_id = models.ForeignKey(NormalUser,on_delete=models.DO_NOTHING, null=True)
+    username = models.CharField(max_length=200,null=True,blank=True)
+    message = models.TextField(null=True,blank=True)

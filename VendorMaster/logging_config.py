@@ -1,7 +1,6 @@
 import os
 from django.conf import settings
 
-
 def get_config(log_dir):
     return {
         'version': 1,
@@ -39,30 +38,30 @@ def get_config(log_dir):
                 'maxBytes': 16777216,  # 16megabytes
                 'formatter': 'verbose'
             },
-            'logstash': {
-                # debug info like line numbers are not logged unless it is an error message
-                'level': 'INFO',
-                'class': 'logstash.TCPLogstashHandler',
-                'host': settings.LOGSTASH_HOST,
-                'port': settings.LOGSTASH_PORT,
-                'version': 1,
-                'message_type': 'payments',
-                'fqdn': False,
-            },
+            # 'logstash': {
+            #     # debug info like line numbers are not logged unless it is an error message
+            #     'level': 'INFO',
+            #     'class': 'logstash.TCPLogstashHandler',
+            #     'host': settings.LOGSTASH_HOST,
+            #     'port': settings.LOGSTASH_PORT,
+            #     'version': 1,
+            #     'message_type': 'payments',
+            #     'fqdn': False,
+            # },
         },
         'loggers': {
             'django': {
-                'handlers': ['django_log_file', 'logstash'],
+                'handlers': ['django_log_file'],
                 'level': 'DEBUG',
                 'propagate': False,
             },
             'django.request': {
-                'handlers': ['django_log_file', 'logstash'],
+                'handlers': ['django_log_file'],
                 'level': 'DEBUG',
                 'propagate': False,
             },
             '': {
-                'handlers': ['console', 'apps_log_file', 'logstash'],
+                'handlers': ['console', 'apps_log_file'],
                 'level': 'DEBUG',
                 'propagate': False,
             },

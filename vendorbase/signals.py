@@ -50,8 +50,11 @@ def create_vendor_info_objects(sender, instance, created, **kwargs):
     if created:
         VendorDetails.objects.create(vendor=instance)
         Theme.objects.create(vendor=instance,name=instance.name,title=instance.name)
-    #if created:
-    #   NormalUser.objects.create(user=instance)
+        for user in NormalUser.objects.all():
+            VendorMargin.objects.create(
+                user=user, vendor=instance,
+                margin=instance.default_margin, margin_available=instance.default_margin
+            )
 
 @receiver(post_save,sender=NormalUser)
 def user_created_updated(sender, instance, created, **kwargs):

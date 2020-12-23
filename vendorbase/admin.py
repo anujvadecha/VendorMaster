@@ -74,7 +74,7 @@ def get_vendor_margin_queryset(request=None,queryset=None):
 class LimitOrderPendingAdmin(admin.ModelAdmin,OrderAdminBase):
     def get_queryset(self, request):
         return get_vendor_order_queryset(request=request,queryset=self.model.objects.filter(status=OrderStatus.WAITING_FOR_LIMIT))
-    list_display = ('instrument_id', 'side', 'quantity', 'status', 'created_at')
+    list_display = ('instrument_id','transaction_id', 'side', 'quantity', 'status', 'created_at')
     list_display_links = ('instrument_id',)
     list_editable = ('status',)
     list_filter = ('status',)
@@ -110,11 +110,11 @@ class OpenOrderAdmin(admin.ModelAdmin,OrderAdminBase):
             return format_html('<a class ="button" href="{}">{}</a>'.format(f"{obj.order_id}/confirm_payment","Confirm Payment"))
     def get_queryset(self, request):
         return get_vendor_order_queryset(request=request,queryset=self.model.objects.filter(status=OrderStatus.OPEN))
-    list_display = ('instrument_id' ,'side','quantity','created_at','approve_payment')
+    list_display = ('instrument_id' ,'transaction_id','side','quantity','created_at','approve_payment')
     list_display_links = ('instrument_id',)
     list_filter = ('instrument_id__name',)
     list_per_page = 10
-    search_fields = ('order_id', 'instrument_id__name', 'user_id__name')
+    search_fields = ('order_id','transaction_id', 'instrument_id__name', 'user_id__name')
 
 
 @admin.register(ExecutedOrder)
@@ -143,9 +143,9 @@ class ExecutedOrderAdmin(admin.ModelAdmin,OrderAdminBase):
     def get_queryset(self, request):
         return get_vendor_order_queryset(request=request,queryset=self.model.objects.filter(status=OrderStatus.EXECUTED))
     # list_display = ('instrument_id', 'user_id_url','side', 'quantity','status','created_at')
-    list_display = ('instrument_id','side', 'quantity','status','otp','created_at')
+    list_display = ('instrument_id','transaction_id','side', 'quantity','status','otp','created_at')
     list_per_page = 10
-    search_fields = ('order_id', 'instrument_id__name', 'user_id__username')
+    search_fields = ('order_id','transaction_id', 'instrument_id__name', 'user_id__username')
 
     def otp(self,obj):
         return render_to_string('otp_form_item.html', {'order_id':obj.order_id}) #format_html('<input type="text" id="otp" style="width:40px" /> <a class ="button" href="document.getElementById("otp").value;/{}">OK</a></a>'.format(f"{obj.order_id}/verify_otp"))
@@ -164,11 +164,11 @@ class ClosedOrderAdmin(admin.ModelAdmin,OrderAdminBase):
         queryset = self.model.objects.filter(status=OrderStatus.CLOSED)
         return get_vendor_order_queryset(request=request,queryset=queryset)
            # list_display = ('instrument_id', 'user_id_url','side', 'quantity','status','created_at')
-    list_display = ('instrument_id','side', 'quantity','status','created_at')
+    list_display = ('instrument_id','transaction_id','side', 'quantity','status','created_at')
     list_display_links = ('instrument_id',)
     list_filter = ('status',)
     list_per_page = 10
-    search_fields = ('order_id', 'instrument_id__name', 'user_id__name')
+    search_fields = ('order_id','transaction_id', 'instrument_id__name', 'user_id__name')
 
 
 @admin.register(Group)
