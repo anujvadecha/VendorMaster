@@ -1,5 +1,6 @@
 <template>
 <div>
+  <q-pull-to-refresh :handler="refresher">
   <div class="">
     <div class="q-gutter-y-md" style="">
       <q-card flat >
@@ -27,9 +28,11 @@
             <ClosedOrders :closed="closed_orders"></ClosedOrders>
           </q-tab-panel>
         </q-tab-panels>
+
       </q-card>
-</div>
+    </div>
   </div>
+  </q-pull-to-refresh>
 </div>
 </template>
 
@@ -49,6 +52,15 @@ export default {
       executed_orders_confirmed: [],
       executed_orders_waiting: [],
       closed_orders: []
+    }
+  },
+  methods: {
+    refresher (done) {
+      setTimeout(() => {
+        // this.$forceUpdate()
+        console.log('hello')
+        done()
+      }, 1000)
     }
   },
   created () {

@@ -66,8 +66,11 @@
         Reset Password
       </q-card-section>
        <q-card-section style="background-color: white" >
+         <q-input v-model="old_password"  label="Re-type current password" />
+         <q-input v-model="new_password1"  label="Enter New Password" />
+         <q-input v-model="new_password2"  label="Re-enter new password" />
       <q-btn class="q-ml-md btn-danger" @click="reset=false">Close</q-btn>
-      <q-btn class="q-ml-md btn-primary" color="primary" @click="reset=false">Confirm</q-btn>
+      <q-btn class="q-ml-md btn-primary" color="primary" @click="changePassword">Confirm</q-btn>
     </q-card-section>
     </q-card>
   </q-dialog>
@@ -110,16 +113,43 @@ export default {
           position: 'top-right'
         })
       })
+    },
+    changePassword () {
+      const axios = require('axios')
+      const data = { old_password: this.old_password, new_password1: this.new_password1, new_password2: this.new_password2 }
+      const config = {
+        method: 'post',
+        url: 'http://127.0.0.1:8000/api/rest-auth/password/change/',
+        headers: {
+          Authorization: `Token ${this.$q.localStorage.getItem('token')}`
+        },
+        data: data
+      }
+      axios(config)
+        .then((res) => {
+          console.log(res.data.message)
+          Notify.create({
+            message: 'Password has been reset!',
+            position: 'top-right',
+            timeout: 1000
+          })
+        })
+        .catch(function (err) {
+          console.log(err)
+        })
     }
   },
   data: function () {
     return {
       reset: false,
-      support: false
+      support: false,
+      old_password: '',
+      new_password: '',
+      confirm_new_password: ''
     }
   },
   created () {
-
+    console.log(this.$q.localStorage.getItem('token'))
   }
 }
 </script>
