@@ -3,7 +3,7 @@
   <div class="q-pa-md">
     <div class="row">
       <div class="col col-sm-6 col-md-6 col-xs-12">
-        <q-card class=" q-ma-md" bordered @click="$router.push('Margins')">
+        <q-card class="bg-light-blue-3 q-ma-md" bordered @click="$router.push('Margins')">
           <q-card-section class="text-center">
           <strong>  Account margins</strong>
           </q-card-section>
@@ -14,7 +14,7 @@
         </q-card>
       </div>
       <div class="col col-sm-6 col-md-6 col-xs-12">
-        <q-card class=" q-ma-md" bordered @click="support_request_method()">
+        <q-card class="bg-light-blue-3 q-ma-md" bordered @click="support_request_method()">
           <q-card-section class="text-center">
           <strong>Support</strong>
           </q-card-section>
