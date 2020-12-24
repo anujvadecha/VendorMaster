@@ -84,6 +84,10 @@ export default {
           })
         })
         .then(() => {
+          console.log('Timestamp : ')
+          console.log(this.orders)
+        })
+        .then(() => {
           this.active_orders = this.orders.filter(order => {
             return order.status === 'WAITING_FOR_LIMIT'
           })

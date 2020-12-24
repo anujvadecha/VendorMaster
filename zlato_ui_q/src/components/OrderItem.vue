@@ -23,8 +23,14 @@
 
       <q-separator/>
       <div class="row q-ma-sm">
+        <div class="col">
+          <p><strong>Time Ordered :</strong>{{order.created_at}}</p>
+        </div>
+      </div>
+      <div class="row q-ma-sm">
           <div class="col">
 <!--            <span style=" font-weight: bold;color:darkblue;font-size: large">{{order.instrument.vendor}}</span>-->
+
         <strong>{{order.instrument.vendor}}</strong>
             <span class="font-bold q-ml-xs-sm " style=""> {{order.instrument.name}}</span>
           </div>

@@ -134,15 +134,20 @@ export default {
       }
       axios(config)
         .then((res) => {
-          console.log(res.data.message)
+          console.log(res)
           Notify.create({
-            message: 'Password has been reset!',
+            message: 'New password has been set!',
             position: 'top-right',
             timeout: 1000
           })
         })
         .catch(function (err) {
           console.log(err)
+          Notify.create({
+            message: 'The new password has to match and have a minimum length of 8 characters',
+            position: 'top-right',
+            timeout: 1000
+          })
         })
     }
   },
