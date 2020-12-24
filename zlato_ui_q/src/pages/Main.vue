@@ -5,12 +5,12 @@
       <q-toolbar style="" class="shadow-2">
         <q-btn class="mobile-only" flat dense round icon="menu" aria-label="Menu" @click="leftDrawerOpen = !leftDrawerOpen"/>
         <q-toolbar-title class="font-bold">
-          <span v-if="currentRouteName==='Home'||''||'/'">
-            <q-img
+          <q-img
             :src="imageSrc"
             transition="scale-transition"
             width="40px"
             />
+          <span v-if="currentRouteName==='Home'||''||'/'">
             <span class="font-bold text-h6">Zlato</span>
           </span>
           <span v-else>
@@ -105,6 +105,7 @@ import BottomOrderDialog from 'components/BottomOrderDialog'
 
 import EssentialLink from 'components/EssentialLink.vue'
 import { Notify } from 'quasar'
+import { get_user_details } from 'src/common/api_calls'
 const linksData = [
   {
     title: 'Home',
@@ -166,14 +167,11 @@ export default {
   name: 'Main',
   components: { EssentialLink, BottomOrderDialog },
   computed: {
-    state_get: function () {
-      console.log(this.$store.state)
-      return ''
+    is_activated: function () {
+      return !this.$store.getters.get_is_activated
     },
     logged_in: function () {
-      console.log('logged in is' + this.$q.localStorage.getItem('token'))
       const token = this.$q.localStorage.getItem('token')
-      console.log(token)
       if (token === '' || token === null || token === 'null') {
         console.log('returning false')
         return false
@@ -183,7 +181,7 @@ export default {
       }
     },
     currentRouteName: function () {
-      return this.$router.name
+      return this.$route.name
     }
   },
   methods: {
@@ -302,6 +300,9 @@ export default {
         .catch(function (error) {
           console.log(error)
         })
+    },
+    get_user_details () {
+
     }
   },
   data () {
@@ -318,6 +319,15 @@ export default {
     console.log('created')
     if (this.logged_in) {
       this.connect_websocket()
+      const store = this.$store
+      get_user_details().then(
+        res => {
+          console.log(res)
+          store.state.is_activated = res.is_activated
+          store.state.requested_registration = res.requested_registration
+          // store.dispatch('setactivated', res.is_activated)
+        }
+      )
       this.$router.push('Home')
     } else {
       this.$router.push('Login')

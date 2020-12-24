@@ -6,6 +6,16 @@
 <!--        >-->
 <!--          Links-->
 <!--        </q-item-label>-->
+  <div class="">
+  <q-card square v-if="!$store.state.is_activated" class="" >
+    <div class="q-pa-sm bg-primary">
+      <div class="text-white" style="font-weight: bold">
+      <div v-if="$store.state.requested_registration">We will register this account as soon as possible</div>
+      <div v-else><q-btn  @click="$router.push('Registration')" class="text-black bg-white">Activate</q-btn> &nbsp; your account to place orders</div>
+      </div>
+    </div>
+  </q-card>
+  </div>
   <TopVendors class="mobile-hide"  :vendors="vendors_computed"></TopVendors>
   <TickerPriceTable title="Ticker prices" :instruments_to_render="instruments_to_render"></TickerPriceTable>
   </div>

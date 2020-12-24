@@ -37,6 +37,11 @@ function get_user_margins () {
   return apiService(endpoint, 'GET', null)
 }
 
+function get_user_details () {
+  const endpoint = base_url + '/api/rest-auth/user'
+  return apiService(endpoint, 'GET', null)
+}
+
 export {
   base_url,
   add_to_favourites,
@@ -45,5 +50,6 @@ export {
   place_order,
   cancel_order,
   get_user_margins,
-  support_request
+  support_request,
+  get_user_details
 }

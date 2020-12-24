@@ -9,7 +9,9 @@ export default new Vuex.Store({
     vendors: [],
     bottom_sheet: false,
     snackbar_message: "",
-    snackbar: false
+    snackbar: false,
+    is_activated: false,
+    requested_registration: false
   },
   mutations: {
     push_instruments(state, instruments) {
@@ -49,6 +51,9 @@ export default new Vuex.Store({
     },
     push_vendors(state, vendors) {
       state.vendors = vendors;
+    },
+    is_activated(state, boolean) {
+      state.is_activated = boolean;
     }
   },
   actions: {
@@ -69,6 +74,9 @@ export default new Vuex.Store({
     },
     show_snackbar({ commit }, message) {
       commit("show_snackbar", message);
+    },
+    setactivated({ commit }, boolean) {
+      commit("is_activated", boolean);
     }
   },
   modules: {},
@@ -100,6 +108,9 @@ export default new Vuex.Store({
     },
     get_sheet: state => {
       return state.bottom_sheet;
+    },
+    get_is_activated: state => {
+      return state.is_activated;
     }
   }
 });

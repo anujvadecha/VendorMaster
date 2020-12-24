@@ -1,9 +1,7 @@
 import json
 from uuid import UUID
-
 from django.core.cache import cache
 from rest_framework import serializers
-
 from admin_interface.models import Theme
 from userBase.models import NormalUser, Support
 from vendorbase.models import Symbol, GlobalPremium, Vendor, Favourite, VendorDetails, VendorMargin
@@ -13,7 +11,7 @@ from vendorbase.models import Symbol, GlobalPremium, Vendor, Favourite, VendorDe
 class NormalUserSerializer(serializers.ModelSerializer):
     class Meta:
         model=NormalUser
-        fields="__all__"
+        exclude=('password',)
 
 # class VendorRelatedField(serializers.RelatedField):
 #     def to_representation(self, value):
@@ -114,3 +112,4 @@ class SupportSerializer(serializers.ModelSerializer):
     class Meta:
         model=Support
         fields="__all__"
+

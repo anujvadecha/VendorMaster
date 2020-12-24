@@ -217,4 +217,8 @@ WEBPACK_LOADER={
     }
 }
 
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'vendorbase.api.serializers.NormalUserSerializer',
+}
+
 SOCKET_GROUP="ticker_group"

@@ -1,6 +1,7 @@
 <template>
 <q-dialog style="width: 50%" v-model="this.get_set_sheet" @hide="set_sheet_close()"  persistent position="bottom">
-    <q-card class="" style="">
+  <div v-if="order_item">
+  <q-card class="" style="">
       <q-card-section class="bg-primary" style=" color: white" >
       <div class="q-pa-md">
         <span class="text-h6">{{order_item.vendor}}</span>
@@ -45,6 +46,7 @@
       <q-btn class="q-ml-md btn-danger" @click="set_sheet_close()">Close</q-btn>
     </q-card-section>
     </q-card>
+    </div>
 </q-dialog>
 </template>
 

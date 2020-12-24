@@ -17,25 +17,26 @@ class GlobalPremium(BaseModel):
 
 
 class SymbolName(DjangoChoices):
-    gold_999 = ChoiceItem("gold 999")
-    gold_999_1kg = ChoiceItem("gold 999 1kg")
-    gold_995 = ChoiceItem("gold 995")
-    gold_995_1kg = ChoiceItem("gold 995 1kg")
-    gold_999_t_plus_1 = ChoiceItem("gold 999 (T+1)")
-    gold_999_1kg_t_plus_1 = ChoiceItem("gold 999 1kg (T+1)")
-    gold_995_t_plus_1 = ChoiceItem("gold 995 (T+1)")
-    gold_995_1kg_t_plus_1 = ChoiceItem("gold 995 1kg (T+1)")
-    gold_999_t_plus_2 = ChoiceItem("gold 999 (T+2)")
-    gold_999_1kg_t_plus_2 = ChoiceItem("gold 999 1kg (T+2)")
-    gold_995_t_plus_2 = ChoiceItem("gold 995 (T+2)")
-    gold_995_1kg_t_plus_2 = ChoiceItem("gold 995 1kg (T+2)")
+    gold_999 = ChoiceItem("Gold 999")
+    gold_999_1kg = ChoiceItem("Gold 999 1kg")
+    gold_995 = ChoiceItem("Gold 995")
+    gold_995_1kg = ChoiceItem("Gold 995 1kg")
+    gold_999_t_plus_1 = ChoiceItem("Gold 999 (T+1)")
+    gold_999_1kg_t_plus_1 = ChoiceItem("Gold 999 1kg (T+1)")
+    gold_995_t_plus_1 = ChoiceItem("Gold 995 (T+1)")
+    gold_995_1kg_t_plus_1 = ChoiceItem("Gold 995 1kg (T+1)")
+    gold_999_t_plus_2 = ChoiceItem("Gold 999 (T+2)")
+    gold_999_1kg_t_plus_2 = ChoiceItem("Gold 999 1kg (T+2)")
+    gold_995_t_plus_2 = ChoiceItem("Gold 995 (T+2)")
+    gold_995_1kg_t_plus_2 = ChoiceItem("Gold 995 1kg (T+2)")
 
 
 class SymbolType(DjangoChoices):
-    gold_999 = ChoiceItem("gold 999")
-    gold_999_1kg = ChoiceItem("gold 999 1kg")
-    gold_995 = ChoiceItem("gold 995")
-    gold_995_1kg = ChoiceItem("gold 995 1kg")
+    gold_999 = ChoiceItem("Gold 999")
+    gold_999_1kg = ChoiceItem("Gold 999 1kg")
+    gold_995 = ChoiceItem("Gold 995")
+    gold_995_1kg = ChoiceItem("Gold 995 1kg")
+    silver = ChoiceItem("Silver")
 
 
 class Vendor(BaseModel):

@@ -1,6 +1,6 @@
 <template>
 <div>
-  <q-pull-to-refresh :handler="refresher">
+  <q-pull-to-refresh @refresh="refresher">
   <div class="">
     <div class="q-gutter-y-md" style="">
       <q-card flat >
@@ -56,50 +56,56 @@ export default {
   },
   methods: {
     refresher (done) {
-      setTimeout(() => {
-        // this.$forceUpdate()
-        console.log('hello')
-        done()
-      }, 1000)
+      this.get_orders().then(done())
+    },
+    get_orders () {
+      return get_orders().then(res => {
+        // this.executed_orders_confirmed.length = 0
+        // this.executed_orders_waiting.length = 0
+        // this.closed_orders.length = 0
+        // this.active_orders.length = 0
+        // this.orders.length = 0
+        this.orders = res
+        console.log(res)
+      })
+        .then(() => {
+          this.orders = this.orders.map(order => {
+            order.instrument = this.$store.getters.get_instrument(
+              order.instrument_id
+            )
+            console.log(order.instrument)
+            return order
+          })
+        })
+        .then(() => {
+          this.orders.sort((a, b) => {
+          // console.log(new Date(a.created_at) - new Date(b.created_at));
+            return new Date(b.created_at) - new Date(a.created_at)
+          })
+        })
+        .then(() => {
+          this.active_orders = this.orders.filter(order => {
+            return order.status === 'WAITING_FOR_LIMIT'
+          })
+          this.executed_orders_waiting = this.orders.filter(order => {
+            return order.status === 'OPEN'
+          })
+          this.executed_orders_waiting.sort((a, b) => {
+            return new Date(b.created_at) - new Date(a.created_at)
+          })
+          this.executed_orders_confirmed = this.orders.filter(order => {
+            return order.status === 'EXECUTED'
+          })
+          this.closed_orders = this.orders.filter(order => {
+            return order.status === 'CLOSED'
+          })
+        })
     }
   },
   created () {
-    get_orders().then(res => {
-      this.orders = res
-    })
-      .then(() => {
-        this.orders = this.orders.map(order => {
-          order.instrument = this.$store.getters.get_instrument(
-            order.instrument_id
-          )
-          console.log(order.instrument)
-          return order
-        })
-      })
-      .then(() => {
-        this.orders.sort((a, b) => {
-          // console.log(new Date(a.created_at) - new Date(b.created_at));
-          return new Date(b.created_at) - new Date(a.created_at)
-        })
-      })
-      .then(() => {
-        this.active_orders = this.orders.filter(order => {
-          return order.status === 'WAITING_FOR_LIMIT'
-        })
-        this.executed_orders_waiting = this.orders.filter(order => {
-          return order.status === 'OPEN'
-        })
-        this.executed_orders_waiting.sort((a, b) => {
-          return new Date(b.created_at) - new Date(a.created_at)
-        })
-        this.executed_orders_confirmed = this.orders.filter(order => {
-          return order.status === 'EXECUTED'
-        })
-        this.closed_orders = this.orders.filter(order => {
-          return order.status === 'CLOSED'
-        })
-      })
+    this.get_orders()
   }
+
 }
 </script>
 

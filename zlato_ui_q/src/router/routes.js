@@ -8,6 +8,7 @@ import Register from 'pages/Register'
 import Marketing from 'pages/Marketing'
 import Main from 'pages/Main'
 import UserMargins from 'pages/UserMargins'
+import RegistrationForm from 'components/RegistrationForm'
 
 const routes = [
   {
@@ -60,6 +61,11 @@ const routes = [
         path: 'margins',
         name: 'Margins',
         component: UserMargins
+      },
+      {
+        path: 'registration',
+        name: 'Registration',
+        component: RegistrationForm
       }
     ]
   },

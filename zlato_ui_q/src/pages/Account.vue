@@ -19,6 +19,7 @@
           <strong>Support</strong>
           </q-card-section>
           <q-separator></q-separator>
+
           <q-card-section class="text-center">
               Send a request for support
           </q-card-section>
@@ -65,19 +66,25 @@
       <q-card-section class="bg-primary text-h6" style=" color: white" >
         Reset Password
       </q-card-section>
-       <q-card-section style="background-color: white" >
+       <q-card-section class="q-ma-md" style="background-color: white" >
          <q-input v-model="old_password"  label="Re-type current password" />
          <q-input v-model="new_password1"  label="Enter New Password" />
          <q-input v-model="new_password2"  label="Re-enter new password" />
-      <q-btn class="q-ml-md btn-danger" @click="reset=false">Close</q-btn>
-      <q-btn class="q-ml-md btn-primary" color="primary" @click="changePassword">Confirm</q-btn>
     </q-card-section>
+      <q-card-section>
+            <q-btn class="q-ml-md btn-danger" @click="reset=false">Close</q-btn>
+      <q-btn class="q-ml-md btn-primary" color="primary" @click="changePassword">Confirm</q-btn>
+
+      </q-card-section>
     </q-card>
   </q-dialog>
   <q-dialog style="" v-model="support"  persistent>
     <q-card class="" style="">
       <q-card-section class="bg-primary text-h6" style=" color: white" >
         Support
+      </q-card-section>
+      <q-card-section>
+
       </q-card-section>
        <q-card-section style="background-color: white" >
       <q-btn class="q-ml-md btn-danger" @click="support=false">Close</q-btn>
@@ -144,8 +151,8 @@ export default {
       reset: false,
       support: false,
       old_password: '',
-      new_password: '',
-      confirm_new_password: ''
+      new_password1: '',
+      new_password2: ''
     }
   },
   created () {

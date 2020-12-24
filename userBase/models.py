@@ -12,12 +12,12 @@ class UserType(DjangoChoices):
 
 
 class NormalUser(AbstractUser):
-    enabled = models.BooleanField(default=True)
-    is_active = models.BooleanField(blank=True)
+    requested_registration = models.BooleanField(default=False)
     phone_number = models.CharField(blank=True, max_length=14)
     profile_picture = models.ImageField(blank=True)
     pan_card = models.ImageField(blank=True)
-    is_activated=models.BooleanField(blank=True,default=False)
+    is_activated = models.BooleanField(default=False)
+
     def get_phone_number(self):
         return self.phone_number
 
