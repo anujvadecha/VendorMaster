@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import { Notify } from 'quasar'
+
 export default {
   data () {
     return {
@@ -84,8 +86,13 @@ export default {
           console.log('Pushed to home')
           router.push('Home')
         })
-        .catch(function (error) {
-          console.log(error)
+        .catch(function (err) {
+          console.log(err)
+          Notify.create({
+            message: 'Incorrect format of registration details',
+            position: 'top-right',
+            timeout: 1000
+          })
         })
     }
   }
