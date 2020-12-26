@@ -1,11 +1,5 @@
 <template>
   <div>
-<!--        <q-item-label-->
-<!--          header-->
-<!--          class="text-grey-8"-->
-<!--        >-->
-<!--          Links-->
-<!--        </q-item-label>-->
   <div class="">
   <q-card square v-if="!$store.state.is_activated" class="" >
     <div class="q-pa-sm bg-primary">

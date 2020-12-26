@@ -15,21 +15,27 @@ else:
 
 class ThemeAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
-        qs = super(ThemeAdmin,self).get_queryset(request)
-        if(request.user.username==settings.ADMIN_USER):
+        qs = super(ThemeAdmin, self).get_queryset(request)
+        if (request.user.username == settings.ADMIN_USER):
             return qs
         else:
             return qs.filter(vendor=Vendor.objects.filter(user_id=request.user).first())
 
-    list_display = ('name', 'active', )
-    list_editable = ('active', )
+    def get_readonly_fields(self, request, obj=None):
+        if (request.user.is_superuser):
+            return ()
+        else:
+            return ('vendor', 'name')
+
+    list_display = ('name', 'active',)
+    list_editable = ('active',)
     list_per_page = 100
     show_full_result_count = False
 
     fieldsets = (
         (None, {
-            'classes': ('wide', ),
-            'fields': ('name', 'active', )
+            'classes': ('wide',),
+            'fields': ('name', 'active',)
         }),
         (_('Vendor'), {
             'classes': ('wide',),
@@ -38,7 +44,7 @@ class ThemeAdmin(admin.ModelAdmin):
             )
         }),
         (_('Environment'), {
-            'classes': ('wide', ),
+            'classes': ('wide',),
             'fields': (
                 'env_name',
                 'env_color',
@@ -47,14 +53,14 @@ class ThemeAdmin(admin.ModelAdmin):
             )
         }),
         (_('Language chooser'), {
-            'classes': ('wide', ),
+            'classes': ('wide',),
             'fields': (
                 'language_chooser_active',
                 'language_chooser_display',
             )
         }),
         (_('Logo'), {
-            'classes': ('wide', ),
+            'classes': ('wide',),
             'fields': (
                 'logo',
                 'logo_color',
@@ -63,11 +69,11 @@ class ThemeAdmin(admin.ModelAdmin):
             )
         }),
         (_('Favicon'), {
-            'classes': ('wide', ),
-            'fields': ('favicon', )
+            'classes': ('wide',),
+            'fields': ('favicon',)
         }),
         (_('Title'), {
-            'classes': ('wide', ),
+            'classes': ('wide',),
             'fields': (
                 'title',
                 'title_color',
@@ -75,7 +81,7 @@ class ThemeAdmin(admin.ModelAdmin):
             )
         }),
         (_('Header'), {
-            'classes': ('wide', ),
+            'classes': ('wide',),
             'fields': (
                 'css_header_background_color',
                 'css_header_text_color',
@@ -84,7 +90,7 @@ class ThemeAdmin(admin.ModelAdmin):
             )
         }),
         (_('Breadcrumbs / Module headers'), {
-            'classes': ('wide', ),
+            'classes': ('wide',),
             'fields': (
                 'css_module_background_color',
                 'css_module_text_color',
@@ -94,14 +100,14 @@ class ThemeAdmin(admin.ModelAdmin):
             )
         }),
         (_('Generic Links'), {
-            'classes': ('wide', ),
+            'classes': ('wide',),
             'fields': (
                 'css_generic_link_color',
                 'css_generic_link_hover_color',
             )
         }),
         (_('Save Buttons'), {
-            'classes': ('wide', ),
+            'classes': ('wide',),
             'fields': (
                 'css_save_button_background_color',
                 'css_save_button_background_hover_color',
@@ -109,7 +115,7 @@ class ThemeAdmin(admin.ModelAdmin):
             )
         }),
         (_('Delete Buttons'), {
-            'classes': ('wide', ),
+            'classes': ('wide',),
             'fields': (
                 'css_delete_button_background_color',
                 'css_delete_button_background_hover_color',
@@ -117,7 +123,7 @@ class ThemeAdmin(admin.ModelAdmin):
             )
         }),
         (_('Related Modal'), {
-            'classes': ('wide', ),
+            'classes': ('wide',),
             'fields': (
                 'related_modal_active',
                 'related_modal_background_color',
@@ -127,15 +133,15 @@ class ThemeAdmin(admin.ModelAdmin):
             )
         }),
         (_('List Filter'), {
-            'classes': ('wide', ),
+            'classes': ('wide',),
             'fields': (
                 'list_filter_dropdown',
                 'list_filter_sticky',
             )
         }),
         (_('Recent Actions'), {
-            'classes': ('wide', ),
-            'fields': ('recent_actions_visible', )
+            'classes': ('wide',),
+            'fields': ('recent_actions_visible',)
         }),
     )
 

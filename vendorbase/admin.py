@@ -23,6 +23,15 @@ class SymbolAdmin(admin.ModelAdmin):
             return qs.filter(vendor_id__user_id=request.user)
         else:
             return qs
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if(request.user.is_superuser):
+            return super().formfield_for_foreignkey(db_field, request, **kwargs)
+        else:
+            if db_field.name == "vendor_id":
+                kwargs["queryset"] = Vendor.objects.filter(user_id=request.user)
+            return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
     list_display = ('name','vendor_id','buy_premium','sell_premium','enabled')
     list_display_links = ('name',)
     list_filter = ('vendor_id','name')
@@ -68,7 +77,8 @@ def get_vendor_margin_queryset(request=None,queryset=None):
     if (request.user.is_superuser):
         return queryset
     else:
-        return queryset.filter(user = request.user)
+        return queryset.filter(vendor__user_id = request.user)
+
 
 @admin.register(LimitOrderPending)
 class LimitOrderPendingAdmin(admin.ModelAdmin,OrderAdminBase):
@@ -135,15 +145,18 @@ class ExecutedOrderAdmin(admin.ModelAdmin,OrderAdminBase):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     def user_id_url(self, obj):
-        if obj and obj.user_id:
-            return format_html('<a href="{}">{}</a>'.format(obj.user_id.get_admin_url(), obj.user_id))
+        link="<a href={}>{}</a>".format(
+            reverse('admin:{}_{}_change'.format(obj.user_id._meta.app_label, obj.user_id.username)))
+        # link = reverse("admin:users_change", args=[obj.user_id])
+        return format_html('<a href="{}">Edit {}</a>', link, obj.user.username)
+
     user_id_url.make_safe = True
     user_id_url.allow_tags = True
 
     def get_queryset(self, request):
         return get_vendor_order_queryset(request=request,queryset=self.model.objects.filter(status=OrderStatus.EXECUTED))
     # list_display = ('instrument_id', 'user_id_url','side', 'quantity','status','created_at')
-    list_display = ('instrument_id','transaction_id','side', 'quantity','status','otp','created_at')
+    list_display = ('instrument_id','user_id_url','transaction_id','side', 'quantity','status','otp','created_at')
     list_per_page = 10
     search_fields = ('order_id','transaction_id', 'instrument_id__name', 'user_id__username')
 
@@ -151,7 +164,7 @@ class ExecutedOrderAdmin(admin.ModelAdmin,OrderAdminBase):
         return render_to_string('otp_form_item.html', {'order_id':obj.order_id}) #format_html('<input type="text" id="otp" style="width:40px" /> <a class ="button" href="document.getElementById("otp").value;/{}">OK</a></a>'.format(f"{obj.order_id}/verify_otp"))
 
     list_display_links = ('instrument_id',)
-    list_filter = ('status',)
+    # list_filter = ('',)
 
 @admin.register(ClosedOrder)
 class ClosedOrderAdmin(admin.ModelAdmin,OrderAdminBase):
@@ -186,20 +199,35 @@ class GlobalPremium(admin.ModelAdmin):
 @admin.register(Favourite)
 class FavouriteAdmin(admin.ModelAdmin):
     pass
-# class OrderEngine_Pool(BaseModel):
-#
-#     pass
+
+
+
 
 @admin.register(VendorDetails)
 class VendorDetailAdmin(admin.ModelAdmin):
-    pass
+
+    def get_readonly_fields(self, request, obj=None):
+        if(request.user.is_superuser):
+            return ()
+        else:
+            return ('vendor',)
+
+    def get_queryset(self, request):
+        queryset = self.model.objects.all()
+        return self.get_vendor_detail_queryset(request=request, queryset=queryset)
+
+    def get_vendor_detail_queryset(self,request, queryset):
+        if(request.user.is_superuser):
+            return queryset
+        else:
+            return queryset.filter(vendor__user_id=request.user)
 
 @admin.register(VendorMargin)
 class VendorMargin(admin.ModelAdmin):
     def get_queryset(self, request):
         queryset = self.model.objects.all()
         return get_vendor_margin_queryset(request=request, queryset=queryset)
-    list_display = ('user','margin',)
+    list_display = ('user','vendor','margin','margin_available')
     list_editable = ('margin',)
     list_display_links = ('user',)
 
@@ -207,4 +235,4 @@ class VendorMargin(admin.ModelAdmin):
         if(request.user.is_superuser):
             return ()
         else:
-            return ('user','vendor')
+            return ('user','vendor','margin_available')
