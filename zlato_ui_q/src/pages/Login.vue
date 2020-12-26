@@ -2,7 +2,8 @@
 <div>
 <div class="window-height window-width row justify-center items-center" style="">
     <div class="column q-pa-lg">
-          <q-card-section style="">
+      <strong class="text-h6">{{message}}</strong>
+      <q-card-section style="">
             <div class="row">
             <q-img
             :src="imageSrc"
@@ -163,7 +164,8 @@ export default {
           })
         })
     }
-  }
+  },
+  props: ['message']
 }
 </script>
 

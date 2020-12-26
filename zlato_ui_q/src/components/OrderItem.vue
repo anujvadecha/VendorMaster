@@ -22,11 +22,7 @@
         </q-card-actions>
 
       <q-separator/>
-      <div class="row q-ma-sm">
-        <div class="col">
-          <p><strong>Time Ordered :</strong>{{order.created_at}}</p>
-        </div>
-      </div>
+
       <div class="row q-ma-sm">
           <div class="col">
 <!--            <span style=" font-weight: bold;color:darkblue;font-size: large">{{order.instrument.vendor}}</span>-->
@@ -42,8 +38,8 @@
       </div>
       <div class="row q-ma-sm">
         <div class="col"><q-chip dense outline color="orange">{{order.side}} </q-chip> {{order.quantity}}
-            </div>
-                <span class="q-ml-sm" style="color: grey"> B:{{order.instrument.bid}} A:{{order.instrument.ask}}</span>
+          <span class="q-ml-sm" style="color:grey"><q-icon name="mdi-clock"></q-icon>{{get_formated_time}}</span>
+            </div> <span class="text-sm q-ml-sm" style="color: grey"> B:{{order.instrument.bid}} A:{{order.instrument.ask}}</span>
       </div>
     </q-card>
   </div>
@@ -54,12 +50,28 @@ import { cancel_order } from 'src/common/api_calls'
 export default {
   name: 'OrderItem',
   props: ['order'],
+  computed: {
+    get_formated_time () {
+      const event = new Date(this.order.created_at)
+      return event.toLocaleString('en-GB')
+    },
+    logged_in: function () {
+      const token = this.$q.localStorage.getItem('token')
+      if (token === '' || token === null || token === 'null') {
+        return false
+      } else {
+        return true
+      }
+    }
+  },
   methods: {
+
     cancel_limit_order () {
       console.log('limit order cancellation request for' + this.order)
       cancel_order({ order_id: this.order.order_id })
     }
   }
+
 }
 </script>
 

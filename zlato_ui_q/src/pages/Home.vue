@@ -1,14 +1,16 @@
 <template>
   <div>
   <div class="">
+    <div v-if="logged_in">
   <q-card square v-if="!$store.state.is_activated" class="" >
     <div class="q-pa-sm bg-primary">
       <div class="text-white" style="font-weight: bold">
       <div v-if="$store.state.requested_registration">We will register this account as soon as possible</div>
-      <div v-else><q-btn  @click="$router.push('Registration')" class="text-black bg-white">Activate</q-btn> &nbsp; your account to place orders</div>
-      </div>
+      <div v-else><q-btn  @click="$router.push('Registration')" class="text-black bg-white"> Activate </q-btn> &nbsp; your account to place orders</div>
+     </div>
     </div>
   </q-card>
+      </div>
   </div>
   <TopVendors class="mobile-hide"  :vendors="vendors_computed"></TopVendors>
   <TickerPriceTable title="Ticker prices" :instruments_to_render="instruments_to_render"></TickerPriceTable>
@@ -51,6 +53,14 @@ export default {
     },
     vendors_computed: function () {
       return this.$store.getters.get_all_vendors
+    },
+    logged_in: function () {
+      const token = this.$q.localStorage.getItem('token')
+      if (token === '' || token === null || token === 'null') {
+        return false
+      } else {
+        return true
+      }
     }
   },
   methods: {
