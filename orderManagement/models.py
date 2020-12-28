@@ -9,6 +9,7 @@ from vendorbase.models import Vendor, Symbol
 class OrderType(DjangoChoices):
     MARKET = ChoiceItem("MARKET")
     LIMIT = ChoiceItem("LIMIT")
+    BEST_LIMIT = ChoiceItem("BEST_LIMIT")
 
 class OrderStatus(DjangoChoices):
     OPEN=ChoiceItem("OPEN")
