@@ -4,7 +4,7 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-
+import logging
 from VendorMaster import settings
 from VendorMaster.consumers import UUIDEncoder
 from admin_interface.models import Theme
@@ -16,17 +16,19 @@ from vendorbase.api.serializers import SymbolSerializer
 from vendorbase.models import Symbol, Vendor, VendorDetails, VendorMargin
 from django.core.cache import cache
 
-@receiver(post_save,sender=Symbol)
-def create_update_symbol(sender,instance,created,**kwargs):
+logger=logging.getLogger(__name__)
+@receiver(post_save, sender=Symbol)
+def create_update_symbol(sender, instance, created, **kwargs):
     print("symbol update")
-    channel_layer=get_channel_layer()
+    channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         settings.SOCKET_GROUP,
         {
             "type": "instrument_update",
-            "instrument_update":json.dumps(SymbolSerializer(instance).data,cls=UUIDEncoder)
-         }
+            "instrument_update": json.dumps(SymbolSerializer(instance).data, cls=UUIDEncoder)
+        }
     )
+
 
 @receiver(post_save, sender=Order)
 @receiver(post_save, sender=LimitOrderPending)
@@ -41,26 +43,33 @@ def create_update_order(sender, instance, created, **kwargs):
         {
             "type": "order_update",
             "user": instance.user_id.id,
-            "order_update": json.dumps(OrderSerializer(instance).data,cls=UUIDEncoder)
+            "order_update": json.dumps(OrderSerializer(instance).data, cls=UUIDEncoder)
         }
     )
 
-@receiver(post_save,sender=Vendor)
+
+@receiver(post_save, sender=Vendor)
 def create_vendor_info_objects(sender, instance, created, **kwargs):
     if created:
         VendorDetails.objects.create(vendor=instance)
-        Theme.objects.create(vendor=instance,name=instance.name,title=instance.name)
+        Theme.objects.create(vendor=instance, name=instance.name, title=instance.name)
         for user in NormalUser.objects.all():
-            VendorMargin.objects.create(
-                user=user, vendor=instance,
-                margin=instance.default_margin, margin_available=instance.default_margin
-            )
+            if user.is_activated and not user.is_staff:
+                VendorMargin.objects.create(
+                    user=user, vendor=instance,
+                    margin=instance.default_margin, margin_available=instance.default_margin
+                )
 
-@receiver(post_save,sender=NormalUser)
+
+@receiver(post_save, sender=NormalUser)
 def user_created_updated(sender, instance, created, **kwargs):
-    if created:
-        for vendor in Vendor.objects.all():
-            VendorMargin.objects.create(
-                user=instance,vendor=vendor,
-                margin=vendor.default_margin,margin_available=vendor.default_margin
-            )
+    logger.info(f" Updating Normal User ")
+    for vendor in Vendor.objects.all():
+        if instance.is_activated:
+            object = VendorMargin.objects.filter(user=instance, vendor=vendor).first()
+            if object == None:
+                logger.info(f" Creating vendor margin object for {instance} vendor {vendor} ")
+                VendorMargin.objects.create(
+                    user=instance, vendor=vendor,
+                    margin=vendor.default_margin, margin_available=vendor.default_margin
+                )

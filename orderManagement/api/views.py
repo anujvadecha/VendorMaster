@@ -40,13 +40,17 @@ class OrderView(APIView):
         serializer = OrderSerializer(data=request.data)
         instrument = Symbol.objects.get(instrument_id=request.data['instrument_id'])
         logger.info(f"Order request received {request.data}")
-        margin_object = VendorMargin.objects.get(user=request.user,vendor_id=instrument.vendor_id)
+        margin_object = VendorMargin.objects.filter(user=request.user,vendor_id=instrument.vendor_id).first()
+        if(margin_object==None):
+            return Response('Margin for this user does not exist')
         if( margin_object.margin_available >= int(request.data['quantity'])):
             logger.info(f"Margin available is {margin_object.margin_available} order quantity {request.data['quantity']}")
             margin_object.margin_available = margin_object.margin_available - int(request.data['quantity'])
             margin_object.save()
         else:
             return Response("Failed due to margin not available",status=status.HTTP_200_OK)
+        if( not request.user.is_activated):
+            return Response('You need to activate your account')
         if (serializer.is_valid()):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

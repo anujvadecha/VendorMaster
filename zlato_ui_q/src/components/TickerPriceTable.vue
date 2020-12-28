@@ -217,7 +217,7 @@ export default {
   computed: {
     data_render: function () {
       var type = ''
-      if (this.tab !== 'All') { type = this.tab.toLowerCase() } else {
+      if (this.tab !== 'All') { type = this.tab } else {
         return this.instruments_to_render
       }
       return this.instruments_to_render.filter(instrument => {

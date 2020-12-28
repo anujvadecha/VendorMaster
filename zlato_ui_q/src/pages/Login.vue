@@ -2,7 +2,8 @@
 <div>
 <div class="window-height window-width row justify-center items-center" style="">
     <div class="column q-pa-lg">
-          <q-card-section style="">
+      <strong class="text-h6">{{message}}</strong>
+      <q-card-section style="">
             <div class="row">
             <q-img
             :src="imageSrc"
@@ -32,7 +33,7 @@
           </q-card-actions>
           <q-card-section class="text-center q-pa-sm">
             <p class="text-grey-6"> Forgot your password? </p>
-            <p>Not a registered user ?<router-link to="/register">Register</router-link></p>
+            <p>Not a registered user ? Register <router-link to="/register">here</router-link></p>
           </q-card-section>
 
     </div>
@@ -163,7 +164,8 @@ export default {
           })
         })
     }
-  }
+  },
+  props: ['message']
 }
 </script>
 

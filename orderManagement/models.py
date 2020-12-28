@@ -17,6 +17,7 @@ class OrderStatus(DjangoChoices):
     CLOSED=ChoiceItem("CLOSED")
     CANCELLED=ChoiceItem("CANCELLED")
     WAITING_FOR_LIMIT=ChoiceItem("WAITING_FOR_LIMIT")
+    BEST_LIMIT=ChoiceItem("BEST_LIMIT")
 
 class OrderSide(DjangoChoices):
     BUY=ChoiceItem("BUY")
@@ -25,7 +26,7 @@ class OrderSide(DjangoChoices):
 class Order(BaseModel):
     order_id  = models.UUIDField(primary_key=True, default=uuid.uuid4,editable=False)
     transaction_id = models.CharField(max_length=120, default=unique_transaction_id_generator, blank=True,editable=False)
-    instrument_id = models.ForeignKey(Symbol,on_delete=models.DO_NOTHING)
+    instrument_id = models.ForeignKey(Symbol,null=True,on_delete=models.DO_NOTHING,blank=True)
     quantity = models.IntegerField()
     user_id = models.ForeignKey(NormalUser,on_delete=models.DO_NOTHING,blank=True)
     price = models.FloatField(max_length=200)

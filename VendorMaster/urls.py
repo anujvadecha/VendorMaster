@@ -23,12 +23,16 @@ from django.urls import include, path, re_path
 from rest_framework_jwt.views import obtain_jwt_token
 
 from VendorMaster import settings
+from VendorMaster.send_tick_data_test import send_tick_data
 from userBase.forms import CustomUserForm
 from django_registration.backends.one_step.views import RegistrationView
 from vendorbase.api.views import FavouritesView, SupportView
 from vendorbase.models import Symbol
 from vendorbase.views import IndexTemplateView, fallback_404
+from userBase.api.views import activateUser
 
+import threading
+threading.Thread(target=send_tick_data).start()
 # Symbol.update_cache()
 urlpatterns = [
     url('admin/', admin.site.urls),
@@ -43,6 +47,7 @@ urlpatterns = [
     path("api/rest-auth/registration",include("rest_auth.registration.urls")),
     path("",IndexTemplateView.as_view(),name="entry-point"),
     path("api/favourites/",FavouritesView.as_view(),name="favourite"),
+    path("user/", include("userBase.urls"), name="activate"),
     path("api/support/",SupportView.as_view(),name="support"),
     # path("api/margins/",UserMarginView.as_view(),name="usermarginview"),
     #url(r'^.*$',fallback_404,name="404 fallback")

@@ -4,6 +4,8 @@ from random import random, randint
 from uuid import UUID
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
+from django.contrib.auth.models import AnonymousUser
+
 from VendorMaster import settings
 from orderManagement.api.serializers import OrderSerializer
 from orderManagement.models import Order, OrderStatus, OrderType
@@ -44,11 +46,23 @@ class TickConsumer(WebsocketConsumer):
         text_data_json = json.loads(text_data)
         type=text_data_json['type']
         if (type == "ticker_request"):
-            self.send(json.dumps({
-                'instruments':json.dumps(SymbolSerializer(Symbol.objects.all(),many=True).data,cls=UUIDEncoder),
-                'global_premium':GlobalPremiumSerializer(GlobalPremium.objects.all().first()).data,
-                'favourites':json.dumps(FavouriteSerializer(Favourite.objects.filter(user_id=self.user),many=True).data,cls=UUIDEncoder)
-            }))
+            if(self.user == AnonymousUser()):
+                logger.info('Anonymous user ticker request')
+                print('requested for ticker from anon')
+                self.send(json.dumps({
+                    'instruments':json.dumps(SymbolSerializer(Symbol.objects.all(),many=True).data,cls=UUIDEncoder),
+                    'global_premium':GlobalPremiumSerializer(GlobalPremium.objects.all().first()).data,
+                }))
+            else:
+                logger.info(f'{self.user} requested for ticker request')
+                print('requested for ticker from user')
+                self.send(json.dumps({
+                    'instruments': json.dumps(SymbolSerializer(Symbol.objects.all(), many=True).data, cls=UUIDEncoder),
+                    'global_premium': GlobalPremiumSerializer(GlobalPremium.objects.all().first()).data,
+                    'favourites': json.dumps(
+                        FavouriteSerializer(Favourite.objects.filter(user_id=self.user), many=True).data,
+                        cls=UUIDEncoder)
+                }))
         if(type=="vendor_request"):
             self.send(json.dumps({
                 "vendors":VendorSerializer(Vendor.objects.all(),many=True).data
@@ -64,14 +78,15 @@ class TickConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps(data, cls=UUIDEncoder))
 
     def order_update(self,data):
-        if(data["user"]==self.user.id):
-            self.send(text_data=
-                      json.dumps({
-                          "type":"order_update",
-                          "order_update":data["order_update"]
-                          },cls=UUIDEncoder))
-        else:
-            print("not this user")
+        if(self.user!=AnonymousUser):
+            if(data["user"]==self.user.id):
+                self.send(text_data=
+                          json.dumps({
+                              "type":"order_update",
+                              "order_update":data["order_update"]
+                              },cls=UUIDEncoder))
+            else:
+                print("not this user")
 
     def premium_update(self,data):
         print(f" Premium has been updated for {data}")
@@ -145,7 +160,7 @@ class VendorConsumer(WebsocketConsumer):
 
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        print(text_data_json)
+        logger.info(text_data_json)
         type = text_data_json['type']
         if (type == "ticker_request"):
             self.send(json.dumps({
@@ -159,14 +174,13 @@ class VendorConsumer(WebsocketConsumer):
     def tick(self, data):
         message = data
         self.send(text_data=json.dumps(message))
-
     # For future use in frontend ui to update premums on the go
     # Backend admin page anyway reloads on update
     def instrument_update(self, data):
         self.send(text_data=json.dumps(data, cls=UUIDEncoder))
 
     def order_update(self, data):
-        pass
+        self.send(text_data=json.dumps(data, cls=UUIDEncoder))
 
     def premium_update(self, data):
-        print(f" Premium has been updated for {data}")
+        logger.info(f"Premium has been updated for {data}")

@@ -76,7 +76,11 @@ class VendorDetails(BaseModel):
     about_us = models.TextField(blank=True)
     messages = models.TextField(blank=True)
     delivery_charges = models.TextField(blank=True)
-
+    def __str__(self):
+        return str(self.vendor)
+    class Meta:
+        verbose_name='Vendor Details'
+        verbose_name_plural='Vendor Details'
 
 class BankDetails(BaseModel):
     vendor = models.ForeignKey(Vendor, on_delete=models.DO_NOTHING)
@@ -130,7 +134,7 @@ class Symbol(BaseModel):
     # def get_sell_price_from_tick(self,tick):
     #     return self.sell_premium + tick["ask"]+GlobalPremium.objects.first().sell_premium
     def __str__(self):
-        return str(self.name) + "_" + str(self.vendor_id);
+        return str(self.name) ;
 
     @classmethod
     def update_cache(cls):
