@@ -28,6 +28,7 @@ from django_registration.backends.one_step.views import RegistrationView
 from vendorbase.api.views import FavouritesView, SupportView
 from vendorbase.models import Symbol
 from vendorbase.views import IndexTemplateView, fallback_404
+from userBase.api.views import activateUser
 
 # Symbol.update_cache()
 urlpatterns = [
@@ -43,6 +44,7 @@ urlpatterns = [
     path("api/rest-auth/registration",include("rest_auth.registration.urls")),
     path("",IndexTemplateView.as_view(),name="entry-point"),
     path("api/favourites/",FavouritesView.as_view(),name="favourite"),
+    path("user/", include("userBase.urls"), name="activate"),
     path("api/support/",SupportView.as_view(),name="support"),
     # path("api/margins/",UserMarginView.as_view(),name="usermarginview"),
     #url(r'^.*$',fallback_404,name="404 fallback")

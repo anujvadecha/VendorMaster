@@ -67,7 +67,6 @@
         Reset Password
       </q-card-section>
        <q-card-section class="q-ma-md" style="background-color: white" >
-         <q-input v-model="old_password"  label="Re-type current password" />
          <q-input v-model="new_password1"  label="Enter New Password" />
          <q-input v-model="new_password2"  label="Re-enter new password" />
     </q-card-section>
@@ -123,7 +122,7 @@ export default {
     },
     changePassword () {
       const axios = require('axios')
-      const data = { old_password: this.old_password, new_password1: this.new_password1, new_password2: this.new_password2 }
+      const data = { new_password1: this.new_password1, new_password2: this.new_password2 }
       const config = {
         method: 'post',
         url: 'http://127.0.0.1:8000/api/rest-auth/password/change/',
@@ -155,7 +154,6 @@ export default {
     return {
       reset: false,
       support: false,
-      old_password: '',
       new_password1: '',
       new_password2: ''
     }

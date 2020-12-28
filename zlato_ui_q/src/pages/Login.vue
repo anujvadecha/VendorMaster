@@ -32,7 +32,7 @@
           </q-card-actions>
           <q-card-section class="text-center q-pa-sm">
             <p class="text-grey-6"> Forgot your password? </p>
-            <p>Not a registered user ?<router-link to="/register">Register</router-link></p>
+            <p>Not a registered user ? Register <router-link to="/register">here</router-link></p>
           </q-card-section>
 
     </div>
