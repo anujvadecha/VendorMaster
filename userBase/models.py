@@ -5,7 +5,6 @@ from phone_field import PhoneField
 from phonenumber_field.formfields import PhoneNumberField
 from base.models import BaseModel
 
-
 class UserType(DjangoChoices):
     user = ChoiceItem("USER")
     vendor = ChoiceItem("VENDOR")
