@@ -82,6 +82,14 @@ const linksData = [
 export default {
   name: 'BottomOrderDialog',
   computed: {
+    logged_in: function () {
+      const token = this.$q.localStorage.getItem('token')
+      if (token === '' || token === null || token === 'null') {
+        return false
+      } else {
+        return true
+      }
+    },
     get_set_sheet: function () {
       return this.$store.getters.get_sheet
     },
@@ -94,59 +102,64 @@ export default {
       this.$store.state.bottom_sheet = false
     },
     place_order: function () {
-      console.log('placing order for ' + this.order_item.instrument_id + this.quantity + this.price + this.tab + 'BUY')
-      this.$store.state.bottom_sheet = false
-      if (this.tab === 'MARKET') {
-        var order = {
-          side: 'BUY',
-          instrument_id: this.order_item.instrument_id,
-          quantity: this.quantity,
-          price: this.order_item.ask,
-          type: this.tab,
-          status: 'OPEN'
-        }
-      } else {
-        order = {
-          side: 'BUY',
-          instrument_id: this.order_item.instrument_id,
-          quantity: this.quantity,
-          price: this.price,
-          type: this.tab,
-          status: 'WAITING_FOR_LIMIT'
-        }
-      }
-      place_order(order).then(res => {
-        console.log(res)
-        const notif = this.$q.notify({
-          spinner: true,
-          group: false,
-          message: 'Please wait...',
-          timeout: 10000,
-          position: 'top-right',
-          color: 'primary'
-        })
-        if (res.order_id !== undefined) {
-          notif({
-            spinner: false,
-            html: true,
-            message: '<h6> Order has been placed </h6>',
-            caption: 'Please check orders for details',
-            position: 'top-right',
-            color: 'positive',
-            timeout: 2000
-          })
+      if (this.logged_in) {
+        console.log('logged in hence placing order')
+        console.log('placing order for ' + this.order_item.instrument_id + this.quantity + this.price + this.tab + 'BUY')
+        this.$store.state.bottom_sheet = false
+        if (this.tab === 'MARKET') {
+          var order = {
+            side: 'BUY',
+            instrument_id: this.order_item.instrument_id,
+            quantity: this.quantity,
+            price: this.order_item.ask,
+            type: this.tab,
+            status: 'OPEN'
+          }
         } else {
-          notif({
-            spinner: false,
-            html: true,
-            message: 'Order could not be placed due to :',
-            caption: '<h6>' + res + '<h6>',
-            position: 'top-right',
-            color: 'negative',
-            timeout: 10000
-          })
+          order = {
+            side: 'BUY',
+            instrument_id: this.order_item.instrument_id,
+            quantity: this.quantity,
+            price: this.price,
+            type: this.tab,
+            status: 'WAITING_FOR_LIMIT'
+          }
         }
-      })
+        place_order(order).then(res => {
+          console.log(res)
+          const notif = this.$q.notify({
+            spinner: true,
+            group: false,
+            message: 'Please wait...',
+            timeout: 10000,
+            position: 'top-right',
+            color: 'primary'
+          })
+          if (res.order_id !== undefined) {
+            notif({
+              spinner: false,
+              html: true,
+              message: '<h6> Order has been placed </h6>',
+              caption: 'Please check orders for details',
+              position: 'top-right',
+              color: 'positive',
+              timeout: 2000
+            })
+          } else {
+            notif({
+              spinner: false,
+              html: true,
+              message: 'Order could not be placed due to :',
+              caption: '<h6>' + res + '<h6>',
+              position: 'top-right',
+              color: 'negative',
+              timeout: 10000
+            })
+          }
+        })
+      } else {
+        this.$router.push({ name: 'Login', params: { message: 'Please login to place orders' } })
+      }
     }
   },
   data () {

@@ -55,13 +55,13 @@
     </q-header>
 <!--    <span class="mobile-only ">-->
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-1">
-      <q-img class="absolute-top" src="https://images.livemint.com/img/2020/05/02/600x338/73342ce6-87d6-11ea-9881-602785b14c14_1587970192680_1588398410207.jpg" style="height: 150px;">
-          <div class="absolute-bottom bg-transparent">
-            <q-avatar size="56px" class="q-mb-sm">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
-            </q-avatar>
-            <div class="text-weight-bold">Deltacap devs</div>
-            <div>@deltacap devs</div>
+      <q-img class="absolute-top" src="https://source.unsplash.com/featured?nature,water" style="height: 150px;">
+          <div class="absolute-bottom ">
+<!--            <q-avatar size="56px" class="q-mb-sm">-->
+<!--              <img src="https://cdn.quasar.dev/img/boy-avatar.png">-->
+<!--            </q-avatar>-->
+            <div class="text-weight-bold">Zlato</div>
+            <div>Mumbai</div>
           </div>
         </q-img>
       <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
@@ -190,8 +190,8 @@ export default {
       this.connect_jwt()
     },
     connect_websocket: function () {
+      const connecter = this.connect_websocket
       const store = this.$store
-      const router = this.$router
       document.cookie = 'authorization=' + this.$q.localStorage.getItem('token') + ';'
       const url = 'ws://' + '127.0.0.1:8000' + '/ws/' + 'ticker' + '/' + '?' + this.$q.localStorage.getItem('token')
       const symbolsocket = new WebSocket(url)
@@ -218,24 +218,26 @@ export default {
         var message = JSON.parse(event.data)
         if (message.instruments) {
           var instruments = JSON.parse(message.instruments)
-          let favourites = JSON.parse(message.favourites)
-          favourites = favourites.map(favourite => {
-            return favourite.instrument_id
-          })
-          instruments = instruments.map(instrument => {
-            instrument.is_favourite = false
-            return instrument
-          })
-          for (let i = 0; i < instruments.length; i++) {
-            for (let j = 0; j < favourites.length; j++) {
-              if (favourites[j] === instruments[i].instrument_id) {
-                console.log('setting instrument')
-                instruments[i].is_favourite = true
+          if (message.favourites) {
+            let favourites = JSON.parse(message.favourites)
+            favourites = favourites.map(favourite => {
+              return favourite.instrument_id
+            })
+            instruments = instruments.map(instrument => {
+              instrument.is_favourite = false
+              return instrument
+            })
+            for (let i = 0; i < instruments.length; i++) {
+              for (let j = 0; j < favourites.length; j++) {
+                if (favourites[j] === instruments[i].instrument_id) {
+                  console.log('setting instrument')
+                  instruments[i].is_favourite = true
+                }
               }
             }
+            console.log(favourites)
+            console.log(instruments)
           }
-          console.log(favourites)
-          console.log(instruments)
           store.dispatch('push_instruments', instruments)
         }
         if (message.gold_tick) {
@@ -268,7 +270,8 @@ export default {
       symbolsocket.onclose = function (event) {
         console.log(event)
         setTimeout(function () {
-          router.push('Login')
+          console.log('websocket disconnected reconnecting ')
+          connecter()
         }, 2000)
       }
     },
@@ -316,10 +319,11 @@ export default {
     }
   },
   created () {
-    console.log('created')
+    this.$router.push('Home')
+    // if (this.logged_in) {
+    this.connect_websocket()
+    const store = this.$store
     if (this.logged_in) {
-      this.connect_websocket()
-      const store = this.$store
       get_user_details().then(
         res => {
           console.log(res)
@@ -328,10 +332,14 @@ export default {
           // store.dispatch('setactivated', res.is_activated)
         }
       )
-      this.$router.push('Home')
     } else {
-      this.$router.push('Login')
+      if (this.$q.is.mobile) {
+        this.$router.push()
+      }
     }
+    // } else {
+    //   this.$router.push('Home')
+    // }
   }
 
 }

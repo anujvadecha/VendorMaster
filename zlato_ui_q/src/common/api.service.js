@@ -6,6 +6,10 @@ function handleResponse (response) {
     return response
   } else if (response.status === 404) {
     return response
+  } else if (response.status === 400) {
+    return response
+  } else if (response.status === 500) {
+    return response
   } else {
     return response.data
   }
@@ -39,9 +43,6 @@ function apiService (endpoint, method, data) {
   }
   return axios(config)
     .then(response => handleResponse(response))
-    .catch(function (error) {
-      console.log(error)
-    })
 }
 
 export { apiService }

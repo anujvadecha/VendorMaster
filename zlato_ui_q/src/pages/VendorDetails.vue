@@ -1,7 +1,9 @@
 <template>
   <div>
     <q-card class="q-ma-md" style="height: 100%;">
-      <q-img style="max-height: 200px" :src="get_vendor_background_image(vendor_object.vendor.theme.background_image)">
+      <q-img style="max-height: 250px"
+             alt="https://source.unsplash.com/featured?nature,water"
+             :src="get_vendor_background_image(vendor_object.vendor.theme.background_image)">
         <div class="absolute-bottom">
           <div class="text-h6">{{ vendor_object.vendor.name }}</div>
           <div class="text-subtitle2">{{ vendor_object.vendor.email }}</div>
@@ -74,6 +76,7 @@ export default {
   },
   methods: {
     get_vendor_background_image (url) {
+      if (url === null) { return 'https://source.unsplash.com/featured?nature,water' }
       return base_url.concat(url)
     }
     // open_order_sheet: function(item) {
