@@ -10,7 +10,3 @@ export default {
   props: ['pending']
 }
 </script>
-
-<style scoped>
-
-</style>

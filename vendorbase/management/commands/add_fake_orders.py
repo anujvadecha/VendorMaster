@@ -6,7 +6,7 @@ from userBase.models import NormalUser
 from vendorbase.models import Symbol
 
 class Command(BaseCommand):
-    user='admin'
+    user='admin1'
     help = 'Process to add fake orders for testing'
     def add_fake_orders(self,count=2000):
         for i in range(0,count):
@@ -32,7 +32,7 @@ class Command(BaseCommand):
             order.save()
     def handle(self, *args, **options):
             self.delete_all_orders()
-            self.add_fake_orders(2)
+            self.add_fake_orders(10)
 
     def delete_all_orders(self):
         Order.objects.all().delete()
