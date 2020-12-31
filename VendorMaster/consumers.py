@@ -88,6 +88,9 @@ class TickConsumer(WebsocketConsumer):
             else:
                 print("not this user")
 
+    def cancel(self, data):
+        pass
+
     def premium_update(self,data):
         print(f" Premium has been updated for {data}")
 
@@ -123,14 +126,19 @@ class OrderEngineConsumer(WebsocketConsumer):
                     json.dumps(OrderSerializer(Order.objects.filter(status=OrderStatus.WAITING_FOR_LIMIT).filter(type=OrderType.LIMIT), many=True).data,cls=UUIDEncoder),
             }))
         if(type=="order_filled"):
-            print(len(text_data_json["order_ids"]))
-            Order.objects.filter(order_id__in=text_data_json["order_ids"]).update(status=OrderStatus.OPEN)
+            Order.objects.filter(order_id__in=text_data_json["order_ids"]).update(status = OrderStatus.OPEN)
 
     def instrument_update(self,data):
         self.send(text_data=json.dumps(data,cls=UUIDEncoder))
 
     def order_update(self,data):
-        self.send(text_data=json.dumps(data,cls=UUIDEncoder))
+        order_update=json.loads(data['order_update'])
+        order_type_limit = order_update['type'] == OrderType.LIMIT
+        if order_type_limit:
+            self.send(text_data=json.dumps(data,cls=UUIDEncoder))
+
+    def cancel(self,data):
+        self.send(text_data=data)
 
     def tick(self,data):
         message = data
@@ -157,6 +165,9 @@ class VendorConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
+
+    def cancel(self, data):
+        pass
 
     def receive(self, text_data):
         text_data_json = json.loads(text_data)

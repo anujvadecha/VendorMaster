@@ -9,6 +9,7 @@
       :filter="filter"
       hide-header
       hide-no-data
+      :pagination="pagination"
       >
       <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
@@ -45,9 +46,13 @@ export default {
   name: 'OrderItemTable',
   components: { OrderItem },
   props: ['orders', 'title'],
+
   data: function () {
     return {
-      filter: ''
+      filter: '',
+      pagination: {
+        rowsPerPage: 0
+      }
     }
   }
 }

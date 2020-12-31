@@ -32,7 +32,7 @@ from vendorbase.views import IndexTemplateView, fallback_404
 from userBase.api.views import activateUser
 
 import threading
-threading.Thread(target=send_tick_data).start()
+# threading.Thread(target=send_tick_data).start()
 # Symbol.update_cache()
 urlpatterns = [
     url('admin/', admin.site.urls),

@@ -192,7 +192,7 @@ ASGI_APPLICATION = 'VendorMaster.asgi.application'
 import os
 
 
-LOGGING = get_config(env('LOG_DIR', default=BASE_DIR))
+# LOGGING = get_config(env('LOG_DIR', default=BASE_DIR))
 
 CHANNEL_LAYERS = {
     "default": {

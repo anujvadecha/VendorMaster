@@ -27,18 +27,24 @@
         <q-tab-panels swipeable v-model="tab" animated>
           <q-tab-panel name="MARKET">
           <div class="row">
-            <q-input class="" type="number" standout="text-white" v-model="quantity" label="Quantity"
-            :rules="quantity_rules"
-            />
-            <q-input  class="q-ml-lg" type="number" readonly v-model="price" :label="order_item.ask.toString()" />
+            <div class="col">
+            <q-input class="" type="number" standout="text-white" v-model="quantity" label="Quantity(gms)"
+            :rules="quantity_rules"/>
+            </div>
+            <div class="col">
+              <q-input  class="q-ml-lg" type="number" readonly v-model="price" :label="order_item.ask.toString()" />
           </div>
+            </div>
           </q-tab-panel>
           <q-tab-panel name="LIMIT">
             <div class="row">
-            <q-input type="number"  standout="text-white" v-model="quantity" label="Quantity"
-            :rules="quantity_rules"/>
+              <div class="col">
+            <q-input type="number"  standout="text-white" v-model="quantity" label="Quantity(gms)"
+            :rules="quantity_rules"/></div>
+              <div class="col">
             <q-input type="number" class="q-ml-md"  v-model="price" :label="order_item.ask.toString()" />
-          </div>
+            </div>
+              </div>
           </q-tab-panel>
         </q-tab-panels>
     <q-card-section style="background-color: white" >
@@ -165,7 +171,7 @@ export default {
   data () {
     return {
       tab: 'MARKET',
-      quantity: 0,
+      quantity: 100,
       price: '',
       imageSrc: '/logo.png',
       leftDrawerOpen: false,

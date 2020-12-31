@@ -159,7 +159,7 @@ class ExecutedOrderAdmin(admin.ModelAdmin,OrderAdminBase):
     def get_queryset(self, request):
         return get_vendor_order_queryset(request=request,queryset=self.model.objects.filter(status=OrderStatus.EXECUTED))
     # list_display = ('instrument_id', 'user_id_url','side', 'quantity','status','created_at')
-    list_display = ('instrument_id','user_id_url','transaction_id','side', 'quantity','status','otp','created_at')
+    list_display = ('instrument_id','transaction_id','side', 'quantity','status','otp','created_at')
     list_per_page = 10
     search_fields = ('order_id','transaction_id', 'instrument_id__name', 'user_id__username')
 
