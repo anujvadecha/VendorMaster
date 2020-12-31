@@ -13,7 +13,10 @@
       <q-card flat bordered>
         <div class="q-ma-md text-h6">Messages from {{ vendor_object.vendor.name }}</div>
         <div class="q-ma-md">
-          {{ vendor_object.vendor.vendor_details.messages }}
+          <span
+                 v-html="vendor_object.vendor.vendor_details.messages"
+               ></span>
+<!--          {{ vendor_object.vendor.vendor_details.messages }}-->
         </div>
       </q-card>
       <q-card>

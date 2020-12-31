@@ -46,6 +46,14 @@ def create_update_order(sender, instance, created, **kwargs):
             "order_update": json.dumps(OrderSerializer(instance).data, cls=UUIDEncoder)
         }
     )
+    if(instance.status==OrderStatus.CANCELLED):
+        print('order cancelled')
+        async_to_sync(channel_layer.group_send)(
+            settings.SOCKET_GROUP,{
+                "type": "cancel",
+                "cancelled":str(instance.order_id)
+            }
+        )
 
 
 @receiver(post_save, sender=Vendor)

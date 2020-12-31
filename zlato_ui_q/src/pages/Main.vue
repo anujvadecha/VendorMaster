@@ -105,7 +105,7 @@ import BottomOrderDialog from 'components/BottomOrderDialog'
 
 import EssentialLink from 'components/EssentialLink.vue'
 import { Notify } from 'quasar'
-import { get_user_details } from 'src/common/api_calls'
+import { base_websocket_url, get_user_details } from 'src/common/api_calls'
 const linksData = [
   {
     title: 'Home',
@@ -193,7 +193,7 @@ export default {
       const connecter = this.connect_websocket
       const store = this.$store
       document.cookie = 'authorization=' + this.$q.localStorage.getItem('token') + ';'
-      const url = 'ws://' + '127.0.0.1:8000' + '/ws/' + 'ticker' + '/' + '?' + this.$q.localStorage.getItem('token')
+      const url = 'ws://' + base_websocket_url + '/ws/' + 'ticker' + '/' + '?' + this.$q.localStorage.getItem('token')
       const symbolsocket = new WebSocket(url)
       symbolsocket.onopen = function () {
         Notify.create({

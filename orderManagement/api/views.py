@@ -10,28 +10,27 @@ from vendorbase.models import VendorMargin, Symbol
 import logging
 logger=logging.getLogger(__name__)
 
-@api_view(["POST"])
-def placeOrder(request):
-    if request.method=="POST":
-        serializer=OrderSerializer(data=request.data)
-        if(serializer.is_valid()):
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(["GET"])
-def getOrderDetails(request):
-    if request.method=="GET":
-        # orders=Order.objects.filter(order_id__in=request.data["order_id"])
-        orders=Order.objects.all()
-        return Response(OrderSerializer(orders,many=True).data)
+# @api_view(["POST"])
+# def placeOrder(request):
+#     if request.method=="POST":
+#         serializer=OrderSerializer(data=request.data)
+#         if(serializer.is_valid()):
+#             serializer.save()
+#             return Response(serializer.data,status=status.HTTP_201_CREATED)
+#         else:
+#             return Response(status=status.HTTP_400_BAD_REQUEST)
+#
+# @api_view(["GET"])
+# def getOrderDetails(request):
+#     if request.method=="GET":
+#         # orders=Order.objects.filter(order_id__in=request.data["order_id"])
+#         orders = Order.objects.all()
+#         return Response(OrderSerializer(orders,many=True).data)
 
 class OrderView(APIView):
     permission_classes = [IsAuthenticated]
-
     def get(self,request):
-        orders = Order.objects.all()
+        orders = Order.objects.filter(user_id=request.user)
         print(request.user)
         return Response(OrderSerializer(orders, many=True).data)
 
@@ -40,13 +39,17 @@ class OrderView(APIView):
         serializer = OrderSerializer(data=request.data)
         instrument = Symbol.objects.get(instrument_id=request.data['instrument_id'])
         logger.info(f"Order request received {request.data}")
-        margin_object = VendorMargin.objects.get(user=request.user,vendor_id=instrument.vendor_id)
+        margin_object = VendorMargin.objects.filter(user=request.user,vendor_id=instrument.vendor_id).first()
+        if(margin_object==None):
+            return Response('Margin for this user does not exist')
         if( margin_object.margin_available >= int(request.data['quantity'])):
             logger.info(f"Margin available is {margin_object.margin_available} order quantity {request.data['quantity']}")
             margin_object.margin_available = margin_object.margin_available - int(request.data['quantity'])
             margin_object.save()
         else:
             return Response("Failed due to margin not available",status=status.HTTP_200_OK)
+        if not request.user.is_activated:
+            return Response('You need to activate your account')
         if (serializer.is_valid()):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -54,7 +57,6 @@ class OrderView(APIView):
             return Response(status=status.HTTP_200_OK)
 
     def delete(self,request):
-        print(request.data)
         order=Order.objects.get(order_id=request.data["order_id"])
         margin = VendorMargin.objects.get(user=request.user, vendor_id=order.instrument_id.vendor_id)
         margin.margin_available=margin.margin_available+order.quantity

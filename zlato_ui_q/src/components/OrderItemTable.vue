@@ -9,7 +9,8 @@
       :filter="filter"
       hide-header
       hide-no-data
-      hide-pagination>
+      :pagination="pagination"
+      >
       <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
           <template v-slot:append>
@@ -21,7 +22,7 @@
       <div class="q-pa-xs col-xs-12 col-sm-12 col-md-6">
           <q-card>
             <OrderItem :order="props.row"></OrderItem>
-        </q-card>
+          </q-card>
       </div>
       </template>
     </q-table>
@@ -45,9 +46,13 @@ export default {
   name: 'OrderItemTable',
   components: { OrderItem },
   props: ['orders', 'title'],
+
   data: function () {
     return {
-      filter: ''
+      filter: '',
+      pagination: {
+        rowsPerPage: 0
+      }
     }
   }
 }

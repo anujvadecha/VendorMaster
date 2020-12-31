@@ -82,6 +82,8 @@ def get_vendor_margin_queryset(request=None,queryset=None):
 
 @admin.register(LimitOrderPending)
 class LimitOrderPendingAdmin(admin.ModelAdmin,OrderAdminBase):
+    change_list_template = 'order_update_detector.html'
+
     def get_queryset(self, request):
         return get_vendor_order_queryset(request=request,queryset=self.model.objects.filter(status=OrderStatus.WAITING_FOR_LIMIT))
     list_display = ('instrument_id','transaction_id', 'side', 'quantity', 'status', 'created_at')
@@ -101,7 +103,7 @@ class OpenOrderAdmin(admin.ModelAdmin,OrderAdminBase):
     #
     # user_id_url.make_safe = True
     # user_id_url.allow_tags = True
-
+    change_list_template = 'order_update_detector.html'
     def get_urls(self):
         urls = super(OpenOrderAdmin,self).get_urls()
         my_urls = [
@@ -129,6 +131,7 @@ class OpenOrderAdmin(admin.ModelAdmin,OrderAdminBase):
 
 @admin.register(ExecutedOrder)
 class ExecutedOrderAdmin(admin.ModelAdmin,OrderAdminBase):
+    change_list_template = 'order_update_detector.html'
 
     def get_urls(self):
         urls = super(ExecutedOrderAdmin,self).get_urls()
@@ -156,7 +159,7 @@ class ExecutedOrderAdmin(admin.ModelAdmin,OrderAdminBase):
     def get_queryset(self, request):
         return get_vendor_order_queryset(request=request,queryset=self.model.objects.filter(status=OrderStatus.EXECUTED))
     # list_display = ('instrument_id', 'user_id_url','side', 'quantity','status','created_at')
-    list_display = ('instrument_id','user_id_url','transaction_id','side', 'quantity','status','otp','created_at')
+    list_display = ('instrument_id','transaction_id','side', 'quantity','status','otp','created_at')
     list_per_page = 10
     search_fields = ('order_id','transaction_id', 'instrument_id__name', 'user_id__username')
 
@@ -168,6 +171,8 @@ class ExecutedOrderAdmin(admin.ModelAdmin,OrderAdminBase):
 
 @admin.register(ClosedOrder)
 class ClosedOrderAdmin(admin.ModelAdmin,OrderAdminBase):
+    change_list_template = 'order_update_detector.html'
+
     def user_id_url(self, obj):
         if obj and obj.user_id:
             return format_html('<a href="{}">{}</a>'.format(obj.user_id.get_admin_url(), obj.user_id))

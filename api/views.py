@@ -11,6 +11,7 @@ def UserRegisterView(request):
     serializer_class = UserRegistrationSerializer
     queryset = User.objects.all()
     if request.method == 'POST':
+        print(request.data)
         serializer = UserRegistrationSerializer(data=request.data)
         if serializer.is_valid():
             # User.objects.create_user(serializer.save())
