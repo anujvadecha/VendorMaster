@@ -87,10 +87,13 @@
         Support
       </q-card-section>
       <q-card-section>
+        <q-input outlined label="Title" v-model="request_title" />
+        <br />
+        <textarea name="message" v-model="request_message" placeholder="Request" id="" cols="33" rows="10"></textarea>
       </q-card-section>
        <q-card-section style="background-color: white" >
       <q-btn class="q-ml-md btn-danger" @click="support=false">Close</q-btn>
-      <q-btn class="q-ml-md btn-primary" color="primary" @click="support=false">Send request</q-btn>
+      <q-btn class="q-ml-md btn-primary" color="primary" @click="sendRequest">Send request</q-btn>
     </q-card-section>
     </q-card>
   </q-dialog>
@@ -163,6 +166,35 @@ export default {
             timeout: 1000
           })
         })
+    },
+    sendRequest () {
+      const axios = require('axios')
+      const data = { title: this.request_title, message: this.request_message }
+      const config = {
+        method: 'post',
+        url: 'http://127.0.0.1:8000/api/support/',
+        headers: {
+          Authorization: `Token ${this.$q.localStorage.getItem('token')}`
+        },
+        data: data
+      }
+      axios(config)
+        .then((res) => {
+          console.log(res)
+          Notify.create({
+            message: 'Request has been succesfully sent!',
+            position: 'top-right',
+            timeout: 1000
+          })
+        })
+        .catch((err) => {
+          console.log(err)
+          Notify.create({
+            message: 'Error while sending the request',
+            position: 'top-right',
+            timeout: 1000
+          })
+        })
     }
   },
   data: function () {
@@ -170,7 +202,9 @@ export default {
       reset: false,
       support: false,
       new_password1: '',
-      new_password2: ''
+      new_password2: '',
+      request_title: '',
+      request_message: ''
     }
   },
   created () {
