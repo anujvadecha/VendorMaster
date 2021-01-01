@@ -26,5 +26,5 @@ class NormalUser(AbstractUser):
 
 class Support(BaseModel):
     user_id = models.ForeignKey(NormalUser, on_delete=models.DO_NOTHING, null=True)
-    username = models.CharField(max_length=200, null=True, blank=True)
+    title = models.CharField(max_length=200, null=True, blank=True)
     message = models.TextField(null=True, blank=True)
