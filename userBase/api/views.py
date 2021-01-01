@@ -1,20 +1,18 @@
 from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.parsers import FormParser, MultiPartParser, FileUploadParser
+from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from userBase.api.serializer import ActivateUserSerializer
-from userBase.models import NormalUser
 
 
-class activateUser(APIView):
+class ActivateUser(APIView):
     parser_classes = [MultiPartParser]
     permission_classes = [IsAuthenticated]
 
     def post(self,request):
         print(request.data)
+        print(request.user)
         user = request.user
         print(user)
         serializer = ActivateUserSerializer(user,data=request.data,partial=True)

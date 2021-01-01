@@ -9,14 +9,16 @@ from VendorMaster import settings
 from VendorMaster.consumers import UUIDEncoder
 from admin_interface.models import Theme
 from orderManagement.api.serializers import OrderSerializer
-from orderManagement.models import Order, LimitOrderPending, OpenOrder, ExecutedOrder, ClosedOrder, OrderStatus, \
-    OrderType
+from orderManagement.models import Order, LimitOrderPending, OpenOrder, ExecutedOrder, ClosedOrder, OrderStatus, OrderType
 from userBase.models import NormalUser
 from vendorbase.api.serializers import SymbolSerializer
 from vendorbase.models import Symbol, Vendor, VendorDetails, VendorMargin
 from django.core.cache import cache
 
 logger=logging.getLogger(__name__)
+
+
+
 @receiver(post_save, sender=Symbol)
 def create_update_symbol(sender, instance, created, **kwargs):
     print("symbol update")
@@ -54,6 +56,15 @@ def create_update_order(sender, instance, created, **kwargs):
                 "cancelled":str(instance.order_id)
             }
         )
+
+
+@receiver(pre_save, sender=Order)
+@receiver(pre_save, sender=LimitOrderPending)
+@receiver(pre_save, sender=OpenOrder)
+@receiver(pre_save, sender=ExecutedOrder)
+@receiver(pre_save, sender=ClosedOrder)
+def pre_save_order(sender, instance, *args, **kwargs):
+    pass
 
 
 @receiver(post_save, sender=Vendor)

@@ -123,10 +123,18 @@ class OrderEngineConsumer(WebsocketConsumer):
         if(type=="all_orders_limit_pending"):
             self.send(json.dumps({
                 'orders':
-                    json.dumps(OrderSerializer(Order.objects.filter(status=OrderStatus.WAITING_FOR_LIMIT).filter(type=OrderType.LIMIT), many=True).data,cls=UUIDEncoder),
+                    json.dumps(OrderSerializer(Order.objects.filter(status=OrderStatus.WAITING_FOR_LIMIT,type__contains=[OrderType.LIMIT,OrderType.BEST_LIMIT]).filter(), many=True).data,cls=UUIDEncoder),
             }))
-        if(type=="order_filled"):
-            Order.objects.filter(order_id__in=text_data_json["order_ids"]).update(status = OrderStatus.OPEN)
+        if(type == "order_filled" ):
+            orders=Order.objects.filter(order_id__in=text_data_json["order_ids"])
+            for order in orders:
+                if(order.status!=OrderStatus.CANCELLED):
+                    if (order.type == OrderType.BEST_LIMIT):
+                        pass
+                    else:
+                        order.status = OrderStatus.OPEN
+                        order.save()
+
 
     def instrument_update(self,data):
         self.send(text_data=json.dumps(data,cls=UUIDEncoder))

@@ -1,6 +1,6 @@
 from django.conf.urls import url
-from userBase.api.views import activateUser
+from userBase.api.views import ActivateUser
 
 urlpatterns=[
-    url("api/activateUser", activateUser.as_view())
+    url("api/activateUser", ActivateUser.as_view())
 ]

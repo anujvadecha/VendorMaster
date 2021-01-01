@@ -18,7 +18,7 @@ class OrderSerializer(serializers.ModelSerializer):
             return obj.instrument_id.name
 
     def get_otp(self,obj):
-        if obj.status==OrderStatus.EXECUTED:
+        if obj.status == OrderStatus.EXECUTED:
             return otp_hash(obj.order_id)
         else:
             return None
@@ -28,4 +28,4 @@ class OrderSerializer(serializers.ModelSerializer):
         fields=["created_at","modified_at","order_id",
         "instrument_id",'transaction_id',"quantity",
         "user_id","price","type",
-        "status","side","otp","name"]
+        "status","side","otp","name","best_limit_id"]

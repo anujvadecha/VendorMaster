@@ -67,3 +67,5 @@ coverage.xml
 docs/_build/
 zlato_ui/webpack-stats.json
 */webpack-stats.json
+migrations/
+*migrations/

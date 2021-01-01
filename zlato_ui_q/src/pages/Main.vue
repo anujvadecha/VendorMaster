@@ -1,9 +1,10 @@
 <template>
+  <div>
   <div id="q-app">
-    <q-layout view="lHh Lpr lFf">
+    <q-layout class="" view="lHh Lpr fFf">
       <q-header class="bg-white text-dark" style="" elevated bordered  >
       <q-toolbar style="" class="shadow-2">
-        <q-btn class="mobile-only" flat dense round icon="menu" aria-label="Menu" @click="leftDrawerOpen = !leftDrawerOpen"/>
+<!--        <q-btn class="mobile-only" flat dense round icon="menu" aria-label="Menu" @click="leftDrawerOpen = !leftDrawerOpen"/>-->
         <q-toolbar-title class="font-bold">
           <q-img
             :src="imageSrc"
@@ -94,9 +95,36 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+    <q-footer v-if="$q.platform.is.mobile"  class=" bg-white text-white">
+      <q-toolbar class="justify-evenly shadow-2">
+        <q-btn flat >
+          <router-link class="text-primary" to="Home" style="text-decoration: None;">
+          <q-icon class="lt-md" size="lg" name="mdi-home" ></q-icon>
+          </router-link>
+        </q-btn>
+        <q-btn flat>
+          <router-link class="text-primary" to="Orders" style="text-decoration: None;">
+          <q-icon class="lt-md" size="lg" name="mdi-bag-checked" ></q-icon>
+           </router-link>
+        </q-btn>
+        <q-btn flat>
+          <router-link class="text-primary" to="Favourites" style="text-decoration: None;">
+          <q-icon class="lt-md" size="lg" name="mdi-heart"></q-icon>
+            </router-link></q-btn>
+        <q-btn flat>
+          <router-link class="text-primary" to="Account" style="text-decoration: None;">
+          <q-icon class="lt-md"  size="lg" name="mdi-account"></q-icon>
+        </router-link>
+        </q-btn>
+      </q-toolbar>
+    </q-footer>
   </q-layout>
     <BottomOrderDialog></BottomOrderDialog>
+    <BestLimitBottomOrderDialog></BestLimitBottomOrderDialog>
+
   </div>
+
+</div>
 </template>
 <script>
 import BottomOrderDialog from 'components/BottomOrderDialog'
@@ -106,6 +134,7 @@ import BottomOrderDialog from 'components/BottomOrderDialog'
 import EssentialLink from 'components/EssentialLink.vue'
 import { Notify } from 'quasar'
 import { base_websocket_url, get_user_details } from 'src/common/api_calls'
+import BestLimitBottomOrderDialog from 'components/BestLimitBottomOrderDialog'
 const linksData = [
   {
     title: 'Home',
@@ -165,7 +194,7 @@ const account_details_tree = [
 // import { base_url } from 'common/api_calls'
 export default {
   name: 'Main',
-  components: { EssentialLink, BottomOrderDialog },
+  components: { BestLimitBottomOrderDialog, EssentialLink, BottomOrderDialog },
   computed: {
     is_activated: function () {
       return !this.$store.getters.get_is_activated
