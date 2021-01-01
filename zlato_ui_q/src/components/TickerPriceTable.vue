@@ -4,7 +4,7 @@
       <div class="col">
         <div v-if="title==null">
             Watchlist
-          </div>
+        </div>
       <div v-else>
         {{title}}
       </div>
@@ -44,72 +44,72 @@
     <template v-slot:top>
 
     </template>
-<!--   / <template v-slot:top-row style="">-->
-<!--        <q-tr class="bg-black text-white" >-->
-<!--            <q-td style="" class="vendor_link" @click="open_vendor_dialog(lowest.vendor_id)" v-if="!$q.platform.is.mobile" key="Vendor" >-->
-<!--            {{ lowest.vendor }}-->
-<!--            </q-td>-->
-<!--            <q-td @click="open_vendor_dialog(lowest.vendor_id)" key="Symbol" >-->
-<!--            <div v-if="$q.platform.is.mobile">-->
-<!--              <div class="col">-->
-<!--                <div class="row vendor_link" >-->
-<!--                   <span style="font-size:small"> {{ lowest.vendor }}</span>-->
-<!--                </div>-->
-<!--                <div class="row">-->
-<!--                  <span style="font-size:small">{{lowest.name}}</span>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <div v-else>-->
-<!--              {{ lowest.name }}-->
-<!--            </div>-->
-<!--          </q-td>-->
-<!--          <q-td @click="open_order_sheet(lowest)" key="Bid" >-->
-<!--            <div v-if="$q.platform.is.mobile">-->
-<!--              <div class="col">-->
-<!--                <div class="row">-->
-<!--                   <span style="font-size:large"> {{ lowest.bid }}</span>-->
-<!--                </div>-->
-<!--                <div class="row">-->
-<!--                  <span style="font-size:small">L:{{lowest.low}}</span>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <div v-else>-->
-<!--              {{ lowest.bid }}-->
-<!--            </div>-->
-<!--          </q-td>-->
-<!--          <q-td @click="open_order_sheet(lowest)" key="Ask" >-->
-<!--            <div v-if="$q.platform.is.mobile">-->
-<!--              <div class="col">-->
-<!--                <div class="row">-->
-<!--                   <span style="font-size:large"> {{ lowest.ask }}</span>-->
-<!--                </div>-->
-<!--                <div class="row">-->
-<!--                  <span style="font-size:small">H:{{lowest.high}}</span>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <div v-else>-->
-<!--              {{ lowest.ask }}-->
-<!--              </div>-->
-<!--          </q-td>-->
-<!--          <q-td v-if="!$q.platform.is.mobile" key="High" >-->
-<!--              {{ lowest.high }}-->
-<!--          </q-td>-->
-<!--          <q-td v-if="!$q.platform.is.mobile" key="Low" >-->
-<!--              {{ lowest.low }}-->
-<!--          </q-td>-->
-<!--          <q-td @click ="toggleFavourite(lowest)" key='favourite' >-->
-<!--            <div v-if="lowest.is_favourite">-->
-<!--              <q-icon size="sm" name="mdi-star"/>-->
-<!--            </div>-->
-<!--            <div v-else>-->
-<!--              <q-icon size="sm" name="mdi-star-outline"/>-->
-<!--            </div>-->
-<!--          </q-td>-->
-<!--        </q-tr>-->
-<!--    </template>-->
+    <template v-slot:top-row style="">
+        <q-tr  class="col-span-full bg-light-green-2 " style="" >
+            <q-td style="" class="vendor_link" @click="open_vendor_dialog(lowest.vendor_id)" v-if="!$q.platform.is.mobile" key="Vendor" >
+            {{ lowest.vendor }}
+            </q-td>
+            <q-td @click="open_vendor_dialog(lowest.vendor_id)" key="Symbol" >
+            <div v-if="$q.platform.is.mobile">
+              <div class="col">
+                <div class="row vendor_link" >
+                   <span style="font-size:small"> {{ lowest.vendor }}</span>
+                </div>
+                <div class="row">
+                  <span style="font-size:small">{{lowest.name}}</span>
+                </div>
+              </div>
+            </div>
+            <div v-else>
+              {{ lowest.name }}
+            </div>
+          </q-td>
+          <q-td @click="open_order_sheet(lowest)" key="Bid" >
+            <div v-if="$q.platform.is.mobile">
+              <div class="col">
+                <div class="row">
+                   <span style="font-size:large"> {{ lowest.bid }}</span>
+                </div>
+                <div class="row">
+                  <span style="font-size:small">L:{{lowest.low}}</span>
+                </div>
+              </div>
+            </div>
+            <div v-else>
+              {{ lowest.bid }}
+            </div>
+          </q-td>
+          <q-td @click="open_order_sheet(lowest)" key="Ask" >
+            <div v-if="$q.platform.is.mobile">
+              <div class="col">
+                <div class="row">
+                   <span style="font-size:large"> {{ lowest.ask }}</span>
+                </div>
+                <div class="row">
+                  <span style="font-size:small">H:{{lowest.high}}</span>
+                </div>
+              </div>
+            </div>
+            <div v-else>
+              {{ lowest.ask }}
+              </div>
+          </q-td>
+          <q-td v-if="!$q.platform.is.mobile" key="High" >
+              {{ lowest.high }}
+          </q-td>
+          <q-td v-if="!$q.platform.is.mobile" key="Low" >
+              {{ lowest.low }}
+          </q-td>
+          <q-td @click ="toggleFavourite(lowest)" key='favourite' >
+            <div v-if="lowest.is_favourite">
+              <q-icon size="sm" name="mdi-star"/>
+            </div>
+            <div v-else>
+              <q-icon size="sm" name="mdi-star-outline"/>
+            </div>
+          </q-td>
+        </q-tr>
+    </template>
       <template v-slot:header="props">
         <q-tr class="text-left"  :props="props">
           <q-th  v-if="!$q.platform.is.mobile">

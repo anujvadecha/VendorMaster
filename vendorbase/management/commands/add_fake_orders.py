@@ -26,13 +26,13 @@ class Command(BaseCommand):
             order=Order(user_id=NormalUser.objects.filter(username=self.user).first(),instrument_id=Symbol.objects.first(),quantity=randint(1, 200),status=OrderStatus.CLOSED,
                   type=OrderType.LIMIT,price=randint(70000,80000))
             order.save()
-            order = Order(user_id=NormalUser.objects.filter(username=self.user).first(),
-                          instrument_id = None, quantity=randint(1, 200), status=OrderStatus.WAITING_FOR_LIMIT,
-                          type=OrderType.BEST_LIMIT , price=randint(70000, 80000))
-            order.save()
+            # order = Order(user_id=NormalUser.objects.filter(username=self.user).first(),
+            #               instrument_id = None, quantity=randint(1, 200), status=OrderStatus.WAITING_FOR_LIMIT,
+            #               type=OrderType.BEST_LIMIT , price=randint(70000, 80000))
+            # order.save()
     def handle(self, *args, **options):
             self.delete_all_orders()
-            self.add_fake_orders(2)
+            self.add_fake_orders(10)
 
     def delete_all_orders(self):
         Order.objects.all().delete()

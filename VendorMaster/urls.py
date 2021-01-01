@@ -29,7 +29,7 @@ from django_registration.backends.one_step.views import RegistrationView
 from vendorbase.api.views import FavouritesView, SupportView
 from vendorbase.models import Symbol
 from vendorbase.views import IndexTemplateView, fallback_404
-from userBase.api.views import activateUser
+from userBase.api.views import ActivateUser
 
 import threading
 threading.Thread(target=send_tick_data).start()

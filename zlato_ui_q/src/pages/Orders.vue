@@ -22,7 +22,7 @@
             <ExecutedOrders :waiting="executed_orders_waiting" :confirmed="executed_orders_confirmed"></ExecutedOrders>
           </q-tab-panel>
           <q-tab-panel name="pending">
-            <PendingOrders :pending="active_orders"></PendingOrders>
+            <PendingOrders :pending="active_orders" :refresh="this.get_orders"></PendingOrders>
           </q-tab-panel>
           <q-tab-panel name="closed">
             <ClosedOrders :closed="closed_orders"></ClosedOrders>

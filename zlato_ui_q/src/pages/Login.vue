@@ -43,6 +43,7 @@
 
 <script>
 import { Notify } from 'quasar'
+import { base_url } from 'src/common/api_calls'
 
 export default {
   name: 'Login',
@@ -140,7 +141,7 @@ export default {
       var data = { username: this.email, password: this.password }
       var config = {
         method: 'post',
-        url: 'http://127.0.0.1:8000/api/rest-auth/login/',
+        url: base_url + '/api/rest-auth/login/',
         headers: {
           'Content-Type': 'application/json'
         },

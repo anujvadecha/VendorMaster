@@ -23,16 +23,18 @@ class OrderSide(DjangoChoices):
     BUY=ChoiceItem("BUY")
     SELL=ChoiceItem("SELL")
 
+
 class Order(BaseModel):
     order_id  = models.UUIDField(primary_key=True, default=uuid.uuid4,editable=False)
-    transaction_id = models.CharField(max_length=120, default=unique_transaction_id_generator, blank=True,editable=False)
+    transaction_id = models.CharField(max_length=120, default = unique_transaction_id_generator ,blank=True,editable=False)
     instrument_id = models.ForeignKey(Symbol,null=True,on_delete=models.DO_NOTHING,blank=True)
     quantity = models.IntegerField()
     user_id = models.ForeignKey(NormalUser,on_delete=models.DO_NOTHING,blank=True)
     price = models.FloatField(max_length=200)
     type = models.CharField(max_length=200, choices=OrderType, default=OrderType.MARKET)
     status = models.CharField(max_length=100,choices=OrderStatus,default=OrderStatus.OPEN)
-    side = models.CharField( default=OrderSide.BUY,max_length=200 ,choices=OrderSide)
+    side = models.CharField(default=OrderSide.BUY,max_length=200 ,choices=OrderSide)
+    best_limit_id = models.CharField(max_length=120,blank=True)
 
     def vendor(self):
         return self.instrument_id.vendor_id
@@ -54,5 +56,9 @@ class ExecutedOrder(Order):
         proxy=True
 
 class LimitOrderPending(Order):
+    class Meta:
+        proxy = True
+
+class BestLimitOrder(Order):
     class Meta:
         proxy = True

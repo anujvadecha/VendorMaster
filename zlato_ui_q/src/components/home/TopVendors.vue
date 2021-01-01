@@ -9,7 +9,7 @@
               height:'150px',
               width:'120px'
             }">
-      <q-img width="80px" :src="base_url+vendor.theme.logo" :alt="vendor.name"/>
+      <q-img width="80px" :src="base_url+vendor.theme.logo"/>
       <span class="text-white" style="font-weight: bold">{{ vendor.name }}</span>
     </q-card-section>
   </q-card>

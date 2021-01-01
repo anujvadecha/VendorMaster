@@ -11,11 +11,11 @@ class UserType(DjangoChoices):
 
 
 class NormalUser(AbstractUser):
-    requested_registration = models.BooleanField(default=False)
-    phone_number = models.CharField(blank=True, max_length=14)
-    profile_picture = models.ImageField(blank=True)
-    pan_card = models.ImageField(blank=True)
-    business_card = models.ImageField(blank=True)
+    requested_registration = models.BooleanField(default = False)
+    phone_number = models.CharField( blank=True , max_length=14 )
+    profile_picture = models.ImageField( blank=True )
+    pan_card = models.ImageField( blank=True )
+    business_card = models.ImageField( blank=True )
     is_activated = models.BooleanField(default=False)
     gst_in_no = models.CharField(max_length=200, blank=True)
     reference_1_name = models.CharField(max_length=200, blank=True,help_text="Please input name and number of any reference we can verify")
@@ -26,5 +26,5 @@ class NormalUser(AbstractUser):
 
 class Support(BaseModel):
     user_id = models.ForeignKey(NormalUser, on_delete=models.DO_NOTHING, null=True)
-    username = models.CharField(max_length=200, null=True, blank=True)
+    title = models.CharField(max_length=200, null=True, blank=True)
     message = models.TextField(null=True, blank=True)

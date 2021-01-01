@@ -1,5 +1,6 @@
 import { apiService } from './api.service'
 const base_url = 'http://127.0.0.1:8000'
+const base_websocket_url = '127.0.0.1:8000'
 
 function add_to_favourites (instrument_id) {
   const endpoint = base_url + '/api/favourites/'
@@ -51,5 +52,6 @@ export {
   cancel_order,
   get_user_margins,
   support_request,
-  get_user_details
+  get_user_details,
+  base_websocket_url
 }

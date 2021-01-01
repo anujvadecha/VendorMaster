@@ -12,9 +12,11 @@
             <strong class="text-h6 justify-center items-center ">User Activation</strong>
             </div>
           </q-card-section>
-          <q-separator color="orange" size="5px"></q-separator>
+          <q-separator color="orange" size="15px"></q-separator>
           <q-card-section>
-            <q-form @submit="submitForm" class="q-px-sm q-pt-xl">
+            <form action="http://127.0.0.1:8000/user/api/activateUser"
+                    method="post" class="q-px-sm q-pt-xl"
+                    enctype='multipart/form-data'>
               <q-input
                 name="phone_number"
                 square clearable
@@ -101,7 +103,7 @@
               </q-input>
               <br />
               <q-btn type="submit" unelevated size="lg" color="primary" class="full-width text-white" label="Activate" />
-            </q-form>
+            </form>
           </q-card-section>
         <!-- <q-card-actions class="q-px-lg">
           <q-btn type="submit" unelevated size="lg" color="primary" class="full-width text-white" label="Activate" />

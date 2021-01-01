@@ -8,7 +8,8 @@ from django.urls import path, reverse
 from django.utils.html import format_html
 
 from base.models import BaseModel
-from orderManagement.models import Order, OrderStatus, OpenOrder, ExecutedOrder, ClosedOrder, LimitOrderPending
+from orderManagement.models import Order, OrderStatus, OpenOrder, ExecutedOrder, ClosedOrder, LimitOrderPending, \
+    BestLimitOrder, OrderType
 from orderManagement.utils import otp_hash
 from userBase.models import NormalUser
 from vendorbase.models import Symbol, Vendor, Group, City, GlobalPremium, Favourite, VendorDetails, VendorMargin
@@ -63,9 +64,6 @@ class VendorAdmin(admin.ModelAdmin):
     pass
 
 
-class OrderAdminBase():
-    class Meta:
-        pass
 
 def get_vendor_order_queryset(request=None,queryset=None):
     if (request.user.is_superuser):
@@ -81,22 +79,37 @@ def get_vendor_margin_queryset(request=None,queryset=None):
 
 
 @admin.register(LimitOrderPending)
-class LimitOrderPendingAdmin(admin.ModelAdmin,OrderAdminBase):
+class LimitOrderPendingAdmin(admin.ModelAdmin):
     change_list_template = 'order_update_detector.html'
-
     def get_queryset(self, request):
-        return get_vendor_order_queryset(request=request,queryset=self.model.objects.filter(status=OrderStatus.WAITING_FOR_LIMIT))
+        return get_vendor_order_queryset(request=request,queryset=self.model.objects.filter(type=OrderType.LIMIT,status=OrderStatus.WAITING_FOR_LIMIT))
     list_display = ('instrument_id','transaction_id', 'side', 'quantity', 'status', 'created_at')
     list_display_links = ('instrument_id',)
     list_editable = ('status',)
-    list_filter = ('status',)
+    list_filter = ('quantity',)
     list_per_page = 10
     ordering = ('created_at',)
     search_fields = ('order_id', 'instrument_id__name', 'user_id__name')
 
+@admin.register(BestLimitOrder)
+class BestLimitOrderAdmin(admin.ModelAdmin):
+    change_list_template = 'order_update_detector.html'
+    def get_queryset(self, request):
+        return get_vendor_order_queryset(request=request,queryset=self.model.objects.filter(type=OrderType.BEST_LIMIT,status=OrderStatus.WAITING_FOR_LIMIT))
+    list_display = ('instrument_id','transaction_id', 'side', 'quantity', 'status', 'created_at')
+    list_display_links = ('instrument_id',)
+    list_editable = ('status',)
+    list_filter = ('quantity',)
+    list_per_page = 10
+    ordering = ('created_at',)
+    search_fields = ('order_id', 'instrument_id__name', 'user_id__name')
+    # readonly_fields = ('best_limit_id',)
+    exclude = ('best_limit_id',)
+    pass
+
 
 @admin.register(OpenOrder)
-class OpenOrderAdmin(admin.ModelAdmin,OrderAdminBase):
+class OpenOrderAdmin(admin.ModelAdmin):
     # def user_id_url(self, obj):
     #     if obj and obj.user_id:
     #         return format_html('<a  href="{}">{}</a>'.format(obj.user_id.get_admin_url(), obj.user_id))
@@ -127,12 +140,11 @@ class OpenOrderAdmin(admin.ModelAdmin,OrderAdminBase):
     list_filter = ('instrument_id__name',)
     list_per_page = 10
     search_fields = ('order_id','transaction_id', 'instrument_id__name', 'user_id__name')
-
+    exclude = ('best_limit_id',)
 
 @admin.register(ExecutedOrder)
-class ExecutedOrderAdmin(admin.ModelAdmin,OrderAdminBase):
+class ExecutedOrderAdmin(admin.ModelAdmin):
     change_list_template = 'order_update_detector.html'
-
     def get_urls(self):
         urls = super(ExecutedOrderAdmin,self).get_urls()
         my_urls = [
@@ -159,7 +171,7 @@ class ExecutedOrderAdmin(admin.ModelAdmin,OrderAdminBase):
     def get_queryset(self, request):
         return get_vendor_order_queryset(request=request,queryset=self.model.objects.filter(status=OrderStatus.EXECUTED))
     # list_display = ('instrument_id', 'user_id_url','side', 'quantity','status','created_at')
-    list_display = ('instrument_id','user_id_url','transaction_id','side', 'quantity','status','otp','created_at')
+    list_display = ('instrument_id','transaction_id','side', 'quantity','status','otp','created_at')
     list_per_page = 10
     search_fields = ('order_id','transaction_id', 'instrument_id__name', 'user_id__username')
 
@@ -168,9 +180,10 @@ class ExecutedOrderAdmin(admin.ModelAdmin,OrderAdminBase):
 
     list_display_links = ('instrument_id',)
     # list_filter = ('',)
+    exclude = ('best_limit_id',)
 
 @admin.register(ClosedOrder)
-class ClosedOrderAdmin(admin.ModelAdmin,OrderAdminBase):
+class ClosedOrderAdmin(admin.ModelAdmin):
     change_list_template = 'order_update_detector.html'
 
     def user_id_url(self, obj):
@@ -187,6 +200,7 @@ class ClosedOrderAdmin(admin.ModelAdmin,OrderAdminBase):
     list_filter = ('status',)
     list_per_page = 10
     search_fields = ('order_id','transaction_id', 'instrument_id__name', 'user_id__name')
+    exclude = ('best_limit_id',)
 
 
 @admin.register(Group)

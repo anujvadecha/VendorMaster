@@ -9,29 +9,29 @@
       <div v-else><q-btn  @click="$router.push('Registration')" class="text-black bg-white"> Activate </q-btn> &nbsp; your account to place orders</div>
      </div>
     </div>
-  </q-card>
-      </div>
+    </q-card>
+    </div>
   </div>
   <TopVendors class="mobile-hide"  :vendors="vendors_computed"></TopVendors>
   <TickerPriceTable title="Ticker prices" :instruments_to_render="instruments_to_render"></TickerPriceTable>
+  <q-btn @click="$store.state.bottom_best_limit_sheet=true">Best limit order</q-btn>
+    <MobileMarketing></MobileMarketing>
   </div>
+
 </template>
 <script>
 import TopVendors from 'components/home/TopVendors'
 import TickerPriceTable from 'components/TickerPriceTable'
 import { add_to_favourites, remove_from_favourites } from 'src/common/api_calls'
+import MobileMarketing from 'components/MobileMarketing'
 // import { add_to_favourites, remove_from_favourites } from '@/common/api_calls'
 
 export default {
   name: 'Home',
-  components: { TickerPriceTable, TopVendors },
+  components: { MobileMarketing, TickerPriceTable, TopVendors },
   data () {
     return {
       slide: 'gold 999',
-      g99instruments: [],
-      g991instruments: [],
-      g95instruments: [],
-      g951instruments: [],
       tab: 'All',
       headers: [
         { name: 'Vendor', align: 'start', field: 'vendor', label: 'Vendor' },
