@@ -15,8 +15,7 @@ from vendorbase.api.serializers import SymbolSerializer
 from vendorbase.models import Symbol, Vendor, VendorDetails, VendorMargin
 from django.core.cache import cache
 
-logger=logging.getLogger(__name__)
-
+logger = logging.getLogger(__name__)
 
 
 @receiver(post_save, sender=Symbol)
@@ -39,6 +38,7 @@ def create_update_symbol(sender, instance, created, **kwargs):
 @receiver(post_save, sender=ClosedOrder)
 def create_update_order(sender, instance, created, **kwargs):
     print("order update received from orderManagement")
+    print(OrderSerializer(instance).data)
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         settings.SOCKET_GROUP,
@@ -48,12 +48,12 @@ def create_update_order(sender, instance, created, **kwargs):
             "order_update": json.dumps(OrderSerializer(instance).data, cls=UUIDEncoder)
         }
     )
-    if(instance.status==OrderStatus.CANCELLED):
+    if(instance.status == OrderStatus.CANCELLED):
         print('order cancelled')
         async_to_sync(channel_layer.group_send)(
-            settings.SOCKET_GROUP,{
+            settings.SOCKET_GROUP, {
                 "type": "cancel",
-                "cancelled":str(instance.order_id)
+                "cancelled": str(instance.order_id)
             }
         )
 
@@ -71,7 +71,8 @@ def pre_save_order(sender, instance, *args, **kwargs):
 def create_vendor_info_objects(sender, instance, created, **kwargs):
     if created:
         VendorDetails.objects.create(vendor=instance)
-        Theme.objects.create(vendor=instance, name=instance.name, title=instance.name)
+        Theme.objects.create(
+            vendor=instance, name=instance.name, title=instance.name)
         for user in NormalUser.objects.all():
             if user.is_activated and not user.is_staff:
                 VendorMargin.objects.create(
@@ -85,9 +86,11 @@ def user_created_updated(sender, instance, created, **kwargs):
     logger.info(f" Updating Normal User ")
     for vendor in Vendor.objects.all():
         if instance.is_activated:
-            object = VendorMargin.objects.filter(user=instance, vendor=vendor).first()
+            object = VendorMargin.objects.filter(
+                user=instance, vendor=vendor).first()
             if object == None:
-                logger.info(f" Creating vendor margin object for {instance} vendor {vendor} ")
+                logger.info(
+                    f" Creating vendor margin object for {instance} vendor {vendor} ")
                 VendorMargin.objects.create(
                     user=instance, vendor=vendor,
                     margin=vendor.default_margin, margin_available=vendor.default_margin
