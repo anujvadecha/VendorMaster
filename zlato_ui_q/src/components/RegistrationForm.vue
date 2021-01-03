@@ -3,16 +3,16 @@
     <div class="row justify-center items-center" style="">
       <div class="column q-pa-lg">
         <q-card-section style="">
-          <div class="row">
-            <q-img
+          <div class="column items-center">
+            <!-- <q-img
             :src="imageSrc"
             transition="scale-transition"
             width="50px"
-            />
-            <strong class="text-h6 justify-center items-center ">User Activation</strong>
-            </div>
-          </q-card-section>
-          <q-separator color="orange" size="15px"></q-separator>
+            /> -->
+            <strong class="text-h6 ">User Activation</strong>
+          </div>
+        </q-card-section>
+          <q-separator color="orange" size="15px" />
           <q-card-section>
             <form action="http://127.0.0.1:8000/user/api/activateUser"
                     method="post" class="q-px-sm q-pt-xl"
@@ -65,42 +65,52 @@
                   <q-icon name="attach_file" />
                 </template>
               </q-file>
-              <q-input
-                name="reference_1_name"
-                square clearable
-                outlined
-                v-model="reference_1_name"
-                label="Name for reference "
-              >
-              </q-input>
-              <br />
-              <q-input
-                name="reference_1_mobile"
-                square clearable
-                outlined
-                v-model="reference_1_mobile"
-                label="Phone number for reference "
-                lazy-rules
-                :rules="[ val => val && val.length === 10 || 'Please type something']"
-              >
-              </q-input>
-              <q-input
-                name="reference_2_name"
-                square clearable
-                outlined
-                v-model="reference_2_name"
-                label="Name for reference "
-              >
-              </q-input>
-              <br />
-              <q-input
-                name="reference_2_mobile"
-                square clearable
-                outlined
-                v-model="reference_2_mobile"
-                label="Phone number for reference "
-              >
-              </q-input>
+              <div class="row">
+                  <div class="col-md-6 q-pr-sm">
+                    <q-input
+                      name="reference_1_name"
+                      square clearable
+                      outlined
+                      v-model="reference_1_name"
+                      label="Name for reference "
+                    />
+                </div>
+                <div class="col-md-6 q-pl-sm">
+                  <q-input
+                    name="reference_1_mobile"
+                    square clearable
+                    outlined
+                    v-model="reference_1_mobile"
+                    label="Phone number for reference "
+                    lazy-rules
+                    :rules="[ val => val && val.length === 10 || 'Please type something']"
+                  >
+                  </q-input>
+                </div>
+              </div>
+              <!-- <br /> -->
+              <div class="row">
+                <div class="col-md-6 q-pr-sm">
+                  <q-input
+                  name="reference_2_name"
+                  square clearable
+                  outlined
+                  v-model="reference_2_name"
+                  label="Name for reference "
+                  >
+                </q-input>
+                </div>
+                <div class="col-md-6 q-pl-sm">
+                  <q-input
+                    name="reference_2_mobile"
+                    square clearable
+                    outlined
+                    v-model="reference_2_mobile"
+                    label="Phone number for reference "
+                  >
+                  </q-input>
+                </div>
+              </div>
               <br />
               <q-btn type="submit" unelevated size="lg" color="primary" class="full-width text-white" label="Activate" />
             </form>

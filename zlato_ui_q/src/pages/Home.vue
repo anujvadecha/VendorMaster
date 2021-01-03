@@ -13,6 +13,21 @@
     </div>
   </div>
   <TopVendors class="mobile-hide"  :vendors="vendors_computed"></TopVendors>
+  <q-btn @click="filter_dialog">Filters</q-btn>
+    <q-dialog style="" v-model="filter"  persistent>
+    <q-card class="" style="">
+      <q-card-section class="bg-primary text-h6" style=" color: white" >
+        Filters
+      </q-card-section>
+      <q-card-section>
+
+      </q-card-section>
+       <q-card-section style="background-color: white" >
+      <q-btn class="q-ml-md btn-danger" @click="filter=false">Close</q-btn>
+      <q-btn class="q-ml-md btn-primary" color="primary" @click="setFilters">Apply Filters</q-btn>
+    </q-card-section>
+    </q-card>
+  </q-dialog>
   <TickerPriceTable title="Ticker prices" :instruments_to_render="instruments_to_render"></TickerPriceTable>
   <q-btn @click="$store.state.bottom_best_limit_sheet=true">Best limit order</q-btn>
     <MobileMarketing></MobileMarketing>
@@ -33,6 +48,7 @@ export default {
     return {
       slide: 'gold 999',
       tab: 'All',
+      filter: false,
       headers: [
         { name: 'Vendor', align: 'start', field: 'vendor', label: 'Vendor' },
         { name: 'Symbol', align: 'start', field: 'name', label: 'Symbol' },
@@ -91,9 +107,10 @@ export default {
       console.log('open order sheet called')
       this.$store.dispatch('set_order_item', item)
       this.$store.dispatch('set_sheet', true)
+    },
+    filter_dialog () {
+      this.filter = !this.filter
     }
-  },
-  created () {
   }
 }
 
