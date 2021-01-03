@@ -26,7 +26,7 @@
         dense
         style="width: available">
         <div v-for="type in types" :key="type">
-          <q-tab :name="type" :label="type" />
+          <q-tab :name="type" :label="type" on/>
         </div>
     </q-tabs>
       </div>
@@ -215,16 +215,53 @@ export default {
   props: ['instruments_to_render', 'title'],
   computed: {
     data_render: function () {
-      var type = ''
-      if (this.tab !== 'All') { type = this.tab } else {
-        return this.instruments_to_render
+      // var type = ''
+      // if (this.tab !== 'All') { type = this.tab } else {
+      //   return this.instruments_to_render
+      // }
+      // return this.instruments_to_render.filter(instrument => {
+      //   return instrument.type === type
+      // })
+      var instruments = []
+      let type = ''
+      if (this.tab !== 'All') {
+        type = this.tab
+        instruments = this.instruments_to_render.filter(instrument => {
+          return instrument.type === type
+        })
+      } else {
+        instruments = this.instruments_to_render
       }
-      return this.instruments_to_render.filter(instrument => {
-        return instrument.type === type
-      })
+      if (this.curFilter) {
+        this.selectedFilters.map(curFilter => {
+          if (curFilter.key === 'delivery_date') {
+            instruments.filter(instrument => {
+              return instrument.delivery_from <= curFilter.value[0] && instrument.delivery_to <= curFilter.value[1]
+            })
+          } else {
+            instruments.filter(instrument => {
+              return instrument.curFilter.key === curFilter.value
+            })
+          }
+        })
+      }
+      return instruments
     },
     lowest: function () {
-      return this.instruments_to_render.filter(e => e.ask === Math.min(...this.instruments_to_render.map(f => f.ask)))[0]
+      let type = ''
+      var instruments = []
+      if (this.tab !== 'All') {
+        type = this.tab
+        instruments = this.instruments_to_render.filter(instrument => {
+          return instrument.type === type
+        })
+      } else {
+        instruments = this.instruments_to_render
+      }
+      // console.log(type)
+      // console.log(instruments)
+      // return this.instruments_to_render.filter(e => e.ask === Math.min(...this.instruments_to_render.map(f => f.ask)))[0]
+      return instruments.filter(e => e.ask === Math.min(...instruments.map(f => f.ask)))[0]
     }
   },
   data () {
@@ -244,7 +281,8 @@ export default {
         { name: 'High', align: 'start', field: 'high', filterable: true, label: 'High', sortable: true },
         { name: 'Low', align: 'start', field: 'low', filterable: true, label: 'Low', sortable: true },
         { name: 'favourite', align: 'start', field: 'is_favourite', label: '' }
-      ]
+      ],
+      selectedFilters: ''
     }
   },
   methods: {
@@ -299,7 +337,6 @@ export default {
       })
     }
   }
-
 }
 </script>
 
