@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import { support_request } from 'src/common/api_calls'
+// import { support_request } from 'src/common/api_calls'
 import { Notify } from 'quasar'
 import LoginRequired from 'components/LoginRequired'
 
@@ -124,15 +124,15 @@ export default {
     },
     support_request_method: function () {
       this.support = true
-      support_request({
-        username: 'anuj',
-        message: 'hey'
-      }).then(res => {
-        Notify.create({
-          message: res,
-          position: 'top-right'
-        })
-      })
+      // support_request({
+      //   username: 'anuj',
+      //   message: 'hey'
+      // }).then(res => {
+      //   Notify.create({
+      //     message: res,
+      //     position: 'top-right'
+      //   })
+      // })
     },
     changePassword () {
       const axios = require('axios')

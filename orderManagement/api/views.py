@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from orderManagement.api.serializers import OrderSerializer
-from orderManagement.models import Order, OrderStatus, OrderType
+from orderManagement.models import Order, OrderStatus, OrderType, BestLimitUserMapping
 from orderManagement.utils import unique_transaction_id_generator, unique_best_limit_id_generator
 from vendorbase.api.serializers import UserMarginsSerializer
 from vendorbase.models import VendorMargin, Symbol
@@ -75,8 +75,9 @@ class OrderView(APIView):
         if not request.user.is_activated:
             return Response('You need to activate your account')
         if(order_request['type'] == OrderType.BEST_LIMIT):
-            order=None
-            order_request['best_limit_id'] = unique_best_limit_id_generator()
+            order = None
+            best_limit_mapping=BestLimitUserMapping.objects.create(user=request.user)
+            order_request['best_limit_id'] =best_limit_mapping.pk
             for instrument in request.data['instrument_id']:
                 order_request['instrument_id'] = instrument
                 margin_valid = self.check_margin_for_order(order_request,request.user)

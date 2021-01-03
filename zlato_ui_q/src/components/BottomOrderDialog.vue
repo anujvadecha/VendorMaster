@@ -7,11 +7,16 @@
         <span class="text-h6">{{order_item.vendor}}</span>
         <span class="q-ml-md font-bold">{{order_item.name}}</span>
         <div class="row">
+          <div class="col-6">
           <span class=" text-right q-ml-sm">B:{{order_item.bid}}</span>
           <span class="text-right q-ml-sm">A:{{order_item.ask}}</span>
+            </div>
+          <div class="col-6">
+          <q-btn size="sm" flat dense class="bg-white text-primary text-right q-pl-sm q-pr-sm" @click="open_best_limit_sheet()">Add multiple</q-btn>
+          </div>
         </div>
       </div>
-        </q-card-section>
+      </q-card-section>
     <q-tabs
           v-model="tab"
           class="text-grey"
@@ -106,6 +111,10 @@ export default {
   methods: {
     set_sheet_close: function () {
       this.$store.state.bottom_sheet = false
+    },
+    open_best_limit_sheet: function () {
+      this.$store.state.bottom_sheet = false
+      this.$store.state.bottom_best_limit_sheet = true
     },
     place_order: function () {
       if (this.logged_in) {

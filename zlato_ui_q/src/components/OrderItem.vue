@@ -6,13 +6,16 @@
            <q-chip outline color="black" dense >ID : {{order.transaction_id}}</q-chip>
         </div>
         <div v-if="order.status==='EXECUTED'">
+          <q-chip v-if="order.type==='BEST_LIMIT'" outline  color="orange" dense >BEST_LIMIT</q-chip>
           <q-chip outline size="md" color="green" dense >Payment confirmed</q-chip>
           <q-chip outline color="blue" dense >OTP:{{order.otp}}</q-chip>
         </div>
         <div v-if="order.status==='OPEN'">
+          <q-chip v-if="order.type==='BEST_LIMIT'" outline  color="orange" dense >BEST_LIMIT</q-chip>
           <q-chip outline  color="blue" dense >Waiting for payment</q-chip>
         </div>
         <div v-if="order.status==='WAITING_FOR_LIMIT'">
+          <q-chip v-if="order.type==='BEST_LIMIT'" outline  color="orange" dense >BEST_LIMIT</q-chip>
           <q-chip outline  color="blue" dense >Limit Order waiting</q-chip>
           <q-chip v-if="cancelled" outline  color="blue" dense >Cancelled</q-chip>
           <q-btn @click="cancel_limit_order()" outline  color="black" dense >CANCEL</q-btn>

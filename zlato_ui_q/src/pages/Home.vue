@@ -14,7 +14,6 @@
   </div>
   <TopVendors class="mobile-hide"  :vendors="vendors_computed"></TopVendors>
   <TickerPriceTable title="Ticker prices" :instruments_to_render="instruments_to_render"></TickerPriceTable>
-  <q-btn @click="$store.state.bottom_best_limit_sheet=true">Best limit order</q-btn>
     <MobileMarketing></MobileMarketing>
   </div>
 

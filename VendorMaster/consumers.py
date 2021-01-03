@@ -25,9 +25,7 @@ class UUIDEncoder(json.JSONEncoder):
 
 
 class TickConsumer(WebsocketConsumer):
-
     room_group_name = settings.SOCKET_GROUP
-
     def connect(self):
         logger.info(f"{self.scope['user']} connected")
         self.user = self.scope["user"]
@@ -137,9 +135,10 @@ class OrderEngineConsumer(WebsocketConsumer):
                                OrderType.LIMIT, OrderType.BEST_LIMIT]), many=True).data, cls=UUIDEncoder),
             }))
         if(type == "order_filled"):
-            print(f"order fill called on order: {orders}")
+            print(f"order fill called on order")
             orders = Order.objects.filter(
                 order_id__in=text_data_json["order_ids"])
+            print(f"order fill called on order: {orders}")
             for order in orders:
                 if(order.status != OrderStatus.CANCELLED):
                     if (order.type == OrderType.BEST_LIMIT):
@@ -165,11 +164,12 @@ class OrderEngineConsumer(WebsocketConsumer):
         order_type_limit = order_update['type'] == OrderType.LIMIT or OrderType.BEST_LIMIT
         order_status_waiting_for_limit = order_update['status'] == OrderStatus.WAITING_FOR_LIMIT
         if order_type_limit and order_status_waiting_for_limit:
+        # if order_type_limit:
             self.send(text_data=json.dumps(data, cls=UUIDEncoder))
 
     def cancel(self, data):
         print(f"on cancel req: {data}")
-        self.send(text_data=data)
+        self.send(text_data=json.dumps(data))
 
     def tick(self, data):
         message = data

@@ -32,7 +32,7 @@ class Command(BaseCommand):
             # order.save()
     def handle(self, *args, **options):
             self.delete_all_orders()
-            self.add_fake_orders(10)
+            self.add_fake_orders(1)
 
     def delete_all_orders(self):
         Order.objects.all().delete()

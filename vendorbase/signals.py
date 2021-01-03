@@ -53,7 +53,7 @@ def create_update_order(sender, instance, created, **kwargs):
         async_to_sync(channel_layer.group_send)(
             settings.SOCKET_GROUP, {
                 "type": "cancel",
-                "cancelled": str(instance.order_id)
+                "cancelled": json.dumps(OrderSerializer(instance).data, cls=UUIDEncoder)
             }
         )
 
