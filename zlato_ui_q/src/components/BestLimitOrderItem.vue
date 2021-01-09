@@ -6,11 +6,28 @@
            <q-chip outline color="black" dense >ID : {{order.best_limit_id}}</q-chip>
         </div>
           <q-chip outline  color="orange" dense >BEST_LIMIT</q-chip>
-          <q-chip outline  color="blue" dense >Limit Order waiting</q-chip>
+<!--          <q-chip outline  color="blue" dense ></q-chip>-->
           <q-chip v-if="cancelled" outline  color="blue" dense >Cancelled</q-chip>
           <q-btn @click="cancel_limit_order()" outline  color="black" dense >CANCEL</q-btn>
         </q-card-actions>
-      <div v-for="best_order in order.orders" :key="best_order.order_id">
+      <q-expansion-item
+      v-model="expanded"
+      :label="order.orders[0].instrument.vendor+' :'+order.orders[0].instrument.name+'  +'+(order.orders.length-1) +' more'"
+      class="font-bold"
+      >
+<!--      <template v-slot:header>-->
+<!--          <div class="row row-span-full q-ma-sm">-->
+<!--          <div class="col">-->
+<!--        <strong>{{order.orders[0].instrument.vendor}}</strong>-->
+<!--            <span class="font-bold q-ml-xs-sm " style=""> {{order.orders[0].instrument.name}}</span>-->
+<!--          </div>-->
+<!--          <div class="col">-->
+<!--              {{order.orders.length-1}} more-->
+<!--          </div>-->
+<!--             <span class="text-right text-sm q-ml-sm" style="color: grey">ltp: {{order.orders[0].instrument.ask}}</span>-->
+<!--      </div>-->
+<!--        </template>-->
+        <div v-for="best_order in order.orders" :key="best_order.order_id">
 
       <q-separator/>
 
@@ -19,11 +36,11 @@
         <strong>{{best_order.instrument.vendor}}</strong>
             <span class="font-bold q-ml-xs-sm " style=""> {{best_order.instrument.name}}</span>
           </div>
-               <span class="text-right text-sm q-ml-sm" style="color: grey">ltp: {{best_order.instrument.ask}}</span>
-
+             <span class="text-right text-sm q-ml-sm" style="color: grey">ltp: {{best_order.instrument.ask}}</span>
       </div>
         </div>
 
+    </q-expansion-item>
       <q-separator/>
       <div class="row q-ma-sm">
         <div class="col"><q-chip dense outline color="orange">{{order.orders[0].side}} </q-chip> {{order.orders[0].quantity}}

@@ -28,6 +28,17 @@
       </div>
        <div class="col col-sm-6 col-md-6 col-xs-12">
         <q-card class=" q-ma-md" bordered >
+          <div class="col col-sm-6 col-md-6 col-xs-12">
+<!--        <q-card class="bg-white " flat bordered @click="$router.push('Margins')">-->
+<!--          <q-card-section class="text-center">-->
+<!--          <strong> Account</strong>-->
+<!--          </q-card-section>-->
+<!--          <q-separator></q-separator>-->
+<!--          <q-card-section class="text-center">-->
+<!--              {{this.$store.state.user_details.username}}-->
+<!--          </q-card-section>-->
+<!--        </q-card>-->
+      </div>
           <q-card-section class="text-center">
           <strong>Account Settings</strong>
           </q-card-section>
@@ -60,6 +71,7 @@
           </q-card-section>
         </q-card>
       </div>
+
     </div>
   </div>
   <div v-else class="" >

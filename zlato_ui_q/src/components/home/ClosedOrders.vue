@@ -1,5 +1,5 @@
 <template>
-  <OrderItemTable title="closed" :show_illustration="true" :orders="closed"></OrderItemTable>
+  <OrderItemTable :show_illustration="true" :orders="closed"></OrderItemTable>
 </template>
 
 <script>

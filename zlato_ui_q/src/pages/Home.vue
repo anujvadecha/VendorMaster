@@ -12,13 +12,12 @@
     </q-card>
     </div>
   </div>
-  <TopVendors class="mobile-hide"  :vendors="vendors_computed"></TopVendors>
-  <q-btn @click="filter_dialog">Filters</q-btn>
+<!--  <q-btn @click="filter_dialog">Filters</q-btn>-->
     <q-dialog style="" v-model="filter"  persistent>
     <q-card class="" style="">
-      <q-card-section class="bg-primary text-h6" style=" color: white" >
-        Filters
-      </q-card-section>
+<!--      <q-card-section class="bg-primary text-h6" style=" color: white" >-->
+<!--        Filters-->
+<!--      </q-card-section>-->
       <q-card-section>
 
       </q-card-section>
@@ -28,8 +27,11 @@
     </q-card-section>
     </q-card>
   </q-dialog>
-  <TickerPriceTable title="Ticker prices" :instruments_to_render="instruments_to_render"></TickerPriceTable>
+  <TickerPriceTable :render_best="true" title="Bullion prices" :instruments_to_render="instruments_to_render"></TickerPriceTable>
+    <TopVendors class="mobile-hide"  :vendors="vendors_computed"></TopVendors>
+    <div class="row">
     <MobileMarketing></MobileMarketing>
+      </div>
   </div>
 
 </template>
@@ -79,6 +81,7 @@ export default {
     }
   },
   methods: {
+    setFilters: function () {},
     toggleFavourite: function (item) {
       item.is_favourite = !item.is_favourite
       if (item.is_favourite === false) {

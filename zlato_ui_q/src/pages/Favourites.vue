@@ -1,7 +1,7 @@
 <template>
   <div>
   <div class="Favourites">
-      <TickerPriceTable title="Favourites" :instruments_to_render="favourite_items" />
+      <TickerPriceTable :render_best="true" title="Favourites" :instruments_to_render="favourite_items" />
   </div>
   <div v-if="logged_in">
   </div>

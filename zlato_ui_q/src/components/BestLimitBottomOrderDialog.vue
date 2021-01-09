@@ -64,7 +64,14 @@ const linksData = [
 export default {
   name: 'BestLimitBottomOrderDialog',
   computed: {
-
+    min_quantity: function () {
+      var min = 100
+      this.selected.forEach(selected => {
+        if (parseInt(selected.value.quantity) > min) { min = parseInt(selected.value.quantity) }
+      })
+      console.log(min)
+      return min
+    },
     logged_in: function () {
       const token = this.$q.localStorage.getItem('token')
       if (token === '' || token === null || token === 'null') {
@@ -162,7 +169,8 @@ export default {
       essentialLinks: linksData,
       quantity_rules: [
         val => !!val || '* Required',
-        val => parseInt(val) % 100 === 0 || 'Should be multiple of 100gms'
+        val => parseInt(val) % 100 === 0 || 'Should be multiple of 100gms',
+        val => parseInt(val) >= this.min_quantity || 'Min Quantity for this order is' + this.min_quantity
       ],
       options: [],
       selected: []

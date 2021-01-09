@@ -142,14 +142,14 @@ const linksData = [
     link: 'https://quasar.dev'
   },
   {
-    title: 'Orders',
-    icon: 'mdi-bag-checked',
-    link: 'https://github.com/quasarframework'
-  },
-  {
     title: 'Favourites',
     icon: 'mdi-heart',
     link: 'https://chat.quasar.dev'
+  },
+  {
+    title: 'Orders',
+    icon: 'mdi-bag-checked',
+    link: 'https://github.com/quasarframework'
   },
   {
     title: 'Account',
@@ -358,7 +358,7 @@ export default {
           console.log(res)
           store.state.is_activated = res.is_activated
           store.state.requested_registration = res.requested_registration
-          // store.dispatch('setactivated', res.is_activated)
+          store.state.user_details = res
         }
       )
     } else {

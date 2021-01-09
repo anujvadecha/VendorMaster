@@ -1,23 +1,27 @@
 <template>
 <div>
+  <q-card bordered flat class="q-ma-sm col-6">
   <div v-if="!$q.platform.is.mobile" class="bg-light-blue-2">
-  <div class="bg-secondary row q-pa-md text-white">
-    <div class="col">
-      <q-img width="40%" src="mobile.png"/>
-    </div>
-    <div class="col">
-      <span class="q-ma-md font-bold row text-h5">
+  <div class="bg-white row  text-white">
+<!--    <div class="col-4">-->
+<!--      <q-img width="30%" src="mobile.png"/>-->
+<!--    </div>-->
+    <div class="">
+      <span class="q-ma-sm font-bold text-primary row text-h6">
         Experience zlato on the go
       </span>
-      <span class="q-ma-md font-bold row text-h6">
+      <span class="q-ma-sm font-bold text-primary row ">
         Convenience is garunteed with our robust order placement engines
         and high priority on experience
       </span>
-      <q-img width="40%" src="googleplay.png"></q-img>
-      <q-img class="q-ml-sm" width="40%" src="appstore.png"></q-img>
+      <q-btn dense flat class="q-pl-sm q-pr-sm q-ma-sm bg-primary" icon="mdi-apple">IOS</q-btn>
+      <q-btn dense flat class="q-pl-sm q-pr-sm q-ma-sm bg-primary" icon="mdi-android">Android</q-btn>
+<!--      <q-img width="30%" src="googleplay.png"></q-img>-->
+<!--      <q-img class="q-ml-sm" width="30%" src="appstore.png"></q-img>-->
     </div>
   </div>
   </div>
+    </q-card>
 </div>
 </template>
 
