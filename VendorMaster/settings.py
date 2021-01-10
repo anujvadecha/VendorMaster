@@ -11,11 +11,18 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 import pathlib
 import environ
-
+import django
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from VendorMaster.logging_config import get_config
-
+import os 
+from channels.routing import get_default_application
 BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
+SECRET_KEY ='3!sood8bmbjt72+idabk$uezm(agi28&t8=ccc(i51!rn(r47n'
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'VendorMaster.settings')
+import django
+#django.setup()
+#application = get_default_application()
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -23,12 +30,11 @@ env = environ.Env(DEBUG=(bool, True), )
 environ.Env.read_env()
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
