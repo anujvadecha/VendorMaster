@@ -118,9 +118,17 @@ WSGI_APPLICATION = 'VendorMaster.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': env.db(var="DATABASE_URL")
+DATABASES={
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'zlato',
+        'USER': 'zlato',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -154,11 +162,7 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "zlato_ui/dist"),
-]
-STATIC_ROOT = "static"
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 ADMIN_USER="admin"
 REST_FRAMEWORK = {

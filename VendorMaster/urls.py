@@ -30,6 +30,8 @@ from vendorbase.api.views import FavouritesView, SupportView
 from vendorbase.models import Symbol
 from vendorbase.views import IndexTemplateView, fallback_404
 from userBase.api.views import ActivateUser
+from django.conf import settings
+from django.conf.urls.static import static
 
 import threading
 threading.Thread(target=send_tick_data).start()
@@ -52,7 +54,7 @@ urlpatterns = [
     # path("api/margins/",UserMarginView.as_view(),name="usermarginview"),
     #url(r'^.*$',fallback_404,name="404 fallback")
     url(r'^api-token-auth/', obtain_jwt_token),
-]
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
     urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
