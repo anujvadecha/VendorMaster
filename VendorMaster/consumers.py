@@ -3,8 +3,10 @@ import threading
 from random import random, randint
 from uuid import UUID
 from asgiref.sync import async_to_sync
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
 from django.contrib.auth.models import AnonymousUser
+from channels.consumer import AsyncConsumer
+from channels.db import database_sync_to_async
 
 from VendorMaster import settings
 from orderManagement.api.serializers import OrderSerializer
@@ -24,66 +26,79 @@ class UUIDEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-class TickConsumer(WebsocketConsumer):
+class TickConsumer(AsyncWebsocketConsumer):
     room_group_name = settings.SOCKET_GROUP
-    def connect(self):
+
+    async def connect(self):
         logger.info(f"{self.scope['user']} connected")
         self.user = self.scope["user"]
         print(self.user)
-        async_to_sync(self.channel_layer.group_add)(
+        await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
         )
-        self.accept()
+        await self.accept()
 
-    def disconnect(self, close_code):
-        async_to_sync(self.channel_layer.group_discard)(
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
         )
 
-    def receive(self, text_data):
+    def ticker_data_anon(self):
+        return json.dumps({
+            'instruments': json.dumps(SymbolSerializer(Symbol.objects.all(), many=True).data, cls=UUIDEncoder),
+            'global_premium': GlobalPremiumSerializer(GlobalPremium.objects.all().first()).data,
+        })
+
+    def ticker_data_user(self):
+        return json.dumps({
+            'instruments': json.dumps(SymbolSerializer(Symbol.objects.all(), many=True).data, cls=UUIDEncoder),
+            'global_premium': GlobalPremiumSerializer(GlobalPremium.objects.all().first()).data,
+            'favourites': json.dumps(
+                FavouriteSerializer(Favourite.objects.filter(
+                    user_id=self.user), many=True).data,
+                cls=UUIDEncoder)
+        })
+
+    def vendor_request_data(self):
+        return json.dumps({
+            "vendors": VendorSerializer(Vendor.objects.all(), many=True).data
+        })
+
+    async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         type = text_data_json['type']
         if (type == "ticker_request"):
             if(self.user == AnonymousUser()):
                 logger.info('Anonymous user ticker request')
                 print('requested for ticker from anon')
-                self.send(json.dumps({
-                    'instruments': json.dumps(SymbolSerializer(Symbol.objects.all(), many=True).data, cls=UUIDEncoder),
-                    'global_premium': GlobalPremiumSerializer(GlobalPremium.objects.all().first()).data,
-                }))
+                self.ticker_anon = await database_sync_to_async(self.ticker_data_anon)()
+                await self.send(self.ticker_anon)
             else:
                 logger.info(f'{self.user} requested for ticker request')
                 print('requested for ticker from user')
-                self.send(json.dumps({
-                    'instruments': json.dumps(SymbolSerializer(Symbol.objects.all(), many=True).data, cls=UUIDEncoder),
-                    'global_premium': GlobalPremiumSerializer(GlobalPremium.objects.all().first()).data,
-                    'favourites': json.dumps(
-                        FavouriteSerializer(Favourite.objects.filter(
-                            user_id=self.user), many=True).data,
-                        cls=UUIDEncoder)
-                }))
+                self.tick_request_data = await database_sync_to_async(self.ticker_data_user)()
+                await self.send(self.tick_request_data)
         if(type == "vendor_request"):
-            self.send(json.dumps({
-                "vendors": VendorSerializer(Vendor.objects.all(), many=True).data
-            }))
+            self.vendor_request = await database_sync_to_async(self.vendor_request_data)()
+            await self.send(self.vendor_request)
 
-    def tick(self, data):
+    async def tick(self, data):
         message = data
-        self.send(text_data=json.dumps(message))
+        await self.send(text_data=json.dumps(message))
 
     # For future use in frontend ui to update premums on the go
     # Backend admin page anyway reloads on update
-    def instrument_update(self, data):
-        self.send(text_data=json.dumps(data, cls=UUIDEncoder))
+    async def instrument_update(self, data):
+        await self.send(text_data=json.dumps(data, cls=UUIDEncoder))
 
-    def order_update(self, data):
+    async def order_update(self, data):
         print("helllooooo")
         print(data)
         if(self.user != AnonymousUser):
             if(data["user"] == self.user.id):
-                self.send(text_data=json.dumps({
+                await self.send(text_data=json.dumps({
                     "type": "order_update",
                     "order_update": data["order_update"]
                 }, cls=UUIDEncoder))
@@ -91,10 +106,10 @@ class TickConsumer(WebsocketConsumer):
                 print("hii")
                 print("not this user")
 
-    def cancel(self, data):
+    async def cancel(self, data):
         pass
 
-    def premium_update(self, data):
+    async def premium_update(self, data):
         print(f" Premium has been updated for {data}")
 
 
@@ -164,7 +179,7 @@ class OrderEngineConsumer(WebsocketConsumer):
         order_type_limit = order_update['type'] == OrderType.LIMIT or OrderType.BEST_LIMIT
         order_status_waiting_for_limit = order_update['status'] == OrderStatus.WAITING_FOR_LIMIT
         if order_type_limit and order_status_waiting_for_limit:
-        # if order_type_limit:
+            # if order_type_limit:
             self.send(text_data=json.dumps(data, cls=UUIDEncoder))
 
     def cancel(self, data):
