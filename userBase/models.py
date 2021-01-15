@@ -22,7 +22,8 @@ class NormalUser(AbstractUser):
     reference_1_mobile = models.CharField(max_length=200, blank=True)
     reference_2_name = models.CharField(max_length=200, blank=True,help_text="Please input name and number of any reference we can verify")
     reference_2_mobile = models.CharField(max_length=200, blank=True)
-
+    avg_rating = models.FloatField(blank=True)
+    no_of_ratings = models.IntegerField(default=0, editable=True)
 
 class Support(BaseModel):
     user_id = models.ForeignKey(NormalUser, on_delete=models.DO_NOTHING, null=True)

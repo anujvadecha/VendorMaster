@@ -5,8 +5,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from userBase.models import NormalUser
 from vendorbase.api.serializers import FavouriteSerializer, UserMarginsSerializer, \
-    SupportSerializer
-from vendorbase.models import Favourite, VendorMargin
+    SupportSerializer, VendorDetailsSerializer, VendorRatingTextSerializer
+from vendorbase.models import Favourite, VendorMargin, VendorDetails, VendorRatingText
 from vendorbase.models import Symbol
 from vendorbase.api.serializers import NormalUserSerializer, SymbolSerializer
 
@@ -64,3 +64,23 @@ class SupportView(APIView):
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+class VendorRatingView(APIView):
+    permission_classes=[IsAuthenticated]
+    def post(self, request):
+        vendor=VendorRatingTextSerializer(data={'vendor_id': request.data["vendor_id"], "user":request.user.pk, "rating_text": request.data["rating_text"]})
+        if vendor.is_valid():
+            vendor.save()
+        else:
+            print(vendor.errors)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        data=request.data
+        vendor_obj=VendorDetails.objects.filter(vendor_id=data['vendor_id']).first()
+        no_of_ratings=vendor_obj.no_of_ratings
+        rating=vendor_obj.avg_rating*no_of_ratings
+        no_of_ratings=no_of_ratings+1
+        avg_rating=(rating+data['rating'])/no_of_ratings
+        vendor_obj.no_of_ratings = no_of_ratings
+        vendor_obj.avg_rating = avg_rating
+        # vendor=VendorDetailsSerializer(data={'vendor_id': data['vendor_id'], 'avg_rating': avg_rating, 'no_of_ratings': no_of_ratings})
+        vendor_obj.save()
+        return Response("success", status.HTTP_200_OK)
