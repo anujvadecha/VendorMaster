@@ -4,7 +4,8 @@ from django.core.cache import cache
 from rest_framework import serializers
 from admin_interface.models import Theme
 from userBase.models import NormalUser, Support
-from vendorbase.models import Symbol, GlobalPremium, Vendor, Favourite, VendorDetails, VendorMargin
+from vendorbase.models import Symbol, GlobalPremium, Vendor, Favourite, VendorDetails, VendorMargin, VendorRatingText, \
+    UserRating
 
 
 #NormalUserSerializer
@@ -33,6 +34,15 @@ class VendorDetailsSerializer(serializers.ModelSerializer):
         model=VendorDetails
         fields="__all__"
 
+class VendorRatingTextSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=VendorRatingText
+        fields="__all__"
+
+class UserRatingTextSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=UserRating
+        fields='__all__'
 
 
 class VendorSerializer(serializers.ModelSerializer):

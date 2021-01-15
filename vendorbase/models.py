@@ -76,11 +76,28 @@ class VendorDetails(BaseModel):
     about_us = models.TextField(blank=True)
     messages = models.TextField(blank=True)
     delivery_charges = models.TextField(blank=True)
+    avg_rating = models.FloatField(blank=True)
+    no_of_ratings = models.IntegerField(default=0, editable=True)
+
     def __str__(self):
         return str(self.vendor)
     class Meta:
         verbose_name='Vendor Details'
         verbose_name_plural='Vendor Details'
+
+
+class VendorRatingText(BaseModel):
+    vendor_id=models.ForeignKey(Vendor, on_delete=models.DO_NOTHING, null=True)
+    user=models.ForeignKey(NormalUser, on_delete=models.DO_NOTHING, null=True)
+    rating_text=models.TextField(blank=True)
+
+    def __str__(self):
+        return self.name.__str__();
+
+class UserRating(BaseModel):
+    user=models.ForeignKey(NormalUser, on_delete=models.DO_NOTHING, null=True)
+    vendor_id=models.ForeignKey(Vendor, on_delete=models.DO_NOTHING, null=True)
+    rating_text=models.TextField(blank=True)
 
 class BankDetails(BaseModel):
     vendor = models.ForeignKey(Vendor, on_delete=models.DO_NOTHING)
