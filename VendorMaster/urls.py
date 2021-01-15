@@ -34,7 +34,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 import threading
-threading.Thread(target=send_tick_data).start()
+#threading.Thread(target=send_tick_data).start()
 # Symbol.update_cache()
 urlpatterns = [
     url('admin/', admin.site.urls),
@@ -47,7 +47,7 @@ urlpatterns = [
     path('api-auth/', include("rest_framework.urls")),
     path("api/rest-auth/",include("rest_auth.urls")),
     path("api/rest-auth/registration",include("rest_auth.registration.urls")),
-    path("",IndexTemplateView.as_view(),name="entry-point"),
+    path("",admin.site.urls,name="entry-point"),
     path("api/favourites/",FavouritesView.as_view(),name="favourite"),
     path("user/", include("userBase.urls"), name="activate"),
     path("api/support/",SupportView.as_view(),name="support"),

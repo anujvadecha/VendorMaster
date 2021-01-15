@@ -70,7 +70,7 @@ INSTALLED_APPS = [
     'corsheaders'
 ]
 MEDIA_URL="/media/"
-MEDIA_ROOT="uploads"
+MEDIA_ROOT="media"
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
