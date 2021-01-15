@@ -32,6 +32,8 @@ export default new Vuex.Store({
     vendors: [],
     bottom_sheet: false,
     bottom_best_limit_sheet: false,
+    order_details_bottom_sheet: false,
+    order_details_selected: undefined,
     snackbar_message: '',
     snackbar: false,
     token: '',
@@ -86,6 +88,9 @@ export default new Vuex.Store({
     },
     set_best_limit_sheet (state, boolean) {
       state.bottom_best_limit_sheet = boolean
+    },
+    set_order_details (state, details) {
+      state.order_details_selected = details
     }
   },
   actions: {
@@ -118,6 +123,9 @@ export default new Vuex.Store({
     },
     set_token ({ commit }, token) {
       commit('set_token', token)
+    },
+    set_order_details ({ commit }, details) {
+      commit('set_order_details', details)
     }
   },
   modules: {},

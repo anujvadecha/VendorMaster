@@ -1,33 +1,74 @@
 <template>
 <div>
-  <div class="q-pa-md">
-    <div v-if="logged_in">
+  <div class="">
+    <div v-if="logged_in"  >
+      <div class="col">
+       <div class="col-12">
+<!--        <q-card bordered square class="shadow-2" >-->
+<!--          <q-card-section class="bg-primary text-white text-h6">-->
+<!--          <strong>Account Settings</strong>-->
+<!--          </q-card-section>-->
+<!--          <q-separator></q-separator>-->
+<!--          <q-card-section class="">-->
+<!--               <q-btn-->
+<!--                 size="lg"-->
+<!--              fab-->
+<!--              color="white"-->
+<!--              icon="mdi-account"-->
+<!--              class="absolute text-black"-->
+<!--              style="top: 0; right: 12px; transform: translateY(-50%);"-->
+<!--        />-->
+<!--              {{$store.state.user_details.username}}-->
+<!--          </q-card-section>-->
+<!--        </q-card>-->
+      </div>
     <div class="row">
-      <div class="col col-sm-6 col-md-6 col-xs-12">
-        <q-card class="bg-light-blue-3 q-ma-md" bordered @click="$router.push('Margins')">
-          <q-card-section class="text-center">
+      <div class="col-12">
+        <q-card square flat class=""  >
+          <q-card-section class="">
           <strong>  Account margins</strong>
           </q-card-section>
           <q-separator></q-separator>
-          <q-card-section class="text-center">
-              Margins available from each vendors
+          <q-card-section class="">
+             <q-item
+            clickable
+            tag="a"
+            target="_blank"
+           @click="$router.push('Margins')"
+          >
+          <q-item-section avatar>
+          <q-icon class="text-primary" name="mdi-locker" />
+        </q-item-section>
+        <q-item-section class="text-primary">Margins available from each vendors</q-item-section>
+        </q-item>
           </q-card-section>
         </q-card>
       </div>
-      <div class="col col-sm-6 col-md-6 col-xs-12">
-        <q-card class="bg-light-blue-3 q-ma-md" bordered @click="support_request_method()">
-          <q-card-section class="text-center">
+      <div class="col-12">
+        <q-separator></q-separator>
+        <q-card square flat class=" " @click="support_request_method()">
+          <q-card-section class="">
           <strong>Support</strong>
           </q-card-section>
           <q-separator></q-separator>
-
-          <q-card-section class="text-center">
-              Send a request for support
+          <q-card-section class="">
+            <q-item
+            clickable
+            tag="a"
+            target="_blank"
+           @click="support_request_method()"
+          >
+          <q-item-section avatar>
+          <q-icon class="text-primary" name="mdi-account-arrow-right" />
+        </q-item-section>
+        <q-item-section class="text-primary">Send a request for support</q-item-section>
+        </q-item>
           </q-card-section>
         </q-card>
       </div>
-       <div class="col col-sm-6 col-md-6 col-xs-12">
-        <q-card class=" q-ma-md" bordered >
+       <div class="col-12">
+         <q-separator></q-separator>
+        <q-card square class="" flat >
           <div class="col col-sm-6 col-md-6 col-xs-12">
 <!--        <q-card class="bg-white " flat bordered @click="$router.push('Margins')">-->
 <!--          <q-card-section class="text-center">-->
@@ -39,11 +80,11 @@
 <!--          </q-card-section>-->
 <!--        </q-card>-->
       </div>
-          <q-card-section class="text-center">
+          <q-card-section class="">
           <strong>Account Settings</strong>
           </q-card-section>
           <q-separator></q-separator>
-          <q-card-section class="text-center">
+          <q-card-section class="">
               <q-list>
         <q-item
             clickable
@@ -71,20 +112,21 @@
           </q-card-section>
         </q-card>
       </div>
-
     </div>
+        </div>
   </div>
+
   <div v-else class="" >
     <LoginRequired page="Account Settings"></LoginRequired>
   </div>
-    <q-dialog style="" v-model="reset" persistent>
+    <q-dialog style="" v-model="reset" >
     <q-card class="" style="">
       <q-card-section class="bg-primary text-h6" style=" color: white" >
         Reset Password
       </q-card-section>
-       <q-card-section class="q-ma-md" style="background-color: white" >
-         <q-input v-model="new_password1"  label="Enter New Password" />
-         <q-input v-model="new_password2"  label="Re-enter new password" />
+       <q-card-section class="q-ma-md q-gutter-y-md" style="background-color: white" >
+         <q-input outlined v-model="new_password1"  label="Enter New Password" />
+         <q-input  outlined v-model="new_password2"  label="Re-enter new password" />
     </q-card-section>
       <q-card-section>
             <q-btn class="q-ml-md btn-danger" @click="reset=false">Close</q-btn>
@@ -93,7 +135,7 @@
       </q-card-section>
     </q-card>
   </q-dialog>
-  <q-dialog style="" v-model="support"  persistent>
+  <q-dialog style="" v-model="support" >
     <q-card class="" style="">
       <q-card-section class="bg-primary text-h6" style=" color: white" >
         Support
@@ -101,7 +143,7 @@
       <q-card-section>
         <q-input outlined label="Title" v-model="request_title" />
         <br />
-        <textarea name="message" v-model="request_message" placeholder="Request" id="" cols="33" rows="10"></textarea>
+        <q-input outlined label="Message" type="textarea" v-model="request_message" id="" cols="33" rows="10"></q-input>
       </q-card-section>
        <q-card-section style="background-color: white" >
       <q-btn class="q-ml-md btn-danger" @click="support=false">Close</q-btn>

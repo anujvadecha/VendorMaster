@@ -9,7 +9,7 @@
     <div v-else>
 <div class="row align-middle">
     <div class="center">
-      <q-img class="q-ml-lg" width="200px" src="/Human.png"></q-img>
+      <q-img class="q-ml-lg" width="200px" src="Human.png"></q-img>
     </div>
       <q-card class="q-ma-md">
       <div class="text-h6 font-bold q-ma-lg">No Executed orders</div>

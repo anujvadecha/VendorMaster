@@ -23,7 +23,7 @@
           <q-card>
             <q-card-section class="text-center">
               <q-img width="40px" :src="get_logo_url(props.row.vendor.theme.logo)"></q-img>
-              <strong>{{ props.row.vendor.name }}</strong>
+              <strong class="q-pa-sm">{{ props.row.vendor.name }}</strong>
             </q-card-section>
             <q-separator />
             <q-card-section class="" >

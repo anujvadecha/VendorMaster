@@ -1,5 +1,5 @@
 <template>
-<q-dialog style="width: 50%" v-model="this.get_set_sheet" @hide="set_sheet_close()"  persistent position="bottom">
+<q-dialog style="width: 50%" v-model="$store.state.bottom_sheet" position="bottom">
   <div v-if="order_item">
   <q-card class="" style="">
       <q-card-section class="bg-primary" style=" color: white" >
@@ -24,6 +24,7 @@
           indicator-color="primary"
           align="justify"
           narrow-indicator
+
         >
           <q-tab name="MARKET" label="MARKET" />
           <q-tab name="LIMIT" label="LIMIT" />
@@ -37,7 +38,7 @@
             :rules="quantity_rules"/>
             </div>
             <div class="col">
-              <q-input  class="q-ml-lg" type="number" readonly v-model="price" :label="order_item.ask.toString()" />
+              <q-input  class="q-ml-lg" type="number" stack-label readonly v-model="order_item.ask" label="Price" />
           </div>
             </div>
           </q-tab-panel>
@@ -47,13 +48,13 @@
             <q-input type="number"  standout="text-white" v-model="quantity" label="Quantity(gms)"
             :rules="quantity_rules"/></div>
               <div class="col">
-            <q-input type="number" class="q-ml-md"  v-model="price" :label="order_item.ask.toString()" />
+            <q-input type="number" standout="text-white" class="q-ml-md" stack-label  v-model="price" :label="order_item.ask.toString()" />
             </div>
               </div>
           </q-tab-panel>
         </q-tab-panels>
     <q-card-section style="background-color: white" >
-      <q-btn class="btn-primary" @click="place_order()">Buy</q-btn>
+      <q-btn class="bg-primary text-white" @click="place_order()">Buy</q-btn>
       <q-btn class="q-ml-md btn-danger" @click="set_sheet_close()">Close</q-btn>
     </q-card-section>
     </q-card>
@@ -140,6 +141,7 @@ export default {
             status: 'WAITING_FOR_LIMIT'
           }
         }
+        const store = this.$store
         place_order(order).then(res => {
           console.log(res)
           const notif = this.$q.notify({
@@ -160,6 +162,11 @@ export default {
               color: 'positive',
               timeout: 2000
             })
+            res.instrument = store.getters.get_instrument(
+              res.instrument_id
+            )
+            store.state.order_details_selected = res
+            store.state.order_details_bottom_sheet = true
           } else {
             notif({
               spinner: false,
