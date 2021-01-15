@@ -1,130 +1,178 @@
 <template>
   <div>
-  <div id="q-app">
-    <q-layout class="" view="lHh Lpr fFf">
-      <q-header class="bg-white text-dark" style="" elevated bordered  >
-      <q-toolbar style="" class="shadow-2">
-<!--        <q-btn class="mobile-only" flat dense round icon="menu" aria-label="Menu" @click="leftDrawerOpen = !leftDrawerOpen"/>-->
-        <q-toolbar-title class="font-bold">
-          <q-img
-            :src="imageSrc"
-            transition="scale-transition"
-            width="40px"
-            />
-          <span v-if="currentRouteName==='Home'||''||'/'">
-            <span class="font-bold text-h6">Zlato</span>
-          </span>
-          <span v-else>
-            {{currentRouteName}}
-          </span>
-        </q-toolbar-title>
+    <div id="q-app">
+      <q-layout class="" view="lHh Lpr fFf">
+        <q-header class="bg-white text-dark" style="" elevated bordered>
+          <q-toolbar style="" class="shadow-2">
+            <q-toolbar-title class="font-bold">
+            <q-btn flat @click="leftDrawerOpen = !leftDrawerOpen" round dense icon="menu" />
+              <q-img
+                :src="imageSrc"
+                transition="scale-transition"
+                width="50px"
+              />
+            <span v-if="currentRouteName==='Home'" class="font-extrabold q-ml-sm ">Zlato</span>
+            <span v-else class="font-extrabold q-ml-sm "> {{ currentRouteName }}</span>
+            </q-toolbar-title>
         <div>
         <span class="color:grey mobile-hide">
-        <q-btn flat >
+        <q-btn flat>
           <router-link class="text-primary" to="Home" style="text-decoration: None;">
-          <q-icon class="lt-md" size="md" name="mdi-home" ></q-icon>
+          <q-icon class="lt-md" size="md" name="mdi-home"></q-icon>
          </router-link>
         </q-btn>
         <q-btn flat>
           <router-link class="text-primary" to="Orders" style="text-decoration: None;">
-          <q-icon class="lt-md" size="md" name="mdi-bag-checked" ></q-icon>
+          <q-icon class="lt-md" size="md" name="mdi-cart"></q-icon>
            </router-link>
         </q-btn>
         <q-btn flat>
           <router-link class="text-primary" to="Favourites" style="text-decoration: None;">
-          <q-icon class="lt-md" size="md" name="mdi-heart"></q-icon>
+          <q-icon class="lt-md" size="md" name="mdi-star"></q-icon>
             </router-link></q-btn>
         <q-btn flat>
           <router-link class="text-primary" to="Account" style="text-decoration: None;">
-          <q-icon class="lt-md"  size="md" name="mdi-account"></q-icon>
+          <q-icon class="lt-md" size="md" name="mdi-account"></q-icon>
         </router-link></q-btn>
           </span>
         </div>
-      </q-toolbar>
-      <q-toolbar class="text-dark bg-white" inset style="font-weight: bold">
-      <q-space></q-space>
-<!--        <q-icon name="mdi-gold"></q-icon>-->
-        <span class="" style="">Gold : 1270</span>
-        <q-space></q-space>
-<!--        <q-icon name="mdi-silverware-clean"></q-icon>-->
-        <span>Silver: 128392</span>
-        <q-space></q-space>
-<!--        <q-icon name="mdi-gold"></q-icon>-->
-        <span>Dollar: 78.9</span>
-        <q-space></q-space>
-      </q-toolbar>
-    </q-header>
-<!--    <span class="mobile-only ">-->
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-1">
-      <q-img class="absolute-top" src="https://source.unsplash.com/featured?nature,water" style="height: 150px;">
-          <div class="absolute-bottom ">
-<!--            <q-avatar size="56px" class="q-mb-sm">-->
-<!--              <img src="https://cdn.quasar.dev/img/boy-avatar.png">-->
-<!--            </q-avatar>-->
-            <div class="text-weight-bold">Zlato</div>
-            <div>Mumbai</div>
-          </div>
-        </q-img>
-      <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
-      <q-list>
-<!--        <q-item-label-->
-<!--          header-->
-<!--          class="text-grey-8"-->
-<!--        >-->
-<!--          Links-->
-<!--        </q-item-label>-->
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-<!--      <q-tree-->
-<!--          :nodes="account_actions"-->
-<!--          node-key="label"-->
-<!--          default-expand-all>-->
-<!--          <template v-slot:default-header="prop">-->
-<!--            <div class="row items-center">-->
-<!--              <q-icon :name="prop.node.icon || 'share'" color="orange" size="28px" class="q-mr-sm" />-->
-<!--              <div class="text-weight-bold text-primary">{{ prop.node.label }}</div>-->
-<!--            </div>-->
-<!--          </template>-->
-<!--      </q-tree>-->
-      </q-list>
-      </q-scroll-area>
-    </q-drawer>
-    <q-page-container>
-      <router-view />
-    </q-page-container>
-    <q-footer v-if="$q.platform.is.mobile"  class=" bg-white text-white">
-      <q-toolbar class="justify-evenly shadow-2">
-        <q-btn flat >
-          <router-link class="text-primary" to="Home" style="text-decoration: None;">
-          <q-icon class="lt-md" size="lg" name="mdi-home" ></q-icon>
-          </router-link>
-        </q-btn>
-        <q-btn flat>
-          <router-link class="text-primary" to="Orders" style="text-decoration: None;">
-          <q-icon class="lt-md" size="lg" name="mdi-bag-checked" ></q-icon>
-           </router-link>
-        </q-btn>
-        <q-btn flat>
-          <router-link class="text-primary" to="Favourites" style="text-decoration: None;">
-          <q-icon class="lt-md" size="lg" name="mdi-heart"></q-icon>
-            </router-link></q-btn>
-        <q-btn flat>
-          <router-link class="text-primary" to="Account" style="text-decoration: None;">
-          <q-icon class="lt-md"  size="lg" name="mdi-account"></q-icon>
-        </router-link>
-        </q-btn>
-      </q-toolbar>
-    </q-footer>
-  </q-layout>
-    <BottomOrderDialog></BottomOrderDialog>
-    <BestLimitBottomOrderDialog></BestLimitBottomOrderDialog>
+        </q-toolbar>
+          <q-toolbar class="text-dark bg-white" inset style="font-weight: bold">
+            <q-space></q-space>
+            <!--        <q-icon name="mdi-gold"></q-icon>-->
+            <span class="" style="">Gold : 1270</span>
+            <q-space></q-space>
+            <!--        <q-icon name="mdi-silverware-clean"></q-icon>-->
+            <span>Silver: 128392</span>
+            <q-space></q-space>
+            <!--        <q-icon name="mdi-gold"></q-icon>-->
+            <span>Dollar: 78.9</span>
+            <q-space></q-space>
+          </q-toolbar>
+        </q-header>
+        <!--    <span class="mobile-only ">-->
+        <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-1">
+          <q-img class="absolute-top" src="https://source.unsplash.com/featured?nature,water" style="height: 150px;">
+            <div class="absolute-bottom ">
+              <!--            <q-avatar size="56px" class="q-mb-sm">-->
+              <!--              <img src="https://cdn.quasar.dev/img/boy-avatar.png">-->
+              <!--            </q-avatar>-->
+              <div class="text-weight-bold">Zlato</div>
+              <div>Mumbai</div>
+            </div>
+          </q-img>
+          <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
+            <q-list>
+              <!--        <q-item-label-->
+              <!--          header-->
+              <!--          class="text-grey-8"-->
+              <!--        >-->
+              <!--          Links-->
+              <!--        </q-item-label>-->
+              <EssentialLink
+                v-for="link in essentialLinks"
+                :key="link.title"
+                v-bind="link"
+              />
+              <EssentialLink
+                v-for="link in extraLinks"
+                :key="link.title"
+                v-bind="link"
+              />
+              <!--      <q-tree-->
+              <!--          :nodes="account_actions"-->
+              <!--          node-key="label"-->
+              <!--          default-expand-all>-->
+              <!--          <template v-slot:default-header="prop">-->
+              <!--            <div class="row items-center">-->
+              <!--              <q-icon :name="prop.node.icon || 'share'" color="orange" size="28px" class="q-mr-sm" />-->
+              <!--              <div class="text-weight-bold text-primary">{{ prop.node.label }}</div>-->
+              <!--            </div>-->
+              <!--          </template>-->
+              <!--      </q-tree>-->
+            </q-list>
+          </q-scroll-area>
+        </q-drawer>
+        <q-page-container>
+          <router-view/>
+        </q-page-container>
+        <q-footer v-if="$q.platform.is.mobile"  class=" bg-white text-white">
+<!--        <q-footer   class=" bg-white text-white">-->
+<!--          <q-toolbar class="justify-evenly shadow-2">-->
+<!--            <q-btn flat>-->
+<!--              <router-link class="text-primary" to="Home" style="text-decoration: None;">-->
+<!--                <div class="col">-->
+<!--                  <q-icon class="lt-md" size="lg" name="mdi-home"></q-icon>-->
+<!--                  <div class="text-xsm">Home</div>-->
+<!--                </div>-->
+<!--              </router-link>-->
+<!--            </q-btn>-->
+<!--            <q-btn flat>-->
+<!--              <router-link class="text-primary" to="Favourites" style="text-decoration: None;">-->
+<!--                <div class="col">-->
+<!--                  <q-icon class="lt-md" size="lg" name="mdi-star"></q-icon>-->
+<!--                  <div class="text-xsm">Favs</div>-->
+<!--                </div>-->
+<!--              </router-link>-->
+<!--            </q-btn>-->
+<!--            <q-btn flat>-->
+<!--              <router-link class="text-primary" to="Orders" style="text-decoration: None;">-->
+<!--                <div class="col">-->
+<!--                  <q-icon class="lt-md" size="lg" name="mdi-cart">-->
+<!--                  </q-icon>-->
+<!--                  <div class="text-xsm">Orders</div>-->
+<!--                </div>-->
+<!--              </router-link>-->
+<!--            </q-btn>-->
+
+<!--            <q-btn flat>-->
+<!--              <router-link class="text-primary" to="Account" style="text-decoration: None;">-->
+<!--                <div class="col">-->
+<!--                  <q-icon class="lt-md" size="lg" name="mdi-account"></q-icon>-->
+<!--                  <div class="text-xsm">Account</div>-->
+<!--                </div>-->
+<!--              </router-link>-->
+<!--            </q-btn>-->
+          <q-tabs
+        v-model="tab"
+        indicator-color="transparent"
+        active-color="primary"
+        class="bg-white text-grey-9 shadow-2"
+        align="justify"
+      >
+<!--        <q-tab name="mails" icon="mail" label="Mails" />-->
+<!--        <q-tab name="alarms" icon="alarm" label="Alarms" />-->
+<!--        <q-tab name="movies" icon="movie" label="Movies" />-->
+     <q-tab v-for="link in essentialLinks"
+                     :key="link.title"
+                     :name="link.title"
+                     :icon="link.icon"
+                     :label="link.alias"
+                      @click="$router.push(link.title)"
+                      indicator-color="transparent"
+                      active-color="white">
+      </q-tab>
+      </q-tabs>
+<!--            <q-tabs v-model="tab" align="justify"  stretch switch-indicator class="text-primary" >-->
+<!--              <q-tab v-for="link in essentialLinks"-->
+<!--                     :key="link.title"-->
+<!--                     :name="link.title"-->
+<!--                     :icon="link.icon"-->
+<!--                     :label="link.alias"-->
+<!--                      @click="$router.push(link.title)"-->
+<!--                      indicator-color="transparent"-->
+<!--                      class="bg-white text-grey shadow-2"-->
+<!--                      active-color="white">-->
+<!--              </q-tab>-->
+<!--            </q-tabs>-->
+        </q-footer>
+      </q-layout>
+      <BottomOrderDialog></BottomOrderDialog>
+      <BestLimitBottomOrderDialog></BestLimitBottomOrderDialog>
+      <OrderDetailsBottom></OrderDetailsBottom>
+    </div>
 
   </div>
-
-</div>
 </template>
 <script>
 import BottomOrderDialog from 'components/BottomOrderDialog'
@@ -135,26 +183,36 @@ import EssentialLink from 'components/EssentialLink.vue'
 import { Notify } from 'quasar'
 import { base_websocket_url, get_user_details } from 'src/common/api_calls'
 import BestLimitBottomOrderDialog from 'components/BestLimitBottomOrderDialog'
-const linksData = [
+import OrderDetailsBottom from 'components/OrderDetailsBottom'
+const extra = [
+  // {
+  //   title: 'Home',
+  //   icon: 'mdi-home',
+  //   alias: 'Home',
+  //   mobile: true
+  // },
+  // {
+  //   title: 'Favourites',
+  //   alias: 'Favs',
+  //   icon: 'mdi-star',
+  //   mobile: true
+  // },
+  // {
+  //   title: 'Orders',
+  //   icon: 'mdi-cart',
+  //   alias: 'Orders',
+  //   mobile: true
+  // },
+  // {
+  //   title: 'Account',
+  //   icon: 'mdi-account',
+  //   alias: 'Account',
+  //   mobile: true
+  // }
   {
-    title: 'Home',
-    icon: 'mdi-home',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Favourites',
-    icon: 'mdi-heart',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Orders',
-    icon: 'mdi-bag-checked',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Account',
-    icon: 'mdi-account',
-    link: 'https://forum.quasar.dev'
+    title: 'Vendors',
+    icon: 'mdi-gold',
+    mobile: false
   }
   // {
   //   title: 'Margins',
@@ -163,21 +221,41 @@ const linksData = [
   // }
 ]
 
-const account_details_tree = [
+const linksData = [
   {
-    label: 'Account details',
-    header: 'root',
+    title: 'Home',
+    icon: 'mdi-home',
+    alias: 'Home',
+    mobile: true
+  },
+  {
+    title: 'Favourites',
+    alias: 'Favs',
+    icon: 'mdi-star',
+    mobile: true
+  },
+  {
+    title: 'Orders',
+    icon: 'mdi-cart',
+    alias: 'Orders',
+    mobile: true
+  },
+  {
+    title: 'Account',
     icon: 'mdi-account',
-    children: [
-      {
-        title: 'Margin',
-        link: 'https://forum.quasar.dev',
-        label: 'Good food',
-        icon: 'mdi-account',
-        header: 'generic'
-      }
-    ]
+    alias: 'Account',
+    mobile: true
   }
+  // {
+  //   title: 'Vendors',
+  //   icon: 'mdi-gold',
+  //   mobile: false
+  // }
+  // {
+  //   title: 'Margins',
+  //   icon: 'mdi-account',
+  //   link: 'https://forum.quasar.dev'
+  // }
 ]
 // const account_actions_list = [
 //   {
@@ -194,7 +272,7 @@ const account_details_tree = [
 // import { base_url } from 'common/api_calls'
 export default {
   name: 'Main',
-  components: { BestLimitBottomOrderDialog, EssentialLink, BottomOrderDialog },
+  components: { OrderDetailsBottom, BestLimitBottomOrderDialog, EssentialLink, BottomOrderDialog },
   computed: {
     is_activated: function () {
       return !this.$store.getters.get_is_activated
@@ -210,6 +288,7 @@ export default {
       }
     },
     currentRouteName: function () {
+      console.log(this.$route.name)
       return this.$route.name
     }
   },
@@ -342,25 +421,27 @@ export default {
       email: '',
       password: ',',
       essentialLinks: linksData,
-      imageSrc: '/logo.png',
+      extraLinks: extra,
+      imageSrc: 'logo.png',
       leftDrawerOpen: false,
-      account_actions: account_details_tree
+      tab: 'Home'
     }
   },
   created () {
     this.$router.push('Home')
-    // if (this.logged_in) {
     this.connect_websocket()
     const store = this.$store
     if (this.logged_in) {
       get_user_details().then(
         res => {
-          console.log(res)
           store.state.is_activated = res.is_activated
           store.state.requested_registration = res.requested_registration
           store.state.user_details = res
         }
-      )
+      ).catch(error => {
+        console.log(error)
+        this.$store.state.token = ''
+      })
     } else {
       if (this.$q.is.mobile) {
         this.$router.push()

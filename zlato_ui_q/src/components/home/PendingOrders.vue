@@ -1,7 +1,7 @@
 <template>
   <div>
-  <OrderItemTable :orders="pending_orders" :show_illustration="true" title="Pending limit"></OrderItemTable>
-  <OrderItemTable :orders="[]" :show_illustration="false" title="Pending Best limit" :best_limit_orders="best_limit"></OrderItemTable>
+  <OrderItemTable :orders="pending_orders" :best_limit_orders="best_limit" :show_illustration="true" title="Pending limit"></OrderItemTable>
+  <!--  <OrderItemTable :orders="[]" :show_illustration="false" title="Pending Best limit" :best_limit_orders="best_limit"></OrderItemTable>-->
 </div>
 </template>
 

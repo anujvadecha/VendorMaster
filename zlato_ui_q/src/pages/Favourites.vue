@@ -1,12 +1,12 @@
 <template>
   <div>
+  <div v-if="logged_in">
   <div class="Favourites">
       <TickerPriceTable :render_best="true" title="Favourites" :instruments_to_render="favourite_items" />
   </div>
-  <div v-if="logged_in">
   </div>
   <div v-else>
-    <LoginRequired page="or add Favourites"></LoginRequired>
+    <LoginRequired  page="or add Favourites"></LoginRequired>
   </div>
   </div>
 </template>

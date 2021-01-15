@@ -11,6 +11,7 @@
           indicator-color="primary"
           align="justify"
           narrow-indicator
+          stretch
         >
           <q-tab name="executed" label="Executed" />
           <q-tab name="pending" label="Pending" />
@@ -28,7 +29,6 @@
             <ClosedOrders :closed="closed_orders"></ClosedOrders>
           </q-tab-panel>
         </q-tab-panels>
-
       </q-card>
     </div>
   </div>
