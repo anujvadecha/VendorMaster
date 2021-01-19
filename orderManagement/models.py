@@ -54,6 +54,13 @@ class Order(BaseModel):
     def __str__(self):
         return self.user_id.__str__();
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['user_id']),
+            models.Index(fields=['status']),
+            models.Index(fields=['user_id','status']),
+        ]
+
 
 class OpenOrder(Order):
     class Meta:
