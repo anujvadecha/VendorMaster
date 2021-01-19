@@ -113,88 +113,181 @@ class TickConsumer(AsyncWebsocketConsumer):
         print(f" Premium has been updated for {data}")
 
 
-class OrderEngineConsumer(WebsocketConsumer):
+# class OrderEngineConsumer(WebsocketConsumer):
+#
+#     room_group_name = settings.SOCKET_GROUP
+#
+#     def connect(self):
+#         async_to_sync(self.channel_layer.group_add)(
+#             self.room_group_name,
+#             self.channel_name
+#         )
+#         self.accept()
+#
+#     def disconnect(self, close_code):
+#         async_to_sync(self.channel_layer.group_discard)(
+#             self.room_group_name,
+#             self.channel_name
+#         )
+#
+#     def receive(self, text_data):
+#         print("receive from consumer")
+#         text_data_json = json.loads(text_data)
+#         type = text_data_json['type']
+#         if (type == "ticker_request"):
+#             self.send(json.dumps({
+#                 'instruments': json.dumps(SymbolSerializer(Symbol.objects.all(), many=True).data, cls=UUIDEncoder),
+#                 'global_premium': GlobalPremiumSerializer(GlobalPremium.objects.all().first()).data
+#             }))
+#         if(type == "all_orders_limit_pending"):
+#             print("i am here on best limit !!!")
+#             print(Order.objects.filter(status=OrderStatus.WAITING_FOR_LIMIT, type__in=[
+#                 OrderType.LIMIT, OrderType.BEST_LIMIT]).filter())
+#             print("done")
+#             self.send(json.dumps({
+#                 'orders':
+#                     json.dumps(OrderSerializer(Order.objects.filter(status=OrderStatus.WAITING_FOR_LIMIT, type__in=[
+#                                OrderType.LIMIT, OrderType.BEST_LIMIT]), many=True).data, cls=UUIDEncoder),
+#             }))
+#         if(type == "order_filled"):
+#             print(f"order fill called on order")
+#             orders = Order.objects.filter(
+#                 order_id__in=text_data_json["order_ids"])
+#             print(f"order fill called on order: {orders}")
+#             for order in orders:
+#                 if(order.status != OrderStatus.CANCELLED):
+#                     if (order.type == OrderType.BEST_LIMIT):
+#                         order.status = OrderStatus.OPEN
+#                         order.save()
+#                         best_limit_orders_to_be_cancelled = Order.objects.filter(
+#                             best_limit_id=order.best_limit_id, status=OrderStatus.WAITING_FOR_LIMIT)
+#                         print(
+#                             f"best_limit_orders_to_be_cancelled:{best_limit_orders_to_be_cancelled} ")
+#                         for bloc in best_limit_orders_to_be_cancelled:
+#                             bloc.status = OrderStatus.CANCELLED
+#                             bloc.save()
+#                     else:
+#                         order.status = OrderStatus.OPEN
+#                         order.save()
+#
+#     def instrument_update(self, data):
+#         self.send(text_data=json.dumps(data, cls=UUIDEncoder))
+#
+#     def order_update(self, data):
+#         print("order update from consumer")
+#         order_update = json.loads(data['order_update'])
+#         order_type_limit = order_update['type'] == OrderType.LIMIT or OrderType.BEST_LIMIT
+#         order_status_waiting_for_limit = order_update['status'] == OrderStatus.WAITING_FOR_LIMIT
+#         if order_type_limit and order_status_waiting_for_limit:
+#             # if order_type_limit:
+#             self.send(text_data=json.dumps(data, cls=UUIDEncoder))
+#
+#     def cancel(self, data):
+#         print(f"on cancel req: {data}")
+#         self.send(text_data=json.dumps(data))
+#
+#     def tick(self, data):
+#         message = data
+#         self.send(text_data=json.dumps(message))
+#     # For future use in frontend ui to update premums on the go
+#     # Backend admin page anyway reloads on update
+#
+#     def premium_update(self, data):
+#         print(f" Premium has been updated for {data}")
+def process_orders(orders):
+    for order in orders:
+        if (order.status != OrderStatus.CANCELLED):
+            if (order.type == OrderType.BEST_LIMIT):
+                order.status = OrderStatus.OPEN
+                order.save()
+                best_limit_orders_to_be_cancelled = Order.objects.filter(
+                    best_limit_id=order.best_limit_id, status=OrderStatus.WAITING_FOR_LIMIT)
+                for bloc in best_limit_orders_to_be_cancelled:
+                    bloc.status = OrderStatus.CANCELLED
+                    bloc.save()
+            else:
+                order.status = OrderStatus.OPEN
+                order.save()
+    return True
+
+
+class OrderEngineConsumer(AsyncWebsocketConsumer):
 
     room_group_name = settings.SOCKET_GROUP
 
-    def connect(self):
-        async_to_sync(self.channel_layer.group_add)(
+    async def connect(self):
+        await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
         )
-        self.accept()
+        await self.accept()
 
-    def disconnect(self, close_code):
-        async_to_sync(self.channel_layer.group_discard)(
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
         )
 
-    def receive(self, text_data):
+    def ticker_request_data(self):
+        return json.dumps({
+            'instruments': json.dumps(SymbolSerializer(Symbol.objects.all(), many=True).data, cls=UUIDEncoder),
+            'global_premium': GlobalPremiumSerializer(GlobalPremium.objects.all().first()).data
+        })
+
+    def limit_order_data(self):
+        return json.dumps({
+            'orders':
+                json.dumps(OrderSerializer(Order.objects.filter(status=OrderStatus.WAITING_FOR_LIMIT, type__in=[
+                    OrderType.LIMIT, OrderType.BEST_LIMIT]), many=True).data, cls=UUIDEncoder),
+        })
+
+    def order_limit_pending(self,text_data_json):
+        return Order.objects.filter(
+                order_id__in=text_data_json["order_ids"])
+
+    async def receive(self, text_data):
         print("receive from consumer")
         text_data_json = json.loads(text_data)
         type = text_data_json['type']
         if (type == "ticker_request"):
-            self.send(json.dumps({
-                'instruments': json.dumps(SymbolSerializer(Symbol.objects.all(), many=True).data, cls=UUIDEncoder),
-                'global_premium': GlobalPremiumSerializer(GlobalPremium.objects.all().first()).data
-            }))
+            print('ticker request recieved')
+            self.tick_req = await database_sync_to_async(self.ticker_request_data)()
+            await self.send(self.tick_req)
         if(type == "all_orders_limit_pending"):
+            print('all orders request received')
             print("i am here on best limit !!!")
-            print(Order.objects.filter(status=OrderStatus.WAITING_FOR_LIMIT, type__in=[
-                OrderType.LIMIT, OrderType.BEST_LIMIT]).filter())
+            # print(Order.objects.filter(status=OrderStatus.WAITING_FOR_LIMIT, type__in=[
+            #    OrderType.LIMIT, OrderType.BEST_LIMIT]).filter())
             print("done")
-            self.send(json.dumps({
-                'orders':
-                    json.dumps(OrderSerializer(Order.objects.filter(status=OrderStatus.WAITING_FOR_LIMIT, type__in=[
-                               OrderType.LIMIT, OrderType.BEST_LIMIT]), many=True).data, cls=UUIDEncoder),
-            }))
+            self.limit_order_d = await database_sync_to_async(self.limit_order_data)()
+            await self.send(self.limit_order_d)
         if(type == "order_filled"):
             print(f"order fill called on order")
-            orders = Order.objects.filter(
-                order_id__in=text_data_json["order_ids"])
-            print(f"order fill called on order: {orders}")
-            for order in orders:
-                if(order.status != OrderStatus.CANCELLED):
-                    if (order.type == OrderType.BEST_LIMIT):
-                        order.status = OrderStatus.OPEN
-                        order.save()
-                        best_limit_orders_to_be_cancelled = Order.objects.filter(
-                            best_limit_id=order.best_limit_id, status=OrderStatus.WAITING_FOR_LIMIT)
-                        print(
-                            f"best_limit_orders_to_be_cancelled:{best_limit_orders_to_be_cancelled} ")
-                        for bloc in best_limit_orders_to_be_cancelled:
-                            bloc.status = OrderStatus.CANCELLED
-                            bloc.save()
-                    else:
-                        order.status = OrderStatus.OPEN
-                        order.save()
+            orders = await database_sync_to_async(self.order_limit_pending)(text_data_json)
+            await database_sync_to_async(process_orders)(orders)
 
-    def instrument_update(self, data):
-        self.send(text_data=json.dumps(data, cls=UUIDEncoder))
+    async def instrument_update(self, data):
+        await self.send(text_data=json.dumps(data, cls=UUIDEncoder))
 
-    def order_update(self, data):
-        print("order update from consumer")
+    async def order_update(self, data):
         order_update = json.loads(data['order_update'])
         order_type_limit = order_update['type'] == OrderType.LIMIT or OrderType.BEST_LIMIT
         order_status_waiting_for_limit = order_update['status'] == OrderStatus.WAITING_FOR_LIMIT
         if order_type_limit and order_status_waiting_for_limit:
             # if order_type_limit:
-            self.send(text_data=json.dumps(data, cls=UUIDEncoder))
+            await self.send(text_data=json.dumps(data, cls=UUIDEncoder))
 
-    def cancel(self, data):
+    async def cancel(self, data):
         print(f"on cancel req: {data}")
-        self.send(text_data=json.dumps(data))
+        await self.send(text_data=json.dumps(data))
 
-    def tick(self, data):
+    async def tick(self, data):
         message = data
-        self.send(text_data=json.dumps(message))
+        await self.send(text_data=json.dumps(message))
     # For future use in frontend ui to update premums on the go
     # Backend admin page anyway reloads on update
-
-    def premium_update(self, data):
+    async def premium_update(self, data):
         print(f" Premium has been updated for {data}")
-
 
 class VendorConsumer(WebsocketConsumer):
     room_group_name = settings.SOCKET_GROUP
