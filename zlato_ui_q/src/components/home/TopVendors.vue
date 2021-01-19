@@ -1,6 +1,6 @@
 <template>
   <div>
-  <span class="q-ma-md row text-h6">Top vendors</span>
+  <span class="q-ma-md row text-h6">All vendors</span>
   <div class=" row q-pa-md">
   <div v-for="vendor in vendors" :key="vendor.vendor_id">
   <q-card class="q-ml-md" @click="open_vendor_dialog(vendor.vendor_id)">

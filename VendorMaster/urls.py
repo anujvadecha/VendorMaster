@@ -26,15 +26,17 @@ from VendorMaster import settings
 from VendorMaster.send_tick_data_test import send_tick_data
 from userBase.forms import CustomUserForm
 from django_registration.backends.one_step.views import RegistrationView
-from vendorbase.api.views import FavouritesView, SupportView
+from vendorbase.api.views import FavouritesView, SupportView, VendorRatingView
 from vendorbase.models import Symbol
 from vendorbase.views import IndexTemplateView, fallback_404
-from userBase.api.views import ActivateUser
+from userBase.api.views import ActivateUser, UserRatingView
 from django.conf import settings
 from django.conf.urls.static import static
 
 import threading
-threading.Thread(target=send_tick_data).start()
+
+# threading.Thread(target=send_tick_data).start()
+# threading.Thread(target=send_tick_data).start()
 # Symbol.update_cache()
 urlpatterns = [
     url('admin/', admin.site.urls),
@@ -48,10 +50,12 @@ urlpatterns = [
     path('api-auth/', include("rest_framework.urls")),
     path("api/rest-auth/", include("rest_auth.urls")),
     path("api/rest-auth/registration", include("rest_auth.registration.urls")),
-    path("", IndexTemplateView.as_view(), name="entry-point"),
+    path("", admin.site.urls, name="entry-point"),
     path("api/favourites/", FavouritesView.as_view(), name="favourite"),
     path("user/", include("userBase.urls"), name="activate"),
     path("api/support/", SupportView.as_view(), name="support"),
+    path("api/ratevendor/", VendorRatingView.as_view(), name="vendor_rating"),
+    path("api/rateuser/", UserRatingView.as_view(), name="user_rating"),
     # path("api/margins/",UserMarginView.as_view(),name="usermarginview"),
     #url(r'^.*$',fallback_404,name="404 fallback")
     url(r'^api-token-auth/', obtain_jwt_token),

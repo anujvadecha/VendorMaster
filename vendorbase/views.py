@@ -8,12 +8,12 @@ from django.views.generic import TemplateView
 class IndexTemplateView(LoginRequiredMixin,TemplateView):
 
     def get_template_names(self):
-        if settings.DEBUG:
-            print("running dev")
-            template_name = "index-dev.html"
-        else:
-            print("Running prod file")
-            template_name = "index.html"
+        # if settings.DEBUG:
+        #     print("running dev")
+        #     template_name = "index-dev.html"
+        # else:
+        print("Running prod file")
+        template_name = "index.html"
         return template_name
 
 def fallback_404(request):

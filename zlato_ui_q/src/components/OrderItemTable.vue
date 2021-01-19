@@ -30,7 +30,7 @@
       <div v-if="show_illustration">
       <div class="row align-middle">
         <div class="center">
-          <q-img class="q-ml-lg" width="200px" src="/Human.png"></q-img>
+          <q-img class="q-ml-lg" width="200px" src="Human.png"></q-img>
         </div>
         <q-card class="q-ma-md">
           <div class="text-h6 font-bold q-ma-lg">No {{title }} orders</div>
@@ -41,6 +41,7 @@
       </div>
         </div>
     </div>
+    <div v-if="best_limit_orders!==undefined">
     <div v-if="best_limit_orders.length>0">
       <q-table
         grid
@@ -67,6 +68,7 @@
         </template>
       </q-table>
     </div>
+      </div>
   </div>
 </template>
 
@@ -87,9 +89,9 @@ export default {
     }
   },
   created () {
-    if (this.best_limit_orders === undefined) {
-      this.best_limit_orders = []
-    }
+    // if (this.best_limit_orders === undefined) {
+    //   this.best_limit_orders = []
+    // }
   }
 }
 </script>

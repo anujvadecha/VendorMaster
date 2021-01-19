@@ -15,15 +15,15 @@
           </q-card-section>
           <q-separator color="orange" size="5px"></q-separator>
           <q-card-section>
-            <q-form class="q-px-sm q-pt-xl">
-              <q-input square clearable v-model="email" type="email" label="Email">
+            <q-form class="q-gutter-y-md">
+              <q-input color="primary" outlined v-model="email" type="email" label="Username">
                 <template v-slot:prepend>
-                  <q-icon name="email" />
+                  <q-icon name="mdi-account" />
                 </template>
               </q-input>
-              <q-input square clearable v-model="password" type="password" label="Password">
+              <q-input color="primary" outlined v-model="password" type="password" label="Password">
                 <template v-slot:prepend>
-                  <q-icon name="lock" />
+                  <q-icon name="mdi-lock" />
                 </template>
               </q-input>
             </q-form>
@@ -51,7 +51,7 @@ export default {
     return {
       email: '',
       password: '',
-      imageSrc: '/logo.png'
+      imageSrc: 'logo.png'
     }
   },
   methods: {

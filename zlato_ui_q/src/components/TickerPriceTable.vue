@@ -19,7 +19,6 @@
       </div>
     <div>
       <q-tabs
-        mobile-arrows
         v-model="tab"
         no-caps
         dense
@@ -36,7 +35,7 @@
             <div class="col-6" v-if="$q.platform.is.mobile" @click="open_vendor_dialog(lowest.vendor_id)">
               <div class="q-pl-md ">
                 <div class="row vendor_link" >
-                   <span style="font-size:small">Lowest: {{ lowest.vendor }}</span>
+                   <span style="font-size:small">Best: {{ lowest.vendor }}</span>
                 </div>
                 <div class="row">
                   <span style="font-size:small">{{lowest.name}}</span>
@@ -94,6 +93,8 @@
         </q-card>
 
   <q-table
+      style=""
+      class=""
       title="Ticker Prices"
       :data="data_render"
       :columns="headers"
@@ -102,6 +103,7 @@
       bordered flat
       v-touch-swipe.mouse="handleSwipe"
       :pagination="pagination"
+      virtual-scroll
     >
     <template v-slot:top>
 
@@ -330,7 +332,7 @@ export default {
   data () {
     return {
       pagination: {
-        rowsPerPage: 20
+        rowsPerPage: 0
       },
       filter: '',
       tab: 'All',
@@ -350,14 +352,13 @@ export default {
   },
   methods: {
     handleSwipe ({ evt, ...info }) {
+      console.log(info)
       if (info.direction === 'right') {
-        console.log('right')
-        this.tabIndex -= 1
+        this.tabIndex = Math.max(0, this.tabIndex - 1)
         this.tab = this.types[Math.min(this.tabIndex, this.types.length - 1)]
         // TODO WRITE LOGIC HERE
       } else {
-        console.log('left')
-        this.tabIndex += 1
+        this.tabIndex = Math.min(this.types.length - 1, this.tabIndex + 1)
         if (this.tabIndex < 0) { this.tabIndex = 0 }
         this.tab = this.types[Math.max(this.tabIndex, 0)]
         // TODO WRITE LOGIC HERE
