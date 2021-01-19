@@ -1,5 +1,10 @@
 <template>
   <div>
+    <!-- <div v-if="orders_to_rate.length > 0">
+      <div v-for="order in orders_to_rate" :key="order.order_id">
+        <Rating v-bind:data="[order.instrument_id.vendor_id, order.instrument_id.vendor, true]" />
+      </div>
+    </div> -->
     <div id="q-app">
       <q-layout class="" view="lHh Lpr fFf">
         <q-header class="bg-white text-dark" style="" elevated bordered>
@@ -179,9 +184,10 @@ import BottomOrderDialog from 'components/BottomOrderDialog'
 // import { NotifySuccess } from 'src/common/api_calls'
 // import MainLayout from 'layouts/MainLayout'
 
+// import Rating from 'components/Rating'
 import EssentialLink from 'components/EssentialLink.vue'
 import { Notify } from 'quasar'
-import { base_websocket_url, get_user_details } from 'src/common/api_calls'
+import { base_websocket_url, get_user_details, get_orders } from 'src/common/api_calls'
 import BestLimitBottomOrderDialog from 'components/BestLimitBottomOrderDialog'
 import OrderDetailsBottom from 'components/OrderDetailsBottom'
 const extra = [
@@ -412,6 +418,29 @@ export default {
           console.log(error)
         })
     },
+    get_orders () {
+      return get_orders().then(res => {
+        this.orders = res
+        console.log(res)
+        console.log('Inside get_orders')
+      })
+        .then(() => {
+          this.orders = this.orders.map(order => {
+            order.instrument_id = this.$store.getters.get_instrument(
+              order.instrument_id
+            )
+            console.log(order.instrument_id)
+            return order
+          })
+        })
+        .then(() => {
+          this.orders_to_rate = this.orders.filter(order => {
+            return order.status === 'CLOSED' && order.is_rated === false
+          })
+          console.log('Orders to be rated')
+          console.log(this.orders_to_rate)
+        })
+    },
     get_user_details () {
 
     }
@@ -424,7 +453,9 @@ export default {
       extraLinks: extra,
       imageSrc: 'logo.png',
       leftDrawerOpen: false,
-      tab: 'Home'
+      tab: 'Home',
+      orders_to_rate: [],
+      orders: []
     }
   },
   created () {
@@ -450,6 +481,7 @@ export default {
     // } else {
     //   this.$router.push('Home')
     // }
+    // this.get_orders()
   }
 
 }

@@ -1,6 +1,11 @@
 <template>
 <div>
   <q-pull-to-refresh @refresh="refresher">
+    <div v-if="orders_to_rate.length > 0">
+      <div v-for="order in orders_to_rate" :key="order.order_id">
+        <Rating v-bind:data="[order.instrument_id.vendor_id, order.instrument_id.vendor, true]" />
+      </div>
+    </div>
   <div class="">
     <div class="q-gutter-y-md" style="">
       <q-card flat >
@@ -41,9 +46,11 @@ import ExecutedOrders from 'components/home/ExecutedOrders'
 import PendingOrders from 'components/home/PendingOrders'
 import ClosedOrders from 'components/home/ClosedOrders'
 import { get_orders } from 'src/common/api_calls'
+import Rating from 'components/Rating'
+
 export default {
   name: 'Orders',
-  components: { ClosedOrders, PendingOrders, ExecutedOrders },
+  components: { ClosedOrders, PendingOrders, ExecutedOrders, Rating },
   data () {
     return {
       tab: 'executed',
@@ -51,7 +58,8 @@ export default {
       active_orders: [],
       executed_orders_confirmed: [],
       executed_orders_waiting: [],
-      closed_orders: []
+      closed_orders: [],
+      orders_to_rate: []
     }
   },
   methods: {
@@ -103,6 +111,12 @@ export default {
           this.closed_orders = this.orders.filter(order => {
             return order.status === 'CLOSED'
           })
+          this.orders_to_rate = this.orders.filter(order => {
+            console.log(order.status)
+            console.log(order.is_rated)
+            return order.status === 'CLOSED' && order.is_rated === false
+          })
+          console.log(this.orders_to_rate)
         })
     }
   },

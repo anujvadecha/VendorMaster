@@ -3,6 +3,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from orderManagement.models import Order
 from userBase.models import NormalUser
 from vendorbase.api.serializers import FavouriteSerializer, UserMarginsSerializer, \
     SupportSerializer, VendorDetailsSerializer, VendorRatingTextSerializer
@@ -74,6 +76,9 @@ class VendorRatingView(APIView):
             print(vendor.errors)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         data=request.data
+        order = Order.objects.filter(order_id=data['order_id']).first()
+        order.is_rated=True
+        order.save()
         vendor_obj=VendorDetails.objects.filter(vendor_id=data['vendor_id']).first()
         no_of_ratings=vendor_obj.no_of_ratings
         rating=vendor_obj.avg_rating*no_of_ratings

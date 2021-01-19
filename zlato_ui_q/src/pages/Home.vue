@@ -13,6 +13,11 @@
     </div>
   </div>
 <!--  <q-btn @click="filter_dialog">Filters</q-btn>-->
+    <div v-if="orders_to_rate.length > 0">
+      <div v-for="order in orders_to_rate" :key="order.order_id">
+        <Rating v-bind:data="[order, true]" />
+      </div>
+    </div>
     <q-dialog style="" v-model="filter"  persistent>
     <q-card class="" style="">
 <!--      <q-card-section class="bg-primary text-h6" style=" color: white" >-->
@@ -38,13 +43,14 @@
 <script>
 import TopVendors from 'components/home/TopVendors'
 import TickerPriceTable from 'components/TickerPriceTable'
-import { add_to_favourites, remove_from_favourites } from 'src/common/api_calls'
+import { add_to_favourites, remove_from_favourites, get_orders } from 'src/common/api_calls'
 import MobileMarketing from 'components/MobileMarketing'
 // import { add_to_favourites, remove_from_favourites } from '@/common/api_calls'
+import Rating from 'components/Rating'
 
 export default {
   name: 'Home',
-  components: { MobileMarketing, TickerPriceTable, TopVendors },
+  components: { MobileMarketing, TickerPriceTable, TopVendors, Rating },
   data () {
     return {
       slide: 'gold 999',
@@ -58,7 +64,9 @@ export default {
         { name: 'High', align: 'start', field: 'high', filterable: true, label: 'High' },
         { name: 'Low', align: 'start', field: 'low', filterable: true, label: 'Low' },
         { name: 'favourite', align: 'start', field: 'is_favourite', label: '' }
-      ]
+      ],
+      orders_to_rate: [],
+      orders: []
     }
   },
   computed: {
@@ -112,7 +120,33 @@ export default {
     },
     filter_dialog () {
       this.filter = !this.filter
+    },
+    get_orders () {
+      return get_orders().then(res => {
+        this.orders = res
+        console.log(res)
+        console.log('Inside get_orders')
+      })
+        .then(() => {
+          this.orders = this.orders.map(order => {
+            order.instrument_id = this.$store.getters.get_instrument(
+              order.instrument_id
+            )
+            console.log(order.instrument_id)
+            return order
+          })
+        })
+        .then(() => {
+          this.orders_to_rate = this.orders.filter(order => {
+            return order.status === 'CLOSED' && order.is_rated === false
+          })
+          console.log('Orders to be rated')
+          console.log(this.orders_to_rate)
+        })
     }
+  },
+  created () {
+    this.get_orders()
   }
 }
 
