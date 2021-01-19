@@ -47,6 +47,7 @@ class Order(BaseModel):
     status = models.CharField(max_length=100, choices=OrderStatus, default=OrderStatus.OPEN)
     side = models.CharField(default=OrderSide.BUY, max_length=200, choices=OrderSide)
     best_limit_id = models.ForeignKey(BestLimitUserMapping, on_delete=models.DO_NOTHING,null=True,blank=True)
+    is_rated = models.BooleanField(default=False)
 
     def vendor(self):
         return self.instrument_id.vendor_id

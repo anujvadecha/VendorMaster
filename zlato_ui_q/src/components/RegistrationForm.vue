@@ -65,17 +65,19 @@
                   <q-icon name="attach_file" />
                 </template>
               </q-file>
-              <div class="row">
-                  <div class="col-md-6 q-pr-sm">
+              <div class="row q-gutter-md">
+                  <div class="col">
                     <q-input
                       name="reference_1_name"
                       square clearable
                       outlined
                       v-model="reference_1_name"
                       label="Name for reference "
+                      lazy-rules
+                      :rules="[ val => val || 'Please provide a name for reference']"
                     />
                 </div>
-                <div class="col-md-6 q-pl-sm">
+                <div class="col">
                   <q-input
                     name="reference_1_mobile"
                     square clearable
@@ -83,14 +85,14 @@
                     v-model="reference_1_mobile"
                     label="Phone number for reference "
                     lazy-rules
-                    :rules="[ val => val && val.length === 10 || 'Please type something']"
+                    :rules="[ val => val && val.length === 10 || 'Please provide a 10 digit phone number']"
                   >
                   </q-input>
                 </div>
               </div>
               <!-- <br /> -->
-              <div class="row">
-                <div class="col-md-6 q-pr-sm">
+              <div class="row q-gutter-md">
+                <div class="col">
                   <q-input
                   name="reference_2_name"
                   square clearable
@@ -100,7 +102,7 @@
                   >
                 </q-input>
                 </div>
-                <div class="col-md-6 q-pl-sm">
+                <div class="col">
                   <q-input
                     name="reference_2_mobile"
                     square clearable
