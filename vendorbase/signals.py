@@ -37,8 +37,6 @@ def create_update_symbol(sender, instance, created, **kwargs):
 @receiver(post_save, sender=ExecutedOrder)
 @receiver(post_save, sender=ClosedOrder)
 def create_update_order(sender, instance, created, **kwargs):
-    print("order update received from orderManagement")
-    print(OrderSerializer(instance).data)
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         settings.SOCKET_GROUP,
@@ -49,13 +47,24 @@ def create_update_order(sender, instance, created, **kwargs):
         }
     )
     if(instance.status == OrderStatus.CANCELLED):
-        print('order cancelled')
         async_to_sync(channel_layer.group_send)(
             settings.SOCKET_GROUP, {
                 "type": "cancel",
                 "cancelled": json.dumps(OrderSerializer(instance).data, cls=UUIDEncoder)
             }
         )
+    if instance.status==OrderStatus.OPEN:
+        instrument = instance.instrument_id
+        margin_object = VendorMargin.objects.filter(user=instance.user_id, vendor_id=instrument.vendor_id).first()
+        if (margin_object == None):
+            logger.error('MARGIN FOR THE INSTANCE DOES NOT EXIST')
+        if (margin_object.margin_available >= instance.quantity):
+            logger.info(f"Margin available is {margin_object.margin_available} order quantity {instance.quantity}")
+            margin_object.margin_available = margin_object.margin_available - instance.quantity
+            margin_object.save()
+            return True
+        else:
+            return False
 
 
 @receiver(pre_save, sender=Order)

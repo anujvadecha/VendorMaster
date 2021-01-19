@@ -1,4 +1,6 @@
 import { apiService } from './api.service'
+// const base_url = 'http://52.15.217.184'
+// const base_websocket_url = '52.15.217.184'
 const base_url = 'http://localhost:8000'
 const base_websocket_url = 'localhost:8000'
 
@@ -43,6 +45,11 @@ function get_user_details () {
   return apiService(endpoint, 'GET', null)
 }
 
+function rate_order (data) {
+  const endpoint = base_url + '/api/ratevendor/'
+  return apiService(endpoint, 'POST', data)
+}
+
 export {
   base_url,
   add_to_favourites,
@@ -53,5 +60,6 @@ export {
   get_user_margins,
   support_request,
   get_user_details,
-  base_websocket_url
+  base_websocket_url,
+  rate_order
 }

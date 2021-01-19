@@ -37,6 +37,7 @@
 <script>
 
 import { Notify } from 'quasar'
+import { rate_order } from 'src/common/api_calls'
 
 export default {
   name: 'Rating',
@@ -61,17 +62,8 @@ export default {
         return
       }
       this.card = false
-      const axios = require('axios')
       const data = { vendor_id: this.order.instrument_id.vendor_id, rating: this.stars, rating_text: this.rating_text, is_rated: true, order_id: this.order.order_id }
-      const config = {
-        method: 'post',
-        url: 'http://localhost:8000' + '/api/ratevendor/',
-        headers: {
-          Authorization: `Token ${this.$q.localStorage.getItem('token')}`
-        },
-        data: data
-      }
-      axios(config)
+      rate_order(data)
         .then((res) => {
           console.log(res)
           Notify.create({
