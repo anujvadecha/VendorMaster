@@ -194,21 +194,6 @@ class TickConsumer(AsyncWebsocketConsumer):
 #
 #     def premium_update(self, data):
 #         print(f" Premium has been updated for {data}")
-def process_orders(orders):
-    for order in orders:
-        if (order.status != OrderStatus.CANCELLED):
-            if (order.type == OrderType.BEST_LIMIT):
-                order.status = OrderStatus.OPEN
-                order.save()
-                best_limit_orders_to_be_cancelled = Order.objects.filter(
-                    best_limit_id=order.best_limit_id, status=OrderStatus.WAITING_FOR_LIMIT)
-                for bloc in best_limit_orders_to_be_cancelled:
-                    bloc.status = OrderStatus.CANCELLED
-                    bloc.save()
-            else:
-                order.status = OrderStatus.OPEN
-                order.save()
-    return True
 
 
 class OrderEngineConsumer(AsyncWebsocketConsumer):
@@ -241,9 +226,25 @@ class OrderEngineConsumer(AsyncWebsocketConsumer):
                     OrderType.LIMIT, OrderType.BEST_LIMIT]), many=True).data, cls=UUIDEncoder),
         })
 
-    def order_limit_pending(self,text_data_json):
+    def order_limit_pending(self, text_data_json):
         return Order.objects.filter(
-                order_id__in=text_data_json["order_ids"])
+            order_id__in=text_data_json["order_ids"])
+
+    def process_orders(self, orders):
+        for order in orders:
+            if (order.status != OrderStatus.CANCELLED):
+                if (order.type == OrderType.BEST_LIMIT):
+                    order.status = OrderStatus.OPEN
+                    order.save()
+                    best_limit_orders_to_be_cancelled = Order.objects.filter(
+                        best_limit_id=order.best_limit_id, status=OrderStatus.WAITING_FOR_LIMIT)
+                    for bloc in best_limit_orders_to_be_cancelled:
+                        bloc.status = OrderStatus.CANCELLED
+                        bloc.save()
+                else:
+                    order.status = OrderStatus.OPEN
+                    order.save()
+        return True
 
     async def receive(self, text_data):
         print("receive from consumer")
@@ -264,7 +265,7 @@ class OrderEngineConsumer(AsyncWebsocketConsumer):
         if(type == "order_filled"):
             print(f"order fill called on order")
             orders = await database_sync_to_async(self.order_limit_pending)(text_data_json)
-            await database_sync_to_async(process_orders)(orders)
+            await database_sync_to_async(self.process_orders)(orders)
 
     async def instrument_update(self, data):
         await self.send(text_data=json.dumps(data, cls=UUIDEncoder))
@@ -286,8 +287,10 @@ class OrderEngineConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps(message))
     # For future use in frontend ui to update premums on the go
     # Backend admin page anyway reloads on update
+
     async def premium_update(self, data):
         print(f" Premium has been updated for {data}")
+
 
 class VendorConsumer(WebsocketConsumer):
     room_group_name = settings.SOCKET_GROUP
