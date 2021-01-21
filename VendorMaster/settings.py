@@ -33,7 +33,7 @@ environ.Env.read_env()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # SETTINGS
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -191,23 +191,25 @@ SITE_ID = 1
 ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_EMAIL_REQUIRED = "true"
 ASGI_APPLICATION = 'VendorMaster.asgi.application'
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+if DEBUG:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels.layers.InMemoryChannelLayer"
+        }
+    }
+else:
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'CONFIG': {
+                "hosts": [('127.0.0.1', 6379)],
+            },
         },
-    },
-}
-
+    }
 
 # LOGGING = get_config(env('LOG_DIR', default=BASE_DIR))
 
-# CHANNEL_LAYERS = {
-#   "default": {
-#      "BACKEND": "channels.layers.InMemoryChannelLayer"
-# }
-# }
+
 # BROKER_URL = 'redis://localhost:6379'
 # CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
