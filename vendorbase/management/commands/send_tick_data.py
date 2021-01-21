@@ -32,8 +32,8 @@ class Command(BaseCommand):
                 "type": "tick",
                 "gold_tick":
                     {
-                        "bid": json.loads(data['updatedata'])[0]['gold1_bid'],
-                        "ask": json.loads(data['updatedata'])[0]['gold1_ask']
+                        "bid": float(json.loads(data['updatedata'])[0]['gold1_bid']),
+                        "ask": float(json.loads(data['updatedata'])[0]['gold1_ask'])
                     }
             }
             channel_layer = get_channel_layer()

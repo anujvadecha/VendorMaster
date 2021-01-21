@@ -33,7 +33,7 @@ environ.Env.read_env()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # SETTINGS
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
