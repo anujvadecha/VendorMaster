@@ -6,6 +6,7 @@ attrs==20.3.0
 autobahn==20.7.1
 Automat==20.2.0
 autopep8==1.5.4
+bidict==0.21.2
 billiard==3.6.3.0
 celery==5.0.2
 certifi==2020.11.8
@@ -84,7 +85,9 @@ pyOpenSSL==19.1.0
 python-crontab==2.5.1
 python-dateutil==2.8.1
 python-decouple==3.3
+python-engineio==4.0.0
 python-memcached==1.59
+python-socketio==5.0.4
 python3-openid==3.2.0
 pytz==2020.4
 PyYAML==5.3.1
