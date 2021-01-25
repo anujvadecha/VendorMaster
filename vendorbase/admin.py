@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.template.loader import render_to_string, get_template
 from django.urls import path, reverse
 from django.utils.html import format_html
+from notifications.views import send_email
 
 from base.models import BaseModel
 from orderManagement.models import Order, OrderStatus, OpenOrder, ExecutedOrder, ClosedOrder, LimitOrderPending, \
@@ -138,6 +139,10 @@ class OpenOrderAdmin(admin.ModelAdmin):
         order = Order.objects.filter(order_id=order_id).first()
         order.status = OrderStatus.EXECUTED
         order.save()
+        print(order.user_id_id)
+        user = NormalUser.objects.filter(id=order.user_id_id).first()
+        # print(user)
+        send_email(user)
         #     obj.status=OrderStatus.EXECUTED
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
