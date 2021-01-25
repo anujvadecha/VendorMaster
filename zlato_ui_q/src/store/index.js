@@ -38,7 +38,11 @@ export default new Vuex.Store({
     snackbar: false,
     token: '',
     order_item: null,
-    user_details: null
+    user_details: null,
+    gold_ask: 0,
+    silver_ask: 0,
+    dollar: 0,
+    gold_comex: 0
   },
 
   mutations: {

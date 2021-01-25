@@ -45,13 +45,13 @@
           <q-toolbar class="text-dark bg-white" inset style="font-weight: bold">
             <q-space></q-space>
             <!--        <q-icon name="mdi-gold"></q-icon>-->
-            <span class="" style="">Gold : 1270</span>
+            <span class="" style="">Gold :{{$store.state.gold_comex}}</span>
             <q-space></q-space>
             <!--        <q-icon name="mdi-silverware-clean"></q-icon>-->
-            <span>Silver: 128392</span>
+            <span>Silver: {{$store.state.silver_ask}}</span>
             <q-space></q-space>
             <!--        <q-icon name="mdi-gold"></q-icon>-->
-            <span>Dollar: 78.9</span>
+            <span>Dollar: {{$store.state.dollar}}</span>
             <q-space></q-space>
           </q-toolbar>
         </q-header>
@@ -191,40 +191,11 @@ import { base_websocket_url, get_user_details, get_orders } from 'src/common/api
 import BestLimitBottomOrderDialog from 'components/BestLimitBottomOrderDialog'
 import OrderDetailsBottom from 'components/OrderDetailsBottom'
 const extra = [
-  // {
-  //   title: 'Home',
-  //   icon: 'mdi-home',
-  //   alias: 'Home',
-  //   mobile: true
-  // },
-  // {
-  //   title: 'Favourites',
-  //   alias: 'Favs',
-  //   icon: 'mdi-star',
-  //   mobile: true
-  // },
-  // {
-  //   title: 'Orders',
-  //   icon: 'mdi-cart',
-  //   alias: 'Orders',
-  //   mobile: true
-  // },
-  // {
-  //   title: 'Account',
-  //   icon: 'mdi-account',
-  //   alias: 'Account',
-  //   mobile: true
-  // }
   {
     title: 'Vendors',
     icon: 'mdi-gold',
     mobile: false
   }
-  // {
-  //   title: 'Margins',
-  //   icon: 'mdi-account',
-  //   link: 'https://forum.quasar.dev'
-  // }
 ]
 
 const linksData = [
