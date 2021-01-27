@@ -8,19 +8,19 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+from datetime import timedelta
 import os
 import pathlib
 import environ
 import django
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from VendorMaster.logging_config import get_config
-import os 
+import os
 from channels.routing import get_default_application
 BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
-SECRET_KEY ='3!sood8bmbjt72+idabk$uezm(agi28&t8=ccc(i51!rn(r47n'
+SECRET_KEY = '3!sood8bmbjt72+idabk$uezm(agi28&t8=ccc(i51!rn(r47n'
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'VendorMaster.settings')
-import django
-#django.setup()
+# django.setup()
 #application = get_default_application()
 
 
@@ -32,6 +32,7 @@ environ.Env.read_env()
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# SETTINGS
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
@@ -69,8 +70,8 @@ INSTALLED_APPS = [
     'webpack_loader',
     'corsheaders'
 ]
-MEDIA_URL="/media/"
-MEDIA_ROOT="media"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = "media"
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -124,7 +125,7 @@ WSGI_APPLICATION = 'VendorMaster.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES={
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'zlato',
@@ -170,7 +171,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
-ADMIN_USER="admin"
+ADMIN_USER = "admin"
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
@@ -178,7 +179,6 @@ REST_FRAMEWORK = {
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication'
     ]
 }
-from datetime import timedelta
 
 JWT_AUTH = {
     'JWT_ALLOW_REFRESH': True,
@@ -186,44 +186,45 @@ JWT_AUTH = {
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
 }
 
-ALLOWED_HOSTS=['*',]
-SITE_ID=1
-ACCOUNT_EMAIL_VERIFICATION="none"
-ACCOUNT_EMAIL_REQUIRED="true"
+ALLOWED_HOSTS = ['*', ]
+SITE_ID = 1
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_REQUIRED = "true"
 ASGI_APPLICATION = 'VendorMaster.asgi.application'
-CHANNEL_LAYERS = {
-     'default': {
-         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-         'CONFIG': {
-             "hosts": [('127.0.0.1', 6379)],
-         },
-         },
- }
-import os
-
+if DEBUG:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels.layers.InMemoryChannelLayer"
+        }
+    }
+else:
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'CONFIG': {
+                "hosts": [('127.0.0.1', 6379)],
+            },
+        },
+    }
 
 # LOGGING = get_config(env('LOG_DIR', default=BASE_DIR))
 
-#CHANNEL_LAYERS = {
- #   "default": {
-  #      "BACKEND": "channels.layers.InMemoryChannelLayer"
-   # }
-#}
+
 # BROKER_URL = 'redis://localhost:6379'
 # CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Africa/Nairobi'
-AUTH_USER_MODEL="userBase.NormalUser"
+AUTH_USER_MODEL = "userBase.NormalUser"
 LOGIN_URL = "accounts/login"
-LOGIN_REDIRECT_URL="/"
-LOGOUT_REDIRECT_URL="/"
-CRISPY_TEMPLATE_PACK="bootstrap4"
-WEBPACK_LOADER={
-    "DEFAULT":{
-        'BUNDLE_DIR_NAME':'/dist',
-        'STATS_FILE':os.path.join(BASE_DIR,'zlato_ui','webpack-stats.json')
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+WEBPACK_LOADER = {
+    "DEFAULT": {
+        'BUNDLE_DIR_NAME': '/dist',
+        'STATS_FILE': os.path.join(BASE_DIR, 'zlato_ui', 'webpack-stats.json')
     }
 }
 
@@ -231,4 +232,4 @@ REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'vendorbase.api.serializers.NormalUserSerializer',
 }
 
-SOCKET_GROUP="ticker_group"
+SOCKET_GROUP = "ticker_group"
