@@ -183,7 +183,6 @@
 import BottomOrderDialog from 'components/BottomOrderDialog'
 // import { NotifySuccess } from 'src/common/api_calls'
 // import MainLayout from 'layouts/MainLayout'
-
 // import Rating from 'components/Rating'
 import EssentialLink from 'components/EssentialLink.vue'
 import { Notify } from 'quasar'
@@ -222,31 +221,9 @@ const linksData = [
     icon: 'mdi-account',
     alias: 'Account',
     mobile: true
-  }
-  // {
-  //   title: 'Vendors',
-  //   icon: 'mdi-gold',
-  //   mobile: false
-  // }
-  // {
-  //   title: 'Margins',
-  //   icon: 'mdi-account',
-  //   link: 'https://forum.quasar.dev'
-  // }
-]
-// const account_actions_list = [
-//   {
-//     title: 'Margin',
-//     icon: 'mdi-account',
-//     link: 'https://forum.quasar.dev'
-//   },
-//   {
-//     title: 'Logout',
-//     icon: 'mdi-account',
-//     link: 'https://forum.quasar.dev'
-//   }
-// ]
-// import { base_url } from 'common/api_calls'
+  }]
+
+import { io } from 'socket.io-client'
 export default {
   name: 'Main',
   components: { OrderDetailsBottom, BestLimitBottomOrderDialog, EssentialLink, BottomOrderDialog },
@@ -273,6 +250,21 @@ export default {
     login_action: function () {
       console.log(this.email + this.password)
       this.connect_jwt()
+    },
+    connect_data: function () {
+      const socket = io('http://209.59.158.15:3001/', { secure: true, transports: ['websocket'], rejectUnauthorized: false, reconnect: true })
+      socket.on('mcxratesupdate:App\\Events\\MCXRateUpdates', function (data) {
+        if (data.updatedata) {
+
+        }
+        console.log(data)
+      })
+      socket.io.on('connection', function (data) {
+        console.log('connected')
+      })
+      // io.on('connect', function () {
+      //   console.log('connectedx')
+      // })
     },
     connect_websocket: function () {
       const connecter = this.connect_websocket
@@ -327,6 +319,7 @@ export default {
         }
         if (message.gold_tick) {
           store.dispatch('update_prices', message)
+          console.log(message)
         }
         if (message.instrument_update) {
           console.log('instrument_update received')
@@ -432,6 +425,7 @@ export default {
   created () {
     this.$router.push('Home')
     this.connect_websocket()
+    // this.connect_data()
     const store = this.$store
     if (this.logged_in) {
       get_user_details().then(

@@ -91,9 +91,8 @@
 <!--            </div>-->
 <!--          </div>-->
         </q-card>
-
   <q-table
-      style=""
+      style="max-height: 600px"
       class=""
       title="Ticker Prices"
       :data="data_render"
@@ -104,6 +103,7 @@
       v-touch-swipe.mouse.horizontal="handleSwipe"
       :pagination="pagination"
       virtual-scroll
+      hide-bottom
     >
     <template v-slot:top>
 
