@@ -30,7 +30,6 @@ class OrderSide(DjangoChoices):
 class BestLimitUserMapping(BaseModel):
     user = models.ForeignKey(NormalUser, on_delete=models.DO_NOTHING)
     best_limit_id = models.AutoField(primary_key=True)
-
     def __str__(self):
         return self.user.username
 
@@ -60,6 +59,7 @@ class Order(BaseModel):
             models.Index(fields=['user_id']),
             models.Index(fields=['status']),
             models.Index(fields=['user_id','status']),
+            models.Index(fields=['status','type']),
         ]
 
 

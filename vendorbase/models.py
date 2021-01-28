@@ -59,6 +59,10 @@ class Vendor(BaseModel):
     reference_2 = models.CharField(max_length=500, blank=True)
     default_margin=models.IntegerField(default=500)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['user_id'])
+        ]
     # phone_number=models.CharField(max_length=12,blank=True)
     def __str__(self):
         return self.name.__str__();
@@ -151,7 +155,10 @@ class Symbol(BaseModel):
     # def get_sell_price_from_tick(self,tick):
     #     return self.sell_premium + tick["ask"]+GlobalPremium.objects.first().sell_premium
     def __str__(self):
-        return str(self.name) ;
+        return str(self.name)
+
+    class Meta:
+        pass
 
     @classmethod
     def update_cache(cls):
@@ -169,6 +176,11 @@ class Symbol(BaseModel):
 class Favourite(models.Model):
     user_id = models.ForeignKey(NormalUser, on_delete=models.DO_NOTHING)
     instrument_id = models.ForeignKey(Symbol, on_delete=models.DO_NOTHING)
+    class Meta:
+        indexes = [
+            models.Index(fields=['user_id']),
+            models.Index(fields=['user_id','instrument_id']),
+        ]
 
 class VendorMargin(BaseModel):
     user = models.ForeignKey(NormalUser, on_delete=models.DO_NOTHING)
@@ -176,7 +188,11 @@ class VendorMargin(BaseModel):
     margin = models.IntegerField(default=0)
     margin_available = models.IntegerField(default=500)
     def __str__(self):
-        return self.user.__str__();
+        return self.user.__str__()
     class Meta:
+        indexes = [
+            models.Index(fields=['user']),
+            models.Index(fields=['user', 'vendor']),
+        ]
         verbose_name = 'User margin'
         verbose_name_plural = 'User margins'
