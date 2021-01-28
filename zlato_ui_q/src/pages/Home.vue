@@ -103,7 +103,6 @@ export default {
         })
       } else {
         add_to_favourites(item).then(res => {
-          console.log(res)
           this.$q.notify({
             message: 'Added ' + item.vendor + ' ' + item.name + ' from favourites',
             timeout: 2000,
@@ -124,7 +123,6 @@ export default {
     get_orders () {
       return get_orders().then(res => {
         this.orders = res
-        console.log(res)
         console.log('Inside get_orders')
       })
         .then(() => {
@@ -132,7 +130,6 @@ export default {
             order.instrument_id = this.$store.getters.get_instrument(
               order.instrument_id
             )
-            console.log(order.instrument_id)
             return order
           })
         })
@@ -140,8 +137,6 @@ export default {
           this.orders_to_rate = this.orders.filter(order => {
             return order.status === 'CLOSED' && order.is_rated === false
           })
-          console.log('Orders to be rated')
-          console.log(this.orders_to_rate)
         })
     }
   },

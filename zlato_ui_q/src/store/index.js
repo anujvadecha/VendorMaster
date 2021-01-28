@@ -50,6 +50,10 @@ export default new Vuex.Store({
       state.instruments = instruments
     },
     update_prices (state, tick) {
+      state.gold_comex = tick.gold_comex.ask
+      state.gold_ask = tick.gold_tick.ask
+      state.silver_ask = tick.silver_tick.ask
+      state.dollar = tick.dollar.ask
       state.instruments = state.instruments.map(function (instrument) {
         instrument.bid = tick.gold_tick.bid + instrument.buy_premium
         instrument.ask = tick.gold_tick.ask + instrument.sell_premium
