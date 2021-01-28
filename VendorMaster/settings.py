@@ -30,10 +30,9 @@ env = environ.Env(DEBUG=(bool, True), )
 environ.Env.read_env()
 
 # SECURITY WARNING: keep the secret key used in production secret!
-
 # SECURITY WARNING: don't run with debug turned on in production!
 # SETTINGS
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -182,7 +181,7 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_EMAIL_REQUIRED = "true"
 ASGI_APPLICATION = 'VendorMaster.asgi.application'
 
-if DEBUG:
+if not DEBUG:
     CHANNEL_LAYERS = {
         "default": {
             "BACKEND": "channels.layers.InMemoryChannelLayer"
@@ -241,5 +240,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "wimpycat714@gmail.com"
-EMAIL_HOST_PASSWORD = "temppassword123"
+EMAIL_HOST_USER = "deltacap.finance@gmail.com"
+EMAIL_HOST_PASSWORD = "Abfc1234!"
