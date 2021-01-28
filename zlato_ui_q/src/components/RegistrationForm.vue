@@ -14,9 +14,10 @@
         </q-card-section>
           <q-separator color="orange" size="15px" />
           <q-card-section>
-            <form action="http://127.0.0.1:8000/user/api/activateUser"
-                    method="post" class="q-px-sm q-pt-xl"
-                    enctype='multipart/form-data'>
+            <q-form
+              @submit="submitForm"
+              class="q-px-sm q-pt-xl"
+              enctype='multipart/form-data'>
               <q-input
                 name="phone_number"
                 square clearable
@@ -24,7 +25,7 @@
                 v-model="phone_number"
                 label="Your phone number "
                 lazy-rules
-                :rules="[ val => val && val.length === 10 || 'Please type something']"
+                :rules="[ val => val && val.length === 10 || 'Please provide a 10 digit phone number']"
               >
               </q-input>
               <q-file
@@ -73,8 +74,7 @@
                       outlined
                       v-model="reference_1_name"
                       label="Name for reference "
-                      lazy-rules
-                      :rules="[ val => val || 'Please provide a name for reference']"
+
                     />
                 </div>
                 <div class="col">
@@ -114,8 +114,8 @@
                 </div>
               </div>
               <br />
-              <q-btn type="submit" unelevated size="lg" color="primary" class="full-width text-white" label="Activate" />
-            </form>
+              <input type="submit" unelevated size="lg" color="primary" class="full-width text" label="Activate" />
+            </q-form>
           </q-card-section>
         <!-- <q-card-actions class="q-px-lg">
           <q-btn type="submit" unelevated size="lg" color="primary" class="full-width text-white" label="Activate" />
@@ -127,6 +127,7 @@
 
 <script>
 import { Notify } from 'quasar'
+import { activate_user } from 'src/common/api_calls'
 
 export default {
   name: 'RegistrationForm',
@@ -143,52 +144,72 @@ export default {
     }
   },
   methods: {
-    submitForm (evt) {
-      const formData = new FormData(evt.target)
-      const axios = require('axios')
-      // const url = window.location.host
-      // console.log(this.profile_picture)
+    // submitForm (evt) {
+    //   const formData = new FormData(evt.target)
+    //   const axios = require('axios')
+    // const url = window.location.host
+    // console.log(this.profile_picture)
+    //       formData.append('profile_picture', this.profile_picture)
+    //       formData.append('pan_card', this.pan_card)
+    //       formData.append('business_card', this.business_card)
+    //       const data = []
+    //       for (const [name, value] of formData.entries()) {
+    //         if (value.length > 0) {
+    //           data.push({
+    //             name,
+    //             value
+    //           })
+    //         }
+    //       }
+    //       console.log(data)
+    //       const config = {
+    //         method: 'put',
+    //         url: 'http://127.0.0.1:8000/user/api/activateUser',
+    //         headers: {
+    //           'Content-type': 'multipart/form-data',
+    //           // 'Content-Disposition': 'attachment; filename=file',
+    //           // filename: 'file',
+    //           Authorization: `Token ${this.$q.localStorage.getItem('token')}`
+    //         },
+    //         data: data
+    //       }
+    //       axios(config, formData)
+    //         .then((res) => {
+    //           console.log(res)
+    //           Notify.create({
+    //             message: 'Registration completed! Activation status under review',
+    //             position: 'top-right',
+    //             timeout: 1000
+    //           })
+    //         })
+    //         .catch((err) => {
+    //           console.log(err)
+    //           Notify.create({
+    //             message: 'Error! Invalid format of details entered',
+    //             position: 'top-right',
+    //             timeout: 1000
+    //           })
+    //         })
+    //     }
+    submitForm () {
+      console.log('helloololololo')
+      var formData = new FormData()
       formData.append('profile_picture', this.profile_picture)
       formData.append('pan_card', this.pan_card)
       formData.append('business_card', this.business_card)
-      const data = []
-      for (const [name, value] of formData.entries()) {
-        if (value.length > 0) {
-          data.push({
-            name,
-            value
-          })
-        }
-      }
-      console.log(data)
-      const config = {
-        method: 'put',
-        url: 'http://127.0.0.1:8000/user/api/activateUser',
-        headers: {
-          'Content-type': 'multipart/form-data',
-          // 'Content-Disposition': 'attachment; filename=file',
-          // filename: 'file',
-          Authorization: `Token ${this.$q.localStorage.getItem('token')}`
-        },
-        data: data
-      }
-      axios(config, formData)
-        .then((res) => {
-          console.log(res)
-          Notify.create({
-            message: 'Registration completed! Activation status under review',
-            position: 'top-right',
-            timeout: 1000
-          })
+      formData.append('phone_number', this.phone_number)
+      formData.append('reference_1_name', this.reference_1_name)
+      formData.append('reference_1_mobile', this.reference_1_mobile)
+      formData.append('reference_2_name', this.reference_2_name)
+      formData.append('reference_2_mobile', this.reference_2_mobile)
+      activate_user(formData).then(res => {
+        console.log(res)
+        Notify.create({
+          message: 'Your account has been activated!',
+          position: 'top-right',
+          timeout: 1000
         })
-        .catch((err) => {
-          console.log(err)
-          Notify.create({
-            message: 'Error! Invalid format of details entered',
-            position: 'top-right',
-            timeout: 1000
-          })
-        })
+      })
     }
   }
 }

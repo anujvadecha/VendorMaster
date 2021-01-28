@@ -17,6 +17,7 @@ class ActivateUser(APIView):
         print(request.user)
         user = request.user
         print(user)
+        request.data['requested_registration'] = True
         serializer = ActivateUserSerializer(user,data=request.data,partial=True)
         if serializer.is_valid():
             serializer.save()
