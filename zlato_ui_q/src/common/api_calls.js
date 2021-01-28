@@ -1,6 +1,6 @@
 import { apiService } from './api.service'
-const base_url = 'http://52.15.217.184'
-const base_websocket_url = '52.15.217.184'
+const base_url = 'http://52.15.217.184:8080'
+const base_websocket_url = '52.15.217.184:8080'
 // const base_url = 'http://localhost:8000'
 // const base_websocket_url = 'localhost:8000'
 
