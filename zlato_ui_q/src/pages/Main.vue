@@ -45,13 +45,13 @@
           <q-toolbar class="text-dark bg-white" inset style="font-weight: bold">
             <q-space></q-space>
             <!--        <q-icon name="mdi-gold"></q-icon>-->
-            <span class="" style="">Gold : 1270</span>
+            <span class="" style="">Gold :{{$store.state.gold_comex}}</span>
             <q-space></q-space>
             <!--        <q-icon name="mdi-silverware-clean"></q-icon>-->
-            <span>Silver: 128392</span>
+            <span>Silver: {{$store.state.silver_ask}}</span>
             <q-space></q-space>
             <!--        <q-icon name="mdi-gold"></q-icon>-->
-            <span>Dollar: 78.9</span>
+            <span>Dollar: {{$store.state.dollar}}</span>
             <q-space></q-space>
           </q-toolbar>
         </q-header>
@@ -183,7 +183,6 @@
 import BottomOrderDialog from 'components/BottomOrderDialog'
 // import { NotifySuccess } from 'src/common/api_calls'
 // import MainLayout from 'layouts/MainLayout'
-
 // import Rating from 'components/Rating'
 import EssentialLink from 'components/EssentialLink.vue'
 import { Notify } from 'quasar'
@@ -191,40 +190,11 @@ import { base_websocket_url, get_user_details, get_orders } from 'src/common/api
 import BestLimitBottomOrderDialog from 'components/BestLimitBottomOrderDialog'
 import OrderDetailsBottom from 'components/OrderDetailsBottom'
 const extra = [
-  // {
-  //   title: 'Home',
-  //   icon: 'mdi-home',
-  //   alias: 'Home',
-  //   mobile: true
-  // },
-  // {
-  //   title: 'Favourites',
-  //   alias: 'Favs',
-  //   icon: 'mdi-star',
-  //   mobile: true
-  // },
-  // {
-  //   title: 'Orders',
-  //   icon: 'mdi-cart',
-  //   alias: 'Orders',
-  //   mobile: true
-  // },
-  // {
-  //   title: 'Account',
-  //   icon: 'mdi-account',
-  //   alias: 'Account',
-  //   mobile: true
-  // }
   {
     title: 'Vendors',
     icon: 'mdi-gold',
     mobile: false
   }
-  // {
-  //   title: 'Margins',
-  //   icon: 'mdi-account',
-  //   link: 'https://forum.quasar.dev'
-  // }
 ]
 
 const linksData = [
@@ -251,31 +221,9 @@ const linksData = [
     icon: 'mdi-account',
     alias: 'Account',
     mobile: true
-  }
-  // {
-  //   title: 'Vendors',
-  //   icon: 'mdi-gold',
-  //   mobile: false
-  // }
-  // {
-  //   title: 'Margins',
-  //   icon: 'mdi-account',
-  //   link: 'https://forum.quasar.dev'
-  // }
-]
-// const account_actions_list = [
-//   {
-//     title: 'Margin',
-//     icon: 'mdi-account',
-//     link: 'https://forum.quasar.dev'
-//   },
-//   {
-//     title: 'Logout',
-//     icon: 'mdi-account',
-//     link: 'https://forum.quasar.dev'
-//   }
-// ]
-// import { base_url } from 'common/api_calls'
+  }]
+
+import { io } from 'socket.io-client'
 export default {
   name: 'Main',
   components: { OrderDetailsBottom, BestLimitBottomOrderDialog, EssentialLink, BottomOrderDialog },
@@ -302,6 +250,21 @@ export default {
     login_action: function () {
       console.log(this.email + this.password)
       this.connect_jwt()
+    },
+    connect_data: function () {
+      const socket = io('http://209.59.158.15:3001/', { secure: true, transports: ['websocket'], rejectUnauthorized: false, reconnect: true })
+      socket.on('mcxratesupdate:App\\Events\\MCXRateUpdates', function (data) {
+        if (data.updatedata) {
+
+        }
+        console.log(data)
+      })
+      socket.io.on('connection', function (data) {
+        console.log('connected')
+      })
+      // io.on('connect', function () {
+      //   console.log('connectedx')
+      // })
     },
     connect_websocket: function () {
       const connecter = this.connect_websocket
@@ -356,6 +319,7 @@ export default {
         }
         if (message.gold_tick) {
           store.dispatch('update_prices', message)
+          console.log(message)
         }
         if (message.instrument_update) {
           console.log('instrument_update received')
@@ -461,6 +425,7 @@ export default {
   created () {
     this.$router.push('Home')
     this.connect_websocket()
+    // this.connect_data()
     const store = this.$store
     if (this.logged_in) {
       get_user_details().then(

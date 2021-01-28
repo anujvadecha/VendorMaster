@@ -6,13 +6,14 @@
              :src="get_vendor_background_image(vendor_object.vendor.theme.background_image)">
         <div class="absolute-bottom">
           <div class="row">
-            <div class="col-2">
-            <q-img style="width:80px"
+<!--            <div class="col-2">-->
+            <q-img style="width:15%;max-width: 80px"
                    alt="https://source.unsplash.com/featured?nature,water"
                    :src="get_vendor_background_image(vendor_object.vendor.theme.logo)">
             </q-img>
-                    </div>
-                  <div class="col-9">
+
+<!--              </div>-->
+                  <div class="col-9 q-ml-md">
                 <div class="text-h6">{{ vendor_object.vendor.name }}</div>
                 <div class="text-subtitle2">{{ vendor_object.vendor.vendor_details.collection_address }}</div>
                 <div class="text-subtitle2">Call: {{ vendor_object.vendor.vendor_details.mobile_number_1 }} /{{ vendor_object.vendor.vendor_details.mobile_number_2 }}</div>

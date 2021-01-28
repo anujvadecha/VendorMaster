@@ -16,17 +16,17 @@ from vendorbase.tasks import update_high_low
 class Command(BaseCommand):
     help = 'Process to send gold ticker data'
     def handle(self, *args, **options):
-        sio = socketio.Client()
+        sio = socketio.Client(reconnection=True)
 
-        @sio.event
+        @sio.on(event='connect')
         def connect():
             print('connection established')
 
-        @sio.event
+        @sio.on(event='disconnect')
         def disconnect():
             print('disconnected from server')
 
-        @sio.on('mcxratesupdate:App\\Events\\MCXRateUpdates')
+        @sio.on(event='mcxratesupdate:App\\Events\\MCXRateUpdates')
         def my_message(data):
             tick = {
                 "type": "tick",
@@ -55,24 +55,15 @@ class Command(BaseCommand):
                         "bid": float(json.loads(data['updatedata'])[4]['gold1_bid']),
                         "ask": float(json.loads(data['updatedata'])[4]['gold1_ask'])
                     }
-
-
             }
+            print('tick received')
             channel_layer = get_channel_layer()
             async_to_sync(channel_layer.group_send)(
                 settings.SOCKET_GROUP,
                 tick
             )
-            # rates=json.loads(data)
-            # rates=rates['updatedata']
-            # print(rates)
-            # print('message received with ', data)
-            # sio.emit('my response', {'response': 'my response'})
-
-
-        sio.connect('http://209.59.158.15:3001/',headers={ "secure": "true", "rejectUnauthorized": "false", "reconnect" : "true" },transports=["websocket"])
+            update_high_low.delay(tick)
+        sio.connect('http://209.59.158.15:3001/',headers={ "secure": "true", "rejectUnauthorized": "false" },transports=["websocket"])
         # sio.wait()
         # while True:
-
-            # update_high_low.delay(tick)
-        #     time.sleep(1)
+        #  time.sleep(1)

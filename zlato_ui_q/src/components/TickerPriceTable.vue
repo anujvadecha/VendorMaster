@@ -91,9 +91,8 @@
 <!--            </div>-->
 <!--          </div>-->
         </q-card>
-
   <q-table
-      style=""
+      style="max-height: 600px"
       class=""
       title="Ticker Prices"
       :data="data_render"
@@ -101,9 +100,10 @@
       :filter="filter"
       row-key="instrument_id"
       bordered flat
-      v-touch-swipe.mouse="handleSwipe"
+      v-touch-swipe.mouse.horizontal="handleSwipe"
       :pagination="pagination"
       virtual-scroll
+      hide-bottom
     >
     <template v-slot:top>
 
@@ -357,7 +357,7 @@ export default {
         this.tabIndex = Math.max(0, this.tabIndex - 1)
         this.tab = this.types[Math.min(this.tabIndex, this.types.length - 1)]
         // TODO WRITE LOGIC HERE
-      } else {
+      } else if (info.direction === 'left') {
         this.tabIndex = Math.min(this.types.length - 1, this.tabIndex + 1)
         if (this.tabIndex < 0) { this.tabIndex = 0 }
         this.tab = this.types[Math.max(this.tabIndex, 0)]
