@@ -68,7 +68,8 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'api',
     'webpack_loader',
-    'corsheaders'
+    'corsheaders',
+    'notifications'
 ]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = "media"
@@ -125,17 +126,6 @@ WSGI_APPLICATION = 'VendorMaster.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'zlato',
-        'USER': 'zlato',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -191,11 +181,15 @@ SITE_ID = 1
 ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_EMAIL_REQUIRED = "true"
 ASGI_APPLICATION = 'VendorMaster.asgi.application'
+
 if DEBUG:
     CHANNEL_LAYERS = {
         "default": {
             "BACKEND": "channels.layers.InMemoryChannelLayer"
         }
+    }
+    DATABASES = {
+        'default': env.db(var="DATABASE_URL")
     }
 else:
     CHANNEL_LAYERS = {
@@ -205,6 +199,16 @@ else:
                 "hosts": [('127.0.0.1', 6379)],
             },
         },
+    }
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'zlato',
+            'USER': 'zlato',
+            'PASSWORD': 'password',
+            'HOST': 'localhost',
+            'PORT': '',
+        }
     }
 
 # LOGGING = get_config(env('LOG_DIR', default=BASE_DIR))
@@ -233,3 +237,10 @@ REST_AUTH_SERIALIZERS = {
 }
 
 SOCKET_GROUP = "ticker_group"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "wimpycat714@gmail.com"
+EMAIL_HOST_PASSWORD = "temppassword123"
