@@ -114,7 +114,7 @@
                 </div>
               </div>
               <br />
-              <input type="submit" unelevated size="lg" color="primary" class="full-width text" label="Activate" />
+              <q-input type="submit" bg-color="blue-5" outlined class="full-width text-white text-center" />
             </q-form>
           </q-card-section>
         <!-- <q-card-actions class="q-px-lg">
@@ -205,7 +205,7 @@ export default {
       activate_user(formData).then(res => {
         console.log(res)
         Notify.create({
-          message: 'Your account has been activated!',
+          message: 'Request for activation has been received!',
           position: 'top-right',
           timeout: 1000
         })
