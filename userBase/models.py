@@ -9,7 +9,6 @@ class UserType(DjangoChoices):
     user = ChoiceItem("USER")
     vendor = ChoiceItem("VENDOR")
 
-
 class NormalUser(AbstractUser):
     requested_registration = models.BooleanField(default = False)
     phone_number = models.CharField( blank=True , max_length=14 )
