@@ -6,25 +6,16 @@
         <span class="text-h6 text-grey-10">Order details</span>
         <q-chip outline class="q-ml-lg" color="black" dense >ID : {{order.transaction_id}}</q-chip>
         <q-chip outline color="primary" dense >Price : {{order.price}}</q-chip>
-<!--        <q-select-->
-<!--          filled-->
-<!--          v-model="selected"-->
-<!--          multiple-->
-<!--          :options="order_items"-->
-<!--          use-chips-->
-<!--          stack-label-->
-<!--          label="Multiple selection"-->
-<!--        />-->
       </div>
       </q-card-section>
        <q-separator></q-separator>
       <div class="row q-ma-sm">
         <div class='col q-ml-sm'>{{order.instrument.name}}</div>
-        <span class=" q-ml-sm" style=""><q-chip dense outline color="orange">{{order.side}} </q-chip>{{order.quantity}}</span>
+        <div class=" q-ml-sm" style=""><q-chip dense outline color="orange">{{order.side}} </q-chip>{{order.quantity}}</div>
       </div>
      <q-separator> </q-separator>
       <div class="row q-ma-sm">
-         <span class="q-ml-sm" style="color:grey"><q-icon name="mdi-clock"></q-icon>{{get_formated_time}}</span>
+         <span class="q-ml-sm col" style="color:grey"><q-icon name="mdi-clock"></q-icon>{{get_formated_time}}</span>
         <div v-if="order.status==='EXECUTED'">
           <q-chip v-if="order.type==='BEST_LIMIT'" outline  color="orange" dense >BEST_LIMIT</q-chip>
           <q-chip outline size="md" color="green" dense >Payment confirmed</q-chip>
@@ -45,18 +36,19 @@
         </div>
       </div>
       <q-separator></q-separator>
-      <div class="q-pa-sm">
-        <div class="q-ma-sm" v-if="this.order.status==='OPEN'">
+      <strong class="q-ma-md" v-if="this.order.status==='OPEN'">
           Please make payment at
-        </div>
-        <div class="q-ma-sm" v-if="this.order.status==='EXECUTED'">
+      </strong>
+      <strong class="q-ma-md" v-if="this.order.status==='EXECUTED'">
           Please collect delivery using the otp from
-        </div>
+      </strong>
+      <div class="q-pa-sm">
+
         <q-card>
           <q-card-section v-bind:style="{
               backgroundColor: vendor.theme.css_header_background_color,
             }">
-            <div class="row">
+            <div class="row" @click="open_vendor_dialog(vendor.vendor_id)">
               <div class="col-3">
                 <q-img width="80px" :src="base_url+vendor.theme.logo"/>
               </div>
@@ -70,20 +62,14 @@
             </div>
           </q-card-section>
        </q-card>
-
-<!--        {{vendor}}-->
         </div>
       <q-separator></q-separator>
-<!--      <q-card-section style="background-color: white" >-->
-<!--      <q-btn class="bg-primary text-white">Ok</q-btn>-->
-<!--      <q-btn class="q-ml-md btn-danger" @click="set_sheet_close()">Close</q-btn>-->
-<!--      </q-card-section>-->
       </q-card>
 </q-dialog>
 </template>
 
 <script>
-import { base_url } from 'src/common/api_calls'
+import { base_url, cancel_order } from 'src/common/api_calls'
 
 export default {
   name: 'OrderDetailsBottom',
@@ -128,6 +114,29 @@ export default {
   methods: {
     set_sheet_close: function () {
       this.$store.state.order_details_bottom_sheet = false
+    },
+    cancel_limit_order () {
+      console.log('limit order cancellation request for' + this.order)
+      // const router = this.$router
+      cancel_order({ order_id: this.order.order_id }).then(res => {
+        this.cancelled = true
+        // window.location.reload().then(
+        //   router.go(0)
+        // )
+      }).then(
+        this.$store.state.order_details_bottom_sheet = false
+      )
+    },
+    open_vendor_dialog: function (vendor_id) {
+      var selected_vendor_item = this.$store.getters.get_vendor_instruments(
+        vendor_id
+      )
+      this.$router.push({
+        name: 'Vendor',
+        params: {
+          vendor_object: selected_vendor_item
+        }
+      })
     }
   },
   data () {

@@ -389,7 +389,6 @@ export default {
       this.$store.dispatch('set_sheet', true)
     },
     open_vendor_dialog: function (vendor_id) {
-      console.log('open vendor called')
       var selected_vendor_item = this.$store.getters.get_vendor_instruments(
         vendor_id
       )
