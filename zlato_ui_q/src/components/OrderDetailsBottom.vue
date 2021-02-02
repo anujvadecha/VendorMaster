@@ -4,8 +4,8 @@
       <q-card-section class="bg-white" style=" color: white" >
       <div class="q-pa-sm">
         <span class="text-h6 text-grey-10">Order details</span>
-        <q-chip outline class="q-ml-lg" color="black" dense >ID : {{order.transaction_id}}</q-chip>
-        <q-chip outline color="primary" dense >Price : {{order.price}}</q-chip>
+        <q-chip outline class="q-ml-lg" color = "black" dense >ID : {{order.transaction_id}}</q-chip>
+        <q-chip outline color="primary" dense> Price : {{order.price}}</q-chip>
       </div>
       </q-card-section>
        <q-separator></q-separator>
