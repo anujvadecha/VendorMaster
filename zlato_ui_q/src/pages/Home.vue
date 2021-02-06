@@ -2,54 +2,20 @@
   <div>
   <div class="">
     <div v-if="logged_in">
-  <q-card square v-if="!$store.state.is_activated" class="" >
-    <div class="q-pa-sm bg-primary">
-      <div class="text-white" style="font-weight: bold">
-      <div v-if="$store.state.requested_registration">We will register this account as soon as possible</div>
-      <div v-else><q-btn  @click="$router.push('Registration')" class="text-black bg-white"> Activate </q-btn> &nbsp; your account to place orders</div>
-     </div>
-    </div>
+    <q-card square v-if="!$store.state.is_activated" class="" >
+      <div class="q-pa-sm bg-primary">
+        <div class="text-white" style="font-weight: bold">
+        <div v-if="$store.state.requested_registration">We will register this account as soon as possible</div>
+        <div v-else><q-btn  @click="$router.push('Registration')" class="text-black bg-white"> Activate </q-btn> &nbsp; your account to place orders</div>
+       </div>
+      </div>
     </q-card>
     </div>
   </div>
-
-
   <div class='row'>
     <q-space />
-    <q-btn label="Filters" color="primary" @click="filterDialog = true" />
   </div>
-
-  <q-dialog v-model="filterDialog">
-    <q-card>
-      <q-card-section class="row items-center q-pb-none">
-        <div class="text-h6">Filters</div>
-        <q-space />
-        <q-btn icon="close" flat round dense v-close-popup />
-      </q-card-section>
-
-      <q-card-section>
-        <div class="text-h6">Delivery From</div>
-        <div class="q-pa-md">
-          <div class="q-pb-sm">
-          </div>
-          <q-date v-model="selected.delivery_from" />
-        </div>
-      </q-card-section>
-
-      <q-card-section>
-        <div class="text-h6">Delivery Till</div>
-        <div class="q-pa-md">
-          <div class="q-pb-sm">
-          </div>
-          <q-date v-model="selected.delivery_to" />
-        </div>
-      </q-card-section>
-
-      <!-- <q-btn label='Apply Filters' @click="applyFilter" /> -->
-    </q-card>
-  </q-dialog>
-
-  <TickerPriceTable :render_best="true" title="Bullion prices" :instruments_to_render="instruments_to_render" :selected="selected"></TickerPriceTable>
+  <TickerPriceTable :render_best="true" title="Bullion prices" :instruments_to_render="instruments_to_render"></TickerPriceTable>
     <TopVendors class="mobile-hide"  :vendors="vendors_computed"></TopVendors>
     <div class="row">
     <MobileMarketing></MobileMarketing>
@@ -60,14 +26,14 @@
 <script>
 import TopVendors from 'components/home/TopVendors'
 import TickerPriceTable from 'components/TickerPriceTable'
-import { add_to_favourites, remove_from_favourites, get_orders } from 'src/common/api_calls'
+import { add_to_favourites, remove_from_favourites } from 'src/common/api_calls'
 import MobileMarketing from 'components/MobileMarketing'
 // import { add_to_favourites, remove_from_favourites } from '@/common/api_calls'
-import Rating from 'components/Rating'
+// import Rating from 'components/Rating'
 
 export default {
   name: 'Home',
-  components: { MobileMarketing, TickerPriceTable, TopVendors, Rating },
+  components: { MobileMarketing, TickerPriceTable, TopVendors },
   data () {
     return {
       slide: 'gold 999',
@@ -82,13 +48,8 @@ export default {
         { name: 'Low', align: 'start', field: 'low', filterable: true, label: 'Low' },
         { name: 'favourite', align: 'start', field: 'is_favourite', label: '' }
       ],
+      instruments: []
 
-      filterDialog: false,
-      instruments: [],
-      selected: {
-        delivery_from: '2021-01-30',
-        delivery_to: '2021-01-30'
-      }
     }
   },
   computed: {

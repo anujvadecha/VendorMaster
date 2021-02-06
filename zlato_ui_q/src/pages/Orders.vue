@@ -74,14 +74,14 @@ export default {
         // this.active_orders.length = 0
         // this.orders.length = 0
         this.orders = res
-        console.log(res)
+        // console.log(res)
       })
         .then(() => {
           this.orders = this.orders.map(order => {
             order.instrument = this.$store.getters.get_instrument(
               order.instrument_id
             )
-            console.log(order.instrument)
+            // console.log(order.instrument)
             return order
           })
         })
@@ -92,8 +92,8 @@ export default {
           })
         })
         .then(() => {
-          console.log('Timestamp : ')
-          console.log(this.orders)
+          // x   console.log('Timestamp : ')
+          //    console.log(this.orders)
         })
         .then(() => {
           this.active_orders = this.orders.filter(order => {
@@ -112,11 +112,11 @@ export default {
             return order.status === 'CLOSED'
           })
           this.orders_to_rate = this.orders.filter(order => {
-            console.log(order.status)
-            console.log(order.is_rated)
+            // console.log(order.status)
+            // console.log(order.is_rated)
             return order.status === 'CLOSED' && order.is_rated === false
           })
-          console.log(this.orders_to_rate)
+          // console.log(this.orders_to_rate)
         })
     }
   },

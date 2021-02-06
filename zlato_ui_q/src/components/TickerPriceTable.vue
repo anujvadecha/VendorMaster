@@ -10,8 +10,11 @@
       </div>
       </div>
       <div class="col">
+      <div class="row">
       <q-input class="q-ml-lg" outlined dense debounce="300" v-model="filter" placeholder="Search">
         </q-input>
+      <q-btn label="Filters" class="q-ml-lg" color="primary" @click="filterDialog = true" />
+      </div>
       </div>
     </div>
     <div class="row q-ml-md">
@@ -268,6 +271,36 @@
         </q-tr>
       </template>
     </q-table>
+     <q-dialog v-model="filterDialog">
+    <q-card>
+      <q-card-section class="row items-center q-pb-none">
+        <div class="text-h6">Filters</div>
+        <q-space />
+        <q-btn icon="close" flat round dense v-close-popup />
+      </q-card-section>
+
+      <q-card-section>
+        <div class="text-h6">Delivery From</div>
+        <div class="q-pa-md">
+          <div class="q-pb-sm">
+          </div>
+          <q-date v-model="selected.delivery_from" />
+        </div>
+      </q-card-section>
+
+      <q-card-section>
+        <div class="text-h6">Delivery Till</div>
+        <div class="q-pa-md">
+          <div class="q-pb-sm">
+          </div>
+          <q-date v-model="selected.delivery_to" />
+        </div>
+      </q-card-section>
+
+      <!-- <q-btn label='Apply Filters' @click="applyFilter" /> -->
+    </q-card>
+  </q-dialog>
+
     </div>
 </template>
 
@@ -277,7 +310,7 @@ import { Notify } from 'quasar'
 
 export default {
   name: 'TickerPriceTable',
-  props: ['instruments_to_render', 'title', 'render_best', 'selected'],
+  props: ['instruments_to_render', 'title', 'render_best'],
   computed: {
     data_render: function () {
       var instruments_to_render = this.$store.state.instruments
@@ -326,6 +359,7 @@ export default {
       filter: '',
       tab: 'All',
       tabIndex: 0,
+      filterDialog: false,
       types: ['All', 'Gold 999', 'Gold 999 1kg', 'Gold 995', 'Gold 995 1kg'],
       headers: [
         { name: 'Vendor', align: 'start', field: 'vendor', label: 'Vendor' },
@@ -336,7 +370,11 @@ export default {
         { name: 'Low', align: 'start', field: 'low', filterable: true, label: 'Low', sortable: true },
         { name: 'favourite', align: 'start', field: 'is_favourite', label: '' }
       ],
-      selectedFilters: ''
+      selectedFilters: '',
+      selected: {
+        delivery_from: null,
+        delivery_to: null
+      }
     }
   },
   methods: {
