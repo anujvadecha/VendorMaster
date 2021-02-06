@@ -277,40 +277,29 @@ import { Notify } from 'quasar'
 
 export default {
   name: 'TickerPriceTable',
-  props: ['instruments_to_render', 'title', 'render_best'],
+  props: ['instruments_to_render', 'title', 'render_best', 'selected'],
   computed: {
     data_render: function () {
-      // var type = ''
-      // if (this.tab !== 'All') { type = this.tab } else {
-      //   return this.instruments_to_render
-      // }
-      // return this.instruments_to_render.filter(instrument => {
-      //   return instrument.type === type
-      // })
-      // var instruments = []
+      var instruments_to_render = this.$store.state.instruments
       let type = ''
+      if (this.selected.delivery_from) {
+        instruments_to_render = instruments_to_render.filter(instrument => {
+          return new Date(instrument.delivery_from) >= new Date(this.selected.delivery_from)
+        })
+      }
+      if (this.selected.delivery_to) {
+        instruments_to_render = instruments_to_render.filter(instrument => {
+          return new Date(instrument.delivery_to) <= new Date(this.selected.delivery_to)
+        })
+      }
       if (this.tab !== 'All') {
         type = this.tab
-        return this.instruments_to_render.filter(instrument => {
+        return instruments_to_render.filter(instrument => {
           return instrument.type === type
         })
       } else {
-        return this.instruments_to_render
+        return instruments_to_render
       }
-      // if (this.selectedFilters) {
-      //   this.selectedFilters.map(curFilter => {
-      //     if (curFilter.key === 'delivery_date') {
-      //       instruments.filter(instrument => {
-      //         return instrument.delivery_from <= curFilter.value[0] && instrument.delivery_to <= curFilter.value[1]
-      //       })
-      //     } else {
-      //       instruments.filter(instrument => {
-      //         return instrument.curFilter.key === curFilter.value
-      //       })
-      //     }
-      //   })
-      // }
-      // return instruments
     },
     lowest: function () {
       let type = ''
@@ -400,6 +389,9 @@ export default {
         }
       })
     }
+  },
+  created () {
+
   }
 }
 </script>
