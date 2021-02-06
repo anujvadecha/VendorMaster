@@ -12,27 +12,44 @@
     </q-card>
     </div>
   </div>
-<!--  <q-btn @click="filter_dialog">Filters</q-btn>-->
-    <div v-if="orders_to_rate.length > 0">
-      <div v-for="order in orders_to_rate" :key="order.order_id">
-        <Rating v-bind:data="[order, true]" />
-      </div>
-    </div>
-    <q-dialog style="" v-model="filter"  persistent>
-    <q-card class="" style="">
-<!--      <q-card-section class="bg-primary text-h6" style=" color: white" >-->
-<!--        Filters-->
-<!--      </q-card-section>-->
-      <q-card-section>
 
+
+  <div class='row'>
+    <q-space />
+    <q-btn label="Filters" color="primary" @click="filterDialog = true" />
+  </div>
+
+  <q-dialog v-model="filterDialog">
+    <q-card>
+      <q-card-section class="row items-center q-pb-none">
+        <div class="text-h6">Filters</div>
+        <q-space />
+        <q-btn icon="close" flat round dense v-close-popup />
       </q-card-section>
-       <q-card-section style="background-color: white" >
-      <q-btn class="q-ml-md btn-danger" @click="filter=false">Close</q-btn>
-      <q-btn class="q-ml-md btn-primary" color="primary" @click="setFilters">Apply Filters</q-btn>
-    </q-card-section>
+
+      <q-card-section>
+        <div class="text-h6">Delivery From</div>
+        <div class="q-pa-md">
+          <div class="q-pb-sm">
+          </div>
+          <q-date v-model="selected.delivery_from" />
+        </div>
+      </q-card-section>
+
+      <q-card-section>
+        <div class="text-h6">Delivery Till</div>
+        <div class="q-pa-md">
+          <div class="q-pb-sm">
+          </div>
+          <q-date v-model="selected.delivery_to" />
+        </div>
+      </q-card-section>
+
+      <!-- <q-btn label='Apply Filters' @click="applyFilter" /> -->
     </q-card>
   </q-dialog>
-  <TickerPriceTable :render_best="true" title="Bullion prices" :instruments_to_render="instruments_to_render"></TickerPriceTable>
+
+  <TickerPriceTable :render_best="true" title="Bullion prices" :instruments_to_render="instruments_to_render" :selected="selected"></TickerPriceTable>
     <TopVendors class="mobile-hide"  :vendors="vendors_computed"></TopVendors>
     <div class="row">
     <MobileMarketing></MobileMarketing>
@@ -65,8 +82,13 @@ export default {
         { name: 'Low', align: 'start', field: 'low', filterable: true, label: 'Low' },
         { name: 'favourite', align: 'start', field: 'is_favourite', label: '' }
       ],
-      orders_to_rate: [],
-      orders: []
+
+      filterDialog: false,
+      instruments: [],
+      selected: {
+        delivery_from: '2021-01-30',
+        delivery_to: '2021-01-30'
+      }
     }
   },
   computed: {
@@ -116,28 +138,6 @@ export default {
       console.log('open order sheet called')
       this.$store.dispatch('set_order_item', item)
       this.$store.dispatch('set_sheet', true)
-    },
-    filter_dialog () {
-      this.filter = !this.filter
-    },
-    get_orders () {
-      return get_orders().then(res => {
-        this.orders = res
-        console.log('Inside get_orders')
-      })
-        .then(() => {
-          this.orders = this.orders.map(order => {
-            order.instrument_id = this.$store.getters.get_instrument(
-              order.instrument_id
-            )
-            return order
-          })
-        })
-        .then(() => {
-          this.orders_to_rate = this.orders.filter(order => {
-            return order.status === 'CLOSED' && order.is_rated === false
-          })
-        })
     }
   },
   created () {
