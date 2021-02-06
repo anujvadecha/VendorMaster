@@ -312,6 +312,7 @@ export default {
             }
           }
           store.dispatch('push_instruments', instruments)
+          console.log('Done')
         }
         if (message.gold_tick) {
           store.dispatch('update_prices', message)
