@@ -10,7 +10,6 @@ from vendorbase.api.serializers import FavouriteSerializer, UserMarginsSerialize
     SupportSerializer, VendorDetailsSerializer, VendorRatingTextSerializer
 from vendorbase.models import Favourite, VendorMargin, VendorDetails, VendorRatingText
 from vendorbase.models import Symbol
-from vendorbase.api.serializers import NormalUserSerializer, SymbolSerializer
 
 # @api_view(["GET"])
 # @permission_classes([IsAuthenticated])

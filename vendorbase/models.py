@@ -165,9 +165,7 @@ class Symbol(BaseModel):
 
     @classmethod
     def update_cache(cls):
-        print("updating cache for all instruments")
         cache.set("instruments", list(Symbol.objects.all()))
-        print("updating cache for each instrument")
         for symbol in Symbol.objects.all():
             to_store = {}
             to_store["high"] = 0
@@ -178,7 +176,7 @@ class Symbol(BaseModel):
 
 class Favourite(models.Model):
     user_id = models.ForeignKey(NormalUser, on_delete=models.DO_NOTHING)
-    instrument_id = models.ForeignKey(Symbol, on_delete=models.DO_NOTHING)
+    instrument_id = models.ForeignKey(Symbol, on_delete=models.CASCADE)
     class Meta:
         indexes = [
             models.Index(fields=['user_id']),
