@@ -10,7 +10,7 @@
             transition="scale-transition"
             width="50px"
             />
-             <strong class="text-h6 q-ml-md q-my-md">Zlato</strong>
+             <strong class="text-h6 q-ml-md q-my-md">DeltaBX</strong>
             </div>
           </q-card-section>
           <q-separator color="orange" size="5px"></q-separator>
