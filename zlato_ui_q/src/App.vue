@@ -202,13 +202,13 @@ document.addEventListener('deviceready', () => {
       text: 'Your experience is high priority , We shall connect you to high speed data. '
     }))
   } catch (err) {
-    cordova.plugins.notification.local.schedule({
-      title: 'An error has occured',
-      text: err.toString()
-    })
+    // cordova.plugins.notification.local.schedule({
+    //   title: 'An error has occured',
+    //   text: err.toString()
+    // })
   }
   cordova.plugins.notification.local.schedule({
-    title: 'Welcome to zlato',
+    title: 'Welcome to bullion exchange',
     text: 'Your experience is high priority , We shall connect you to high speed data. '
   })
 }, false)

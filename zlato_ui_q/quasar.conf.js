@@ -121,8 +121,8 @@ module.exports = function (/* ctx */) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: 'Zlato',
-        short_name: 'Zlato',
+        name: 'DeltaBX',
+        short_name: 'DeltaBX',
         description: 'A Gold bullion app',
         display: 'standalone',
         orientation: 'portrait',
