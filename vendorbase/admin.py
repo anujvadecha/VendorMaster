@@ -6,7 +6,8 @@ from django.shortcuts import render
 from django.template.loader import render_to_string, get_template
 from django.urls import path, reverse
 from django.utils.html import format_html
-from notifications.views import send_email
+from notifications.views import notifications
+from notifications.models import NotificationType, TemplateType
 
 from base.models import BaseModel
 from orderManagement.models import Order, OrderStatus, OpenOrder, ExecutedOrder, ClosedOrder, LimitOrderPending, \
@@ -142,7 +143,9 @@ class OpenOrderAdmin(admin.ModelAdmin):
         print(order.user_id_id)
         user = NormalUser.objects.filter(id=order.user_id_id).first()
         # print(user)
-        send_email(user)
+        payload = {}
+        notifications([NotificationType.MAIL], user, payload,
+                      TemplateType.ORDER_CONFIRMED)
         #     obj.status=OrderStatus.EXECUTED
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
