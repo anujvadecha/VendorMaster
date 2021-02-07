@@ -1,0 +1,15 @@
+{
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-deltabx-prod-224749-authRole",
+      "UnauthRoleArn": "arn:aws:iam::515472289637:role/amplify-deltabx-prod-224749-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::515472289637:role/amplify-deltabx-prod-224749-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-deltabx-prod-224749-deployment",
+      "UnauthRoleName": "amplify-deltabx-prod-224749-unauthRole",
+      "StackName": "amplify-deltabx-prod-224749",
+      "StackId": "arn:aws:cloudformation:us-east-2:515472289637:stack/amplify-deltabx-prod-224749/6b4dace0-6968-11eb-a62c-0a372f5300d2",
+      "AmplifyAppId": "d3bvqivkccdv6c"
+    }
+  }
+}
