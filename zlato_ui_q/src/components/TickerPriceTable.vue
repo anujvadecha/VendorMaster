@@ -10,8 +10,11 @@
       </div>
       </div>
       <div class="col">
+      <div class="row">
       <q-input class="q-ml-lg" outlined dense debounce="300" v-model="filter" placeholder="Search">
         </q-input>
+      <q-btn label="Filters" class="q-ml-lg" color="primary" @click="filterDialog = true" />
+      </div>
       </div>
     </div>
     <div class="row q-ml-md">
@@ -268,6 +271,36 @@
         </q-tr>
       </template>
     </q-table>
+     <q-dialog v-model="filterDialog">
+    <q-card>
+      <q-card-section class="row items-center q-pb-none">
+        <div class="text-h6">Filters</div>
+        <q-space />
+        <q-btn icon="close" flat round dense v-close-popup />
+      </q-card-section>
+
+      <q-card-section>
+        <div class="text-h6">Delivery From</div>
+        <div class="q-pa-md">
+          <div class="q-pb-sm">
+          </div>
+          <q-date v-model="selected.delivery_from" />
+        </div>
+      </q-card-section>
+
+      <q-card-section>
+        <div class="text-h6">Delivery Till</div>
+        <div class="q-pa-md">
+          <div class="q-pb-sm">
+          </div>
+          <q-date v-model="selected.delivery_to" />
+        </div>
+      </q-card-section>
+
+      <!-- <q-btn label='Apply Filters' @click="applyFilter" /> -->
+    </q-card>
+  </q-dialog>
+
     </div>
 </template>
 
@@ -280,37 +313,26 @@ export default {
   props: ['instruments_to_render', 'title', 'render_best'],
   computed: {
     data_render: function () {
-      // var type = ''
-      // if (this.tab !== 'All') { type = this.tab } else {
-      //   return this.instruments_to_render
-      // }
-      // return this.instruments_to_render.filter(instrument => {
-      //   return instrument.type === type
-      // })
-      // var instruments = []
+      var instruments_to_render = this.$store.state.instruments
       let type = ''
+      if (this.selected.delivery_from) {
+        instruments_to_render = instruments_to_render.filter(instrument => {
+          return new Date(instrument.delivery_from) >= new Date(this.selected.delivery_from)
+        })
+      }
+      if (this.selected.delivery_to) {
+        instruments_to_render = instruments_to_render.filter(instrument => {
+          return new Date(instrument.delivery_to) <= new Date(this.selected.delivery_to)
+        })
+      }
       if (this.tab !== 'All') {
         type = this.tab
-        return this.instruments_to_render.filter(instrument => {
+        return instruments_to_render.filter(instrument => {
           return instrument.type === type
         })
       } else {
-        return this.instruments_to_render
+        return instruments_to_render
       }
-      // if (this.selectedFilters) {
-      //   this.selectedFilters.map(curFilter => {
-      //     if (curFilter.key === 'delivery_date') {
-      //       instruments.filter(instrument => {
-      //         return instrument.delivery_from <= curFilter.value[0] && instrument.delivery_to <= curFilter.value[1]
-      //       })
-      //     } else {
-      //       instruments.filter(instrument => {
-      //         return instrument.curFilter.key === curFilter.value
-      //       })
-      //     }
-      //   })
-      // }
-      // return instruments
     },
     lowest: function () {
       let type = ''
@@ -337,6 +359,7 @@ export default {
       filter: '',
       tab: 'All',
       tabIndex: 0,
+      filterDialog: false,
       types: ['All', 'Gold 999', 'Gold 999 1kg', 'Gold 995', 'Gold 995 1kg'],
       headers: [
         { name: 'Vendor', align: 'start', field: 'vendor', label: 'Vendor' },
@@ -347,7 +370,11 @@ export default {
         { name: 'Low', align: 'start', field: 'low', filterable: true, label: 'Low', sortable: true },
         { name: 'favourite', align: 'start', field: 'is_favourite', label: '' }
       ],
-      selectedFilters: ''
+      selectedFilters: '',
+      selected: {
+        delivery_from: null,
+        delivery_to: null
+      }
     }
   },
   methods: {
@@ -389,7 +416,6 @@ export default {
       this.$store.dispatch('set_sheet', true)
     },
     open_vendor_dialog: function (vendor_id) {
-      console.log('open vendor called')
       var selected_vendor_item = this.$store.getters.get_vendor_instruments(
         vendor_id
       )
@@ -400,6 +426,9 @@ export default {
         }
       })
     }
+  },
+  created () {
+
   }
 }
 </script>

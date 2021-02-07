@@ -28,7 +28,7 @@
       <div @click="set_order_details()">
       <div class="row q-ma-sm">
           <div class="col">
-        <strong>{{order.instrument.vendor}}</strong>
+            <strong>{{order.instrument.vendor}}</strong>
             <span class="font-bold q-ml-xs-sm " style=""> {{order.instrument.name}}</span>
           </div>
           <div class="col">

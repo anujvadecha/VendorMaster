@@ -257,7 +257,6 @@ export default {
         if (data.updatedata) {
 
         }
-        console.log(data)
       })
       socket.io.on('connection', function (data) {
         console.log('connected')
@@ -307,29 +306,24 @@ export default {
             for (let i = 0; i < instruments.length; i++) {
               for (let j = 0; j < favourites.length; j++) {
                 if (favourites[j] === instruments[i].instrument_id) {
-                  console.log('setting instrument')
                   instruments[i].is_favourite = true
                 }
               }
             }
-            console.log(favourites)
-            console.log(instruments)
           }
           store.dispatch('push_instruments', instruments)
+          console.log('Done')
         }
         if (message.gold_tick) {
           store.dispatch('update_prices', message)
-          console.log(message)
         }
         if (message.instrument_update) {
           console.log('instrument_update received')
-          console.log(message)
           var to_update = JSON.parse(message.instrument_update)
           console.log(to_update)
           store.dispatch('update_instrument', to_update)
         }
         if (message.vendors) {
-          console.log(message.vendors)
           var vendors = message.vendors.map(vendor => {
             vendor.theme = JSON.parse(vendor.theme)[0]
             vendor.vendor_details = JSON.parse(vendor.vendor_details)[0]

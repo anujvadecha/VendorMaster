@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "759672044500",
+    "project_id": "zlato-80834",
+    "storage_bucket": "zlato-80834.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:759672044500:android:48ed74ee9a5894d9a0b441",
+        "android_client_info": {
+          "package_name": "com.deltacap.zlato"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "759672044500-n2jmv17ql08q86am45sods3pui5ujiss.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcw9UTeJZesu1DeZZcWnglPLwFdtemUlg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "759672044500-n2jmv17ql08q86am45sods3pui5ujiss.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

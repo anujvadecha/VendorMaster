@@ -29,6 +29,9 @@ class SymbolName(DjangoChoices):
     gold_999_1kg_t_plus_2 = ChoiceItem("Gold 999 1kg (T+2)")
     gold_995_t_plus_2 = ChoiceItem("Gold 995 (T+2)")
     gold_995_1kg_t_plus_2 = ChoiceItem("Gold 995 1kg (T+2)")
+    gold_999_gst_tcs = ChoiceItem("Gold 999 GST & TCS")
+    gold_995_gst_tcs = ChoiceItem("Gold 995 GST & TCS")
+    gold_unfix = ChoiceItem("Gold Unfix")
 
 
 class SymbolType(DjangoChoices):

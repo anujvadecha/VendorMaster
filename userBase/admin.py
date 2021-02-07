@@ -20,7 +20,7 @@ class CustomUserAdmin(UserAdmin):
         queryset = self.model.objects.all()
         return self.get_user_queryset(request=request, queryset=queryset)
 
-    list_display = ['username','is_staff','is_activated']
+    list_display = ['username','is_staff','is_activated','requested_registration']
     fieldsets = (
                 *UserAdmin.fieldsets,
                 (
