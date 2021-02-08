@@ -313,7 +313,7 @@ export default {
   props: ['instruments_to_render', 'title', 'render_best'],
   computed: {
     data_render: function () {
-      var instruments_to_render = this.$store.state.instruments
+      var instruments_to_render = this.instruments_to_render
       let type = ''
       if (this.selected.delivery_from) {
         instruments_to_render = instruments_to_render.filter(instrument => {
