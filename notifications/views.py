@@ -22,7 +22,7 @@ def notifications(type, userdata, payload, template):
 def send_email(user, payload, template_type):
     print(user.email)
 
-    subject = 'Order Confirmed'
+    subject = str(template_type)
     email_from = settings.EMAIL_HOST_USER
 
     recipient_list = [user.email]
@@ -36,16 +36,19 @@ def send_email(user, payload, template_type):
 
 
 def send_sms(user, payload, template_type):
-    message = "This is my sms test msg"
+    message = f"Your Order is {str(template_type)}"
+    print(payload)
+    print(message)
+    print(template_type)
+    print(user.phone_number)
     numbers = [user.phone_number]
-    endpoint = 'https://swiftmediasms.com/api/pushsms.php?username=DeltaCap&password=9712&sender=BLKsMs&message={message}&numbers={number}&unicode=false&flash=false'
+    endpoint = 'https://swiftmediasms.com/api/pushsms.php?username=DeltaCap&password=9712&sender=BTIITI&message={message}&numbers={numbers}&unicode=false&flash=false'
     url = endpoint.format(message=message, numbers=numbers)
-    headers = {'api_key': settings.SMS_API_KEY}
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:  # SUCCESS
-        pass
-    else:
-        pass
+    response = requests.get(url)
+    # if response.status_code == 200:  # SUCCESS
+    #     pass
+    # else:
+    #     pass
 
 
 def push_notifications(user, payload, template_type):
