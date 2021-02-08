@@ -7,7 +7,7 @@ from vendorbase.models import Symbol
 
 
 class Command(BaseCommand):
-    user = 'admin'
+    user = 'admin_zlato'
     help = 'Process to add fake orders for testing'
 
     def add_fake_orders(self, count=2000):

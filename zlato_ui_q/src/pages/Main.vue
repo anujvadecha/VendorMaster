@@ -16,7 +16,7 @@
                 transition="scale-transition"
                 width="50px"
               />
-            <span v-if="currentRouteName==='Home'" class="font-extrabold q-ml-sm ">Zlato</span>
+            <span v-if="currentRouteName==='Home'" class="font-extrabold q-ml-sm ">DeltaBX</span>
             <span v-else class="font-extrabold q-ml-sm "> {{ currentRouteName }}</span>
             </q-toolbar-title>
         <div>
@@ -269,7 +269,7 @@ export default {
       const connecter = this.connect_websocket
       const store = this.$store
       document.cookie = 'authorization=' + this.$q.localStorage.getItem('token') + ';'
-      const url = 'ws://' + base_websocket_url + '/ws/' + 'ticker' + '/' + '?' + this.$q.localStorage.getItem('token')
+      const url = 'wss://' + base_websocket_url + '/ws/' + 'ticker' + '/' + '?' + this.$q.localStorage.getItem('token')
       const symbolsocket = new WebSocket(url)
       symbolsocket.onopen = function () {
         Notify.create({

@@ -9,15 +9,15 @@
         {{title}}
       </div>
       </div>
-      <div class="col">
       <div class="row">
-      <q-input class="q-ml-lg" outlined dense debounce="300" v-model="filter" placeholder="Search">
+<!--      <div class="row">-->
+      <q-btn style="max-height:50px" dense icon="mdi-filter" class="" color="primary" @click="filterDialog = true" />
+      <q-input class="q-ml-sm" outlined dense debounce="300" v-model="filter" placeholder="Search">
         </q-input>
-      <q-btn label="Filters" class="q-ml-lg" color="primary" @click="filterDialog = true" />
-      </div>
+<!--      </div>-->
       </div>
     </div>
-    <div class="row q-ml-md">
+      <div class="row q-ml-md">
           Please click on Bid/Ask to place orders
       </div>
     <div>
