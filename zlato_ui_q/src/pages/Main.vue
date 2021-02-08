@@ -269,7 +269,7 @@ export default {
       const connecter = this.connect_websocket
       const store = this.$store
       document.cookie = 'authorization=' + this.$q.localStorage.getItem('token') + ';'
-      const url = 'ws://' + base_websocket_url + '/ws/' + 'ticker' + '/' + '?' + this.$q.localStorage.getItem('token')
+      const url = 'wss://' + base_websocket_url + '/ws/' + 'ticker' + '/' + '?' + this.$q.localStorage.getItem('token')
       const symbolsocket = new WebSocket(url)
       symbolsocket.onopen = function () {
         Notify.create({
