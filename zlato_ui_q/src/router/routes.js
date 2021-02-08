@@ -1,32 +1,32 @@
-import Orders from 'pages/Orders'
-import Favourites from 'pages/Favourites'
+// import Orders from 'pages/Orders'
+// import Favourites from 'pages/Favourites'
 import Home from 'pages/Home'
-import Account from 'pages/Account'
-import VendorDetails from 'pages/VendorDetails'
-import Login from 'pages/Login'
-import Register from 'pages/Register'
-import Marketing from 'pages/Marketing'
+// import Account from 'pages/Account'
+// import VendorDetails from 'pages/VendorDetails'
+// import Login from 'pages/Login'
+// import Register from 'pages/Register'
+// import Marketing from 'pages/Marketing'
 import Main from 'pages/Main'
-import UserMargins from 'pages/UserMargins'
-import RegistrationForm from 'components/RegistrationForm'
-import Vendors from 'pages/Vendors'
+// import UserMargins from 'pages/UserMargins'
+// import RegistrationForm from 'components/RegistrationForm'
+// import Vendors from 'pages/Vendors'
 
 const routes = [
   {
     path: '/main',
     name: 'Marketing',
-    component: Marketing
+    component: import('pages/Marketing')
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login,
+    component: () => import('pages/Login'),
     props: true
   },
   {
     path: '/register',
     name: 'Register',
-    component: Register
+    component: import('pages/Register')
   },
   {
     path: '/',
@@ -40,39 +40,39 @@ const routes = [
       },
       {
         path: 'orders',
-        component: Orders,
+        component: () => import('pages/Orders'),
         name: 'Orders'
       },
       {
         path: 'favourites',
-        component: Favourites,
+        component: () => import('pages/Favourites'),
         name: 'Favourites'
       },
       {
         path: 'account',
-        component: Account,
-        name: 'Account'
+        name: 'Account',
+        component: () => import('pages/Account')
       },
       {
         path: 'vendor',
         name: 'Vendor',
-        component: VendorDetails,
+        component: () => import('pages/VendorDetails'),
         props: true
       },
       {
         path: 'margins',
         name: 'Margins',
-        component: UserMargins
+        component: import('pages/UserMargins')
       },
       {
         path: 'registration',
         name: 'Registration',
-        component: RegistrationForm
+        component: () => import('components/RegistrationForm')
       },
       {
         path: 'vendors',
         name: 'Vendors',
-        component: Vendors
+        component: () => import('pages/Vendors')
       }
     ]
   },

@@ -1,13 +1,23 @@
 <template>
   <div>
-  <div v-if="logged_in">
-  <div class="Favourites">
-      <TickerPriceTable :render_best="true" title="Favourites" :instruments_to_render="favourite_items" />
-  </div>
-  </div>
-  <div v-else>
-    <LoginRequired  page="or add Favourites"></LoginRequired>
-  </div>
+    <div v-if="logged_in">
+      <div v-if="favourite_items.length > 0">
+        <div class="Favourites">
+            <TickerPriceTable :render_best="true" title="Favourites" :instruments_to_render="favourite_items" />
+        </div>
+      </div>
+      <div v-else>
+        <center>
+          <q-img width="20%" height=20% src="no_results.png"></q-img>
+          <div class="q-mt-md">
+            <strong class="text-h6">Please select some favourites from home to view them</strong>
+          </div>
+        </center>
+      </div>
+    </div>
+    <div v-else>
+      <LoginRequired  page="or add Favourites"></LoginRequired>
+    </div>
   </div>
 </template>
 
