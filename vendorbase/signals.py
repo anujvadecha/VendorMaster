@@ -53,8 +53,8 @@ def create_update_order(sender, instance, created, **kwargs):
     payload = OrderSerializer(instance).data
 
     if(instance.status == OrderStatus.CANCELLED):
-        notifications([NotificationType.MAIL, NotificationType.SMS], user, payload,
-                      TemplateType.ORDER_CANCELLED)
+        notifications.delay([NotificationType.MAIL, NotificationType.SMS], user, payload,
+                            TemplateType.ORDER_CANCELLED)
         async_to_sync(channel_layer.group_send)(
             settings.SOCKET_GROUP, {
                 "type": "cancel",
@@ -62,8 +62,8 @@ def create_update_order(sender, instance, created, **kwargs):
             }
         )
     if instance.status == OrderStatus.OPEN:
-        notifications([NotificationType.MAIL, NotificationType.SMS], user, payload,
-                      TemplateType.ORDER_OPEN)
+        notifications.delay([NotificationType.MAIL, NotificationType.SMS], user, payload,
+                            TemplateType.ORDER_OPEN)
         instrument = instance.instrument_id
         margin_object = VendorMargin.objects.filter(
             user=instance.user_id, vendor_id=instrument.vendor_id).first()
@@ -78,11 +78,11 @@ def create_update_order(sender, instance, created, **kwargs):
         else:
             return False
     if instance.status == OrderStatus.EXECUTED:
-        notifications([NotificationType.MAIL, NotificationType.SMS], user, payload,
-                      TemplateType.ORDER_EXECUTED)
+        notifications.delay([NotificationType.MAIL, NotificationType.SMS], user, payload,
+                            TemplateType.ORDER_EXECUTED)
     if instance.status == OrderStatus.WAITING_FOR_LIMIT:
-        notifications([NotificationType.MAIL, NotificationType.SMS], user, payload,
-                      TemplateType.ORDER_WAITING_FOR_LIMIT)
+        notifications.delay([NotificationType.MAIL, NotificationType.SMS], user, payload,
+                            TemplateType.ORDER_WAITING_FOR_LIMIT)
 
 
 @receiver(pre_save, sender=Order)
