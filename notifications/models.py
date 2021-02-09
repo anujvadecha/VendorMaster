@@ -9,7 +9,9 @@ class NotificationType(DjangoChoices):
     SMS = ChoiceItem("SMS")
     PUSH_NOTIFICATION = ChoiceItem("PUSH_NOTIFICATION")
 
+
 class TemplateType(DjangoChoices):
-    ORDER_PLACED = ChoiceItem("ORDER_PLACED")
-    ORDER_CONFIRMED = ChoiceItem("ORDER_CONFIRMED")
     ORDER_CANCELLED = ChoiceItem("ORDER_CANCELLED")
+    ORDER_OPEN = ChoiceItem("ORDER_OPEN")
+    ORDER_EXECUTED = ChoiceItem("ORDER_EXECUTED")
+    ORDER_WAITING_FOR_LIMIT = ChoiceItem("ORDER_WAITING_FOR_LIMIT")

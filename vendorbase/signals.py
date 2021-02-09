@@ -14,6 +14,8 @@ from userBase.models import NormalUser
 from vendorbase.api.serializers import SymbolSerializer
 from vendorbase.models import Symbol, Vendor, VendorDetails, VendorMargin
 from django.core.cache import cache
+from notifications.views import notifications
+from notifications.models import NotificationType, TemplateType
 
 logger = logging.getLogger(__name__)
 
@@ -46,25 +48,41 @@ def create_update_order(sender, instance, created, **kwargs):
             "order_update": json.dumps(OrderSerializer(instance).data, cls=UUIDEncoder)
         }
     )
+
+    user = NormalUser.objects.filter(id=instance.user_id.id).first()
+    payload = OrderSerializer(instance).data
+
     if(instance.status == OrderStatus.CANCELLED):
+        notifications.delay([NotificationType.MAIL, NotificationType.SMS], user, payload,
+                            TemplateType.ORDER_CANCELLED)
         async_to_sync(channel_layer.group_send)(
             settings.SOCKET_GROUP, {
                 "type": "cancel",
                 "cancelled": json.dumps(OrderSerializer(instance).data, cls=UUIDEncoder)
             }
         )
-    if instance.status==OrderStatus.OPEN:
+    if instance.status == OrderStatus.OPEN:
+        notifications.delay([NotificationType.MAIL, NotificationType.SMS], user, payload,
+                            TemplateType.ORDER_OPEN)
         instrument = instance.instrument_id
-        margin_object = VendorMargin.objects.filter(user=instance.user_id, vendor_id=instrument.vendor_id).first()
+        margin_object = VendorMargin.objects.filter(
+            user=instance.user_id, vendor_id=instrument.vendor_id).first()
         if (margin_object == None):
             logger.error('MARGIN FOR THE INSTANCE DOES NOT EXIST')
         if (margin_object.margin_available >= instance.quantity):
-            logger.info(f"Margin available is {margin_object.margin_available} order quantity {instance.quantity}")
+            logger.info(
+                f"Margin available is {margin_object.margin_available} order quantity {instance.quantity}")
             margin_object.margin_available = margin_object.margin_available - instance.quantity
             margin_object.save()
             return True
         else:
             return False
+    if instance.status == OrderStatus.EXECUTED:
+        notifications.delay([NotificationType.MAIL, NotificationType.SMS], user, payload,
+                            TemplateType.ORDER_EXECUTED)
+    if instance.status == OrderStatus.WAITING_FOR_LIMIT:
+        notifications.delay([NotificationType.MAIL, NotificationType.SMS], user, payload,
+                            TemplateType.ORDER_WAITING_FOR_LIMIT)
 
 
 @receiver(pre_save, sender=Order)
