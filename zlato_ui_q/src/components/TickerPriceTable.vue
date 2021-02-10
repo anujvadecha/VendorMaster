@@ -11,11 +11,9 @@
       </div>
       <div class="row">
 <!--      <div class="row">-->
-      <q-btn style="max-height:50px" dense icon="mdi-filter" class="" color="primary"
-             @click="openFilterDrawer()"
-      />
-      <q-input class="q-ml-sm" outlined dense debounce="300" v-model="filter" placeholder="Search">
-        </q-input>
+
+      <q-input class="q-ml-sm" outlined dense debounce="300" v-model="filter" placeholder="Search" />
+      <q-btn class="q-ml-sm" style="max-height:36px" dense icon="mdi-filter" text-color='dark' color="white" @click="filterDialog = true" />
 <!--      </div>-->
       </div>
     </div>
@@ -281,23 +279,36 @@
         <q-btn icon="close" flat round dense v-close-popup />
       </q-card-section>
 
-      <q-card-section>
-        <div class="text-h6">Delivery From</div>
-        <div class="q-pa-md">
-          <div class="q-pb-sm">
+      <q-card-section horizontal>
+        <q-card-section>
+          <div class="text-h6">Delivery From</div>
+        </q-card-section>
+
+        <q-separator vertical />
+
+        <q-card-section>
+          <div class="q-pa-md">
+            <div class="q-pb-sm">
+            </div>
+            <q-date v-model="selected.delivery_from" />
           </div>
-          <q-date v-model="selected.delivery_from" />
-        </div>
+        </q-card-section>
       </q-card-section>
 
-      <q-card-section>
-        <div class="text-h6">Delivery Till</div>
-        <div class="q-pa-md">
+      <!-- <q-separator horizontal />
+
+        <q-card-section>
+          <div class="text-h6">Delivery Till</div>
+        </q-card-section> -->
+
+      <!-- <q-card-section>
+        <div class="text-h6">Delivery Till</div> -->
+        <!-- <div class="q-pa-md">
           <div class="q-pb-sm">
           </div>
           <q-date v-model="selected.delivery_to" />
-        </div>
-      </q-card-section>
+        </div> -->
+      <!-- </q-card-section> -->
 
       <!-- <q-btn label='Apply Filters' @click="applyFilter" /> -->
     </q-card>
@@ -372,7 +383,6 @@ export default {
         { name: 'Low', align: 'start', field: 'low', filterable: true, label: 'Low', sortable: true },
         { name: 'favourite', align: 'start', field: 'is_favourite', label: '' }
       ],
-      selectedFilters: '',
       selected: {
         delivery_from: null,
         delivery_to: null
