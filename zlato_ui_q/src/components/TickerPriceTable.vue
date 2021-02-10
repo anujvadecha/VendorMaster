@@ -13,7 +13,7 @@
 <!--      <div class="row">-->
 
       <q-input class="q-ml-sm" outlined dense debounce="300" v-model="filter" placeholder="Search" />
-      <q-btn class="q-ml-sm" style="max-height:36px" dense icon="mdi-filter" text-color='dark' color="white" @click="filterDialog = true" />
+      <q-btn class="q-ml-sm" style="max-height:36px" dense icon="mdi-filter" text-color='dark' color="white" @click="openFilterDrawer()" />
 <!--      </div>-->
       </div>
     </div>

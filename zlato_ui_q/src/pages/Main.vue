@@ -113,38 +113,21 @@
             <q-list>
               <q-tree
                 default-expand-all
-      :nodes="filters"
-      node-key="label"
-      no-connectors
-    />
-<!--                    :expanded.sync="expanded"-->
-              <!--        <q-item-label-->
-              <!--          header-->
-              <!--          class="text-grey-8"-->
-              <!--        >-->
-              <!--          Links-->
-              <!--        </q-item-label>-->
-<!--              <EssentialLink-->
-<!--                v-for="link in essentialLinks"-->
-<!--                :key="link.title"-->
-<!--                v-bind="link"-->
-<!--              />-->
-<!--              <EssentialLink-->
-<!--                v-for="link in extraLinks"-->
-<!--                :key="link.title"-->
-<!--                v-bind="link"-->
-<!--              />-->
-              <!--      <q-tree-->
-              <!--          :nodes="account_actions"-->
-              <!--          node-key="label"-->
-              <!--          default-expand-all>-->
-              <!--          <template v-slot:default-header="prop">-->
-              <!--            <div class="row items-center">-->
-              <!--              <q-icon :name="prop.node.icon || 'share'" color="orange" size="28px" class="q-mr-sm" />-->
-              <!--              <div class="text-weight-bold text-primary">{{ prop.node.label }}</div>-->
-              <!--            </div>-->
-              <!--          </template>-->
-              <!--      </q-tree>-->
+                :nodes="filters"
+                node-key="label"
+                no-connectors
+              >
+              <template v-slot:default-header="props">
+        <div class="row items-center">
+<!--          <q-icon name=" share" color="orange" size="28px" class="q-mr-sm" />-->
+          <div class="text-weight-bold text-primary">{{props.node.label}}</div>
+        </div>
+      </template>
+
+<!--      <template v-slot:default-body="">-->
+<!--        <span  class="text-weight-light text-black">This is some default content.</span>-->
+<!--      </template>-->
+                <!----></q-tree>
             </q-list>
           </q-scroll-area>
         </q-drawer>
@@ -477,8 +460,8 @@ export default {
             },
             {
               label: 'Tommorow',
-              icon: 'room_service',
-              disabled: true
+              icon: 'room_service'
+              // disabled: true
             },
             {
               label: 'Custom',
