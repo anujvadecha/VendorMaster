@@ -109,3 +109,14 @@ class VendorRequestView(APIView):
 class TickerRequestView(APIView):
     def get(self):
         pass
+
+
+class UserMarginCron(APIView):
+    def post(self, request):
+        margins = VendorMargin.objects.all()
+        # print(margins)
+        for m in margins:
+            m.margin_available = m.margin
+            m.save()
+        # print(margins)
+        return Response("success", status.HTTP_200_OK)

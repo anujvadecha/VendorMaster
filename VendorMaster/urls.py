@@ -26,7 +26,7 @@ from VendorMaster import settings
 from VendorMaster.send_tick_data_test import send_tick_data
 from userBase.forms import CustomUserForm
 from django_registration.backends.one_step.views import RegistrationView
-from vendorbase.api.views import FavouritesView, SupportView, VendorRatingView
+from vendorbase.api.views import FavouritesView, SupportView, UserMarginCron, VendorRatingView
 from vendorbase.models import Symbol
 from vendorbase.views import IndexTemplateView, fallback_404
 from userBase.api.views import ActivateUser, UserRatingView
@@ -56,7 +56,7 @@ urlpatterns = [
     path("api/support/", SupportView.as_view(), name="support"),
     path("api/ratevendor/", VendorRatingView.as_view(), name="vendor_rating"),
     path("api/rateuser/", UserRatingView.as_view(), name="user_rating"),
-    # path("api/margins/",UserMarginView.as_view(),name="usermarginview"),
+    path("api/margins/", UserMarginCron.as_view(), name="usermargincron"),
     #url(r'^.*$',fallback_404,name="404 fallback")
     url(r'^api-token-auth/', obtain_jwt_token),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
