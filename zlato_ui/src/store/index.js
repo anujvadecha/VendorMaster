@@ -11,7 +11,8 @@ export default new Vuex.Store({
     snackbar_message: "",
     snackbar: false,
     is_activated: false,
-    requested_registration: false
+    requested_registration: false,
+    rightDrawerOpen: false
   },
   mutations: {
     push_instruments(state, instruments) {

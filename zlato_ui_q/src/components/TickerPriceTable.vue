@@ -11,7 +11,9 @@
       </div>
       <div class="row">
 <!--      <div class="row">-->
-      <q-btn style="max-height:50px" dense icon="mdi-filter" class="" color="primary" @click="filterDialog = true" />
+      <q-btn style="max-height:50px" dense icon="mdi-filter" class="" color="primary"
+             @click="openFilterDrawer()"
+      />
       <q-input class="q-ml-sm" outlined dense debounce="300" v-model="filter" placeholder="Search">
         </q-input>
 <!--      </div>-->
@@ -378,6 +380,9 @@ export default {
     }
   },
   methods: {
+    openFilterDrawer () {
+      this.$store.state.rightDrawerOpen = !this.$store.state.rightDrawerOpen
+    },
     handleSwipe ({ evt, ...info }) {
       console.log(info)
       if (info.direction === 'right') {
