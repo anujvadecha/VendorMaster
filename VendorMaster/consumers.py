@@ -94,8 +94,6 @@ class TickConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps(data, cls=UUIDEncoder))
 
     async def order_update(self, data):
-        print("helllooooo")
-        print(data)
         if(self.user != AnonymousUser):
             if(data["user"] == self.user.id):
                 await self.send(text_data=json.dumps({
