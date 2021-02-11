@@ -152,6 +152,7 @@ class Symbol(BaseModel):
     source_symbol = models.CharField(max_length=200, choices=SourceSymbol)
     buy_premium = models.FloatField()
     sell_premium = models.FloatField()
+    is_deleted = models.BooleanField(default=False)
     # def get_bid_price_from_tick(self,tick):
     #     return self.buy_premium+tick["bid"]+GlobalPremium.objects.first().buy_premium
     #

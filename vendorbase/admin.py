@@ -50,6 +50,9 @@ class SymbolAdmin(admin.ModelAdmin):
         )
         return response
 
+    def delete_model(self, request, obj):
+        obj.is_deleted=True
+        obj.save()
 
 @admin.register(Vendor)
 class VendorAdmin(admin.ModelAdmin):
