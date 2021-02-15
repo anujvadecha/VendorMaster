@@ -32,7 +32,7 @@ environ.Env.read_env()
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECURITY WARNING: don't run with debug turned on in production!
 # SETTINGS
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -242,3 +242,6 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "deltacap.finance@gmail.com"
 EMAIL_HOST_PASSWORD = "Abfc1234!"
+
+USE_TZ = True
+TIME_ZONE = 'Asia/Kolkata'
