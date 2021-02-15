@@ -54,7 +54,8 @@ export default {
   },
   computed: {
     instruments_to_render: function () {
-      return this.$store.getters.get_instruments
+      //  TODO Create a filtered instruments getter inside store
+      return this.$store.getters.get_filtered_instruments
     },
     bottom_sheet: function () {
       return this.$store.getters.get_sheet
@@ -100,10 +101,10 @@ export default {
       this.$store.dispatch('set_order_item', item)
       this.$store.dispatch('set_sheet', true)
     }
-  },
-  created () {
-    this.get_orders()
   }
+  // created () {
+  //   this.get_orders()
+  // }
 }
 
 </script>

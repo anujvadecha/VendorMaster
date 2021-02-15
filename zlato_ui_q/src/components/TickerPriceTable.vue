@@ -328,16 +328,16 @@ export default {
     data_render: function () {
       var instruments_to_render = this.instruments_to_render
       let type = ''
-      if (this.selected.delivery_from) {
-        instruments_to_render = instruments_to_render.filter(instrument => {
-          return new Date(instrument.delivery_from) >= new Date(this.selected.delivery_from)
-        })
-      }
-      if (this.selected.delivery_to) {
-        instruments_to_render = instruments_to_render.filter(instrument => {
-          return new Date(instrument.delivery_to) <= new Date(this.selected.delivery_to)
-        })
-      }
+      // if (this.selected.delivery_from) {
+      //   instruments_to_render = instruments_to_render.filter(instrument => {
+      //     return new Date(instrument.delivery_from) >= new Date(this.selected.delivery_from)
+      //   })
+      // }
+      // if (this.selected.delivery_to) {
+      //   instruments_to_render = instruments_to_render.filter(instrument => {
+      //     return new Date(instrument.delivery_to) <= new Date(this.selected.delivery_to)
+      //   })
+      // }
       if (this.tab !== 'All') {
         type = this.tab
         return instruments_to_render.filter(instrument => {

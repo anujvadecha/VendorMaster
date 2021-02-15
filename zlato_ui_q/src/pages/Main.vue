@@ -6,6 +6,29 @@
       </div>
     </div> -->
     <div id="q-app">
+      <q-dialog v-model="filterDialog">
+    <q-card>
+      <q-card-section class="row items-center q-pb-none">
+        <div class="text-h6">Filters</div>
+        <q-space />
+        <q-btn icon="close" flat round dense v-close-popup />
+      </q-card-section>
+
+      <q-card-section>
+        <div class="text-h6">Delivery Till</div>
+        <div class="q-pa-md">
+          <div class="q-pb-sm">
+          </div>
+          <q-date v-model="custom_delivery_date" />
+        </div>
+      </q-card-section>
+
+      <q-card-section>
+      <q-btn label='Apply' @click="applyFilter" />
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+
       <q-layout class="" view="lHh Lpr fFf">
         <q-header class="bg-white text-dark" style="" elevated bordered>
           <q-toolbar style="" class="shadow-2">
@@ -114,6 +137,8 @@
               <q-tree
                 default-expand-all
                 :nodes="filters"
+                selected-color="primary"
+                :selected.sync="active_label"
                 node-key="label"
                 no-connectors
               >
@@ -281,6 +306,9 @@ export default {
     }
   },
   methods: {
+    applyFilters () {
+      this.$store.state.selected_filters.delivery_to = this.custom_delivery_date
+    },
     login_action: function () {
       console.log(this.email + this.password)
       this.connect_jwt()
@@ -303,7 +331,7 @@ export default {
       const connecter = this.connect_websocket
       const store = this.$store
       document.cookie = 'authorization=' + this.$q.localStorage.getItem('token') + ';'
-      const url = 'wss://' + base_websocket_url + '/ws/' + 'ticker' + '/' + '?' + this.$q.localStorage.getItem('token')
+      const url = 'ws://' + base_websocket_url + '/ws/' + 'ticker' + '/' + '?' + this.$q.localStorage.getItem('token')
       const symbolsocket = new WebSocket(url)
       symbolsocket.onopen = function () {
         Notify.create({
@@ -435,10 +463,37 @@ export default {
     },
     get_user_details () {
 
+    },
+    deliveryFilter (val) {
+      if (val === 'Today') {
+        const currentDate = new Date()
+        const day = currentDate.getDate()
+        const month = currentDate.getMonth() + 1
+        const year = currentDate.getFullYear()
+        this.$store.state.selected_filters.delivery_to = year + '-' + month + '-' + day
+      } else if (val === 'Tomorrow') {
+        const currentDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+        const day = currentDate.getDate()
+        const month = currentDate.getMonth() + 1
+        const year = currentDate.getFullYear()
+        this.$store.state.selected_filters.delivery_to = year + '-' + month + '-' + day
+      } else if (val === 'Day After') {
+        const currentDate = new Date(new Date().getTime() + 48 * 60 * 60 * 1000)
+        const day = currentDate.getDate()
+        const month = currentDate.getMonth() + 1
+        const year = currentDate.getFullYear()
+        this.$store.state.selected_filters.delivery_to = year + '-' + month + '-' + day
+      } else if (val === 'Custom') {
+        this.filterDialog = true
+      } else if (val === 'None') {
+        this.$store.state.selected_filters.delivery_to = ''
+      }
     }
   },
   data () {
     return {
+      custom_delivery_date: '',
+      active_label: 'None',
       email: '',
       password: ',',
       essentialLinks: linksData,
@@ -456,21 +511,36 @@ export default {
           children: [
             {
               label: 'Today',
+              handler: () => this.deliveryFilter('Today'),
               icon: 'mdi-van'
             },
             {
               label: 'Tommorow',
+              handler: () => this.deliveryFilter('Tomorrow'),
               icon: 'room_service'
               // disabled: true
             },
             {
+              label: 'Day After',
+              handler: () => this.deliveryFilter('Day After'),
+              icon: 'room_service'
+            },
+            {
               label: 'Custom',
+              handler: () => this.deliveryFilter('Custom'),
               icon: 'photo'
+            },
+            {
+              label: 'None',
+              handler: () => this.deliveryFilter('None')
             }
           ]
         }
-      ]
-
+      ],
+      filterDialog: false,
+      selected_filters: {
+        delivery_to: ''
+      }
     }
   },
   created () {

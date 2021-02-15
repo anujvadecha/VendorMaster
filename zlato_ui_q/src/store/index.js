@@ -42,7 +42,10 @@ export default new Vuex.Store({
     gold_ask: 0,
     silver_ask: 0,
     dollar: 0,
-    gold_comex: 0
+    gold_comex: 0,
+    selected_filters: {
+      delivery_to: ''
+    }
   },
 
   mutations: {
@@ -140,6 +143,19 @@ export default new Vuex.Store({
   getters: {
     get_instruments: state => {
       return state.instruments
+    },
+    get_filtered_instruments: state => {
+      console.log(state.selected_filters.delivery_to)
+      var filtered_instruments = {}
+      if (state.selected_filters.delivery_to.length > 0) {
+        filtered_instruments = state.instruments.filter(
+          instrument => new Date(instrument.delivery_to) >= new Date(state.selected_filters.delivery_to)
+        )
+      } else {
+        filtered_instruments = state.instruments
+      }
+      console.log(filtered_instruments)
+      return filtered_instruments
     },
     get_instrument: state => instrument_id => {
       return state.instruments.find(
