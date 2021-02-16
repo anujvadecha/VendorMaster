@@ -31,7 +31,7 @@
         </div>
     </q-tabs>
       </div>
-       <q-card v-if="render_best" square  bordered flat class="bg-light-blue-2 row q-pa-sm" style="" >
+       <q-card v-if="render_best && instruments_to_render.length>0"  square  bordered flat class="bg-light-blue-2 row q-pa-sm" style="" >
          <div style="" class="col-3 vendor_link" @click="open_vendor_dialog(lowest.vendor_id)" v-if="!$q.platform.is.mobile"  >
             Best : {{ lowest.vendor }}
           </div>
