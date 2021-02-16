@@ -1,8 +1,8 @@
 <template>
 <div>
-  <q-card class="q-ma-sm">
+  <q-card v-if="!$q.platform.is.mobile" class="q-ma-sm">
     <q-card-section>
-  <div v-if="!$q.platform.is.mobile" class="bg-light-blue-2">
+  <div  class="bg-light-blue-2">
   <div class="bg-white row  text-white">
 <!--    <div class="col-4">-->
 <!--      <q-img width="30%" src="mobile.png"/>-->
