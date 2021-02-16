@@ -361,6 +361,7 @@ export default {
             favourites = favourites.map(favourite => {
               return favourite.instrument_id
             })
+            console.log(instruments)
             instruments = instruments.map(instrument => {
               instrument.is_favourite = false
               return instrument

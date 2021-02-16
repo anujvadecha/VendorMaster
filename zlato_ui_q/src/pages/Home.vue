@@ -17,9 +17,7 @@
   </div>
   <TickerPriceTable :render_best="true" title="Bullion prices" :instruments_to_render="instruments_to_render"></TickerPriceTable>
     <TopVendors class="mobile-hide"  :vendors="vendors_computed"></TopVendors>
-    <div class="row">
     <MobileMarketing></MobileMarketing>
-      </div>
   </div>
 
 </template>

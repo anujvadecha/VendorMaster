@@ -1,6 +1,7 @@
 <template>
 <div>
-  <q-card bordered flat class="q-ma-sm col-6">
+  <q-card class="q-ma-sm">
+    <q-card-section>
   <div v-if="!$q.platform.is.mobile" class="bg-light-blue-2">
   <div class="bg-white row  text-white">
 <!--    <div class="col-4">-->
@@ -19,8 +20,10 @@
 <!--      <q-img width="30%" src="googleplay.png"></q-img>-->
 <!--      <q-img class="q-ml-sm" width="30%" src="appstore.png"></q-img>-->
     </div>
+
   </div>
   </div>
+      </q-card-section>
     </q-card>
 </div>
 </template>

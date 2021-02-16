@@ -58,8 +58,19 @@ export default new Vuex.Store({
       state.silver_ask = tick.silver_tick.ask
       state.dollar = tick.dollar.ask
       state.instruments = state.instruments.map(function (instrument) {
-        instrument.bid = tick.gold_tick.bid + instrument.buy_premium
-        instrument.ask = tick.gold_tick.ask + instrument.sell_premium
+        if (instrument.source_symbol === 'gold_fut') {
+          instrument.bid = tick.gold_tick.bid + instrument.buy_premium
+          instrument.ask = tick.gold_tick.ask + instrument.sell_premium
+        } else if (instrument.source_symbol === 'gold_bank') {
+          instrument.bid =
+            parseInt((tick.gold_comex.ask * tick.dollar.ask * 31.1035 * 1.12875) /
+              0.999 / 100) +
+            instrument.buy_premium
+          instrument.ask =
+            parseInt((tick.gold_comex.ask * tick.dollar.ask * 31.1035 * 1.12875) /
+              0.999 / 100) +
+            instrument.sell_premium
+        }
         instrument.high = Math.max(
           instrument.bid,
           instrument.high,
