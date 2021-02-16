@@ -99,6 +99,7 @@ class LimitOrderPendingAdmin(admin.ModelAdmin):
     list_per_page = 10
     ordering = ('created_at',)
     search_fields = ('order_id', 'instrument_id__name', 'user_id__name')
+    exclude = ('is_rated',)
 
 
 @admin.register(BestLimitOrder)
@@ -161,7 +162,8 @@ class OpenOrderAdmin(admin.ModelAdmin):
     list_per_page = 10
     search_fields = ('order_id', 'transaction_id',
                      'instrument_id__name', 'user_id__name')
-    exclude = ('best_limit_id',)
+
+    exclude = ('best_limit_id','is_rated')
 
 
 @admin.register(ExecutedOrder)
@@ -207,7 +209,7 @@ class ExecutedOrderAdmin(admin.ModelAdmin):
 
     list_display_links = ('instrument_id',)
     # list_filter = ('',)
-    exclude = ('best_limit_id',)
+    exclude = ('best_limit_id','is_rated')
 
 
 @admin.register(ClosedOrder)
@@ -231,7 +233,7 @@ class ClosedOrderAdmin(admin.ModelAdmin):
     list_per_page = 10
     search_fields = ('order_id', 'transaction_id',
                      'instrument_id__name', 'user_id__name')
-    exclude = ('best_limit_id',)
+    exclude = ('best_limit_id','is_rated')
 
 
 @admin.register(Group)
