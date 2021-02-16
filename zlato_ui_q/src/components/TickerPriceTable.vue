@@ -11,8 +11,8 @@
       </div>
       <div class="row">
 <!--      <div class="row">-->
-
-      <q-input class="q-ml-sm" outlined dense debounce="300" v-model="filter" placeholder="Search" />
+      <q-input v-if="search_selected" clearable @clear="search_selected=false" class="q-ml-sm" outlined dense debounce="300" v-model="filter" placeholder="Search" />
+      <q-btn v-if="!search_selected" class="q-ml-sm" style="max-height:36px" dense icon="mdi-magnify" text-color='dark' color="white" @click="search_selected=true" />
       <q-btn class="q-ml-sm" style="max-height:36px" dense icon="mdi-filter" text-color='dark' color="white" @click="openFilterDrawer()" />
 <!--      </div>-->
       </div>
@@ -369,6 +369,7 @@ export default {
       pagination: {
         rowsPerPage: 0
       },
+      search_selected: false,
       filter: '',
       tab: 'All',
       tabIndex: 0,
