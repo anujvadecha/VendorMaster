@@ -22,7 +22,6 @@ logger = logging.getLogger(__name__)
 
 @receiver(post_save, sender=Symbol)
 def create_update_symbol(sender, instance, created, **kwargs):
-    print("symbol update")
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         settings.SOCKET_GROUP,

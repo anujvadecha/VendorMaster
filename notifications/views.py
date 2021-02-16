@@ -23,9 +23,9 @@ def notifications(type, userdata, payload, template):
 def send_email(user, payload, template_type):
     subject = str(template_type)
     email_from = settings.EMAIL_HOST_USER
-    recipient_list = [user.email]
+    recipient_list = [user['email']]
     html_content = render_to_string(
-        str(template_type) + '.html', {'name': user.first_name, 't_id': str(payload["transaction_id"]), 'otp': str(payload["otp"])})
+        str(template_type) + '.html', {'name': user['first_name'], 't_id': str(payload["transaction_id"]), 'otp': str(payload["otp"])})
     text_content = strip_tags(html_content)
     msg = EmailMultiAlternatives(
         subject, text_content, email_from, recipient_list)
@@ -36,10 +36,10 @@ def send_email(user, payload, template_type):
 def send_sms(user, payload, template_type):
     t_id = payload["transaction_id"]
     otp = payload["otp"]
-    message = f"Hello {user.first_name}, \nYour Order with Transaction id: {str(t_id)} is {str(template_type).split('_')[1]}"
+    message = f"Hello {user['first_name']}, \nYour Order with Transaction id: {str(t_id)} is {str(template_type).split('_')[1]}"
     if(template_type == TemplateType.ORDER_EXECUTED):
         message = message + f"\nYour OTP is {str(otp)}"
-    numbers = [user.phone_number]
+    numbers = [user['phone_number']]
     endpoint = 'https://swiftmediasms.com/api/pushsms.php?username=DeltaCap&password=9712&sender=BTIITI&message={message}&numbers={numbers}&unicode=false&flash=false'
     url = endpoint.format(message=message, numbers=numbers)
     response = requests.get(url)
