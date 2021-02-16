@@ -7,6 +7,7 @@ import Home from 'pages/Home'
 // import Register from 'pages/Register'
 // import Marketing from 'pages/Marketing'
 import Main from 'pages/Main'
+import UserMargins from 'pages/UserMargins'
 // import UserMargins from 'pages/UserMargins'
 // import RegistrationForm from 'components/RegistrationForm'
 // import Vendors from 'pages/Vendors'
@@ -62,7 +63,7 @@ const routes = [
       {
         path: 'margins',
         name: 'Margins',
-        component: import('pages/UserMargins')
+        component: UserMargins
       },
       {
         path: 'registration',
