@@ -20,8 +20,21 @@ export default new Vuex.Store({
     },
     update_prices(state, tick) {
       state.instruments = state.instruments.map(function(instrument) {
-        instrument.bid = tick.gold_tick.bid + instrument.buy_premium;
-        instrument.ask = tick.gold_tick.ask + instrument.sell_premium;
+        if (instrument.source_symbol === "gold_fut") {
+          console.log("updating gold fut rate");
+          instrument.bid = tick.gold_tick.bid + instrument.buy_premium;
+          instrument.ask = tick.gold_tick.ask + instrument.sell_premium;
+        } else if (instrument.source_symbol === "gold_bank") {
+          console.log("updating gold bank rate");
+          instrument.bid =
+            (tick.gold_comex.ask * tick.dollar.ask * 31.1035 * 1.12875) /
+              0.999 +
+            instrument.buy_premium;
+          instrument.ask =
+            (tick.gold_comex.ask * tick.dollar.ask * 31.1035 * 1.12875) /
+              0.999 +
+            instrument.sell_premium;
+        }
         instrument.high = Math.max(
           instrument.bid,
           instrument.high,
@@ -32,6 +45,7 @@ export default new Vuex.Store({
           instrument.low,
           instrument.ask
         );
+
         return instrument;
       });
     },

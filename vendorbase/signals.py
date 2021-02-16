@@ -11,7 +11,7 @@ from admin_interface.models import Theme
 from orderManagement.api.serializers import OrderSerializer
 from orderManagement.models import Order, LimitOrderPending, OpenOrder, ExecutedOrder, ClosedOrder, OrderStatus, OrderType
 from userBase.models import NormalUser
-from vendorbase.api.serializers import SymbolSerializer
+from vendorbase.api.serializers import SymbolSerializer, NormalUserSerializer
 from vendorbase.models import Symbol, Vendor, VendorDetails, VendorMargin
 from django.core.cache import cache
 from notifications.views import notifications
@@ -62,7 +62,7 @@ def create_update_order(sender, instance, created, **kwargs):
             }
         )
     if instance.status == OrderStatus.OPEN:
-        notifications.delay([NotificationType.MAIL, NotificationType.SMS], user, payload,
+        notifications.delay([NotificationType.MAIL, NotificationType.SMS], NormalUserSerializer(user).data, payload,
                             TemplateType.ORDER_OPEN)
         instrument = instance.instrument_id
         margin_object = VendorMargin.objects.filter(

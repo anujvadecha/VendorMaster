@@ -7,7 +7,7 @@ test.py
 .idea/vcs.xml
 #*migrations/
 node_modules
-/dist
+#/dist
 # local env files
 .env.local
 .env.*.local
@@ -33,7 +33,6 @@ __pycache__/
 bin/
 build/
 develop-eggs/
-dist/
 eggs/
 lib/
 lib64/
