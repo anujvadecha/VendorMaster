@@ -78,10 +78,10 @@ def create_update_order(sender, instance, created, **kwargs):
         else:
             return False
     if instance.status == OrderStatus.EXECUTED:
-        notifications.delay([NotificationType.MAIL, NotificationType.SMS], user, payload,
+        notifications.delay([NotificationType.MAIL, NotificationType.SMS], NormalUserSerializer(user).data, payload,
                             TemplateType.ORDER_EXECUTED)
     if instance.status == OrderStatus.WAITING_FOR_LIMIT:
-        notifications.delay([NotificationType.MAIL, NotificationType.SMS], user, payload,
+        notifications.delay([NotificationType.MAIL, NotificationType.SMS], NormalUserSerializer(user).data, payload,
                             TemplateType.ORDER_WAITING_FOR_LIMIT)
 
 
