@@ -122,6 +122,7 @@ export default {
   },
   created () {
     this.get_orders()
+    this.$store.state.rightDrawerOpen = false
   }
 
 }

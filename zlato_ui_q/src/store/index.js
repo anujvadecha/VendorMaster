@@ -165,7 +165,6 @@ export default new Vuex.Store({
       } else {
         filtered_instruments = state.instruments
       }
-      console.log(filtered_instruments)
       return filtered_instruments
     },
     get_instrument: state => instrument_id => {

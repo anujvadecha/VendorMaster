@@ -262,7 +262,7 @@ export default {
     }
   },
   created () {
-    console.log(this.$q.localStorage.getItem('token'))
+    this.$store.state.rightDrawerOpen = false
   },
   computed: {
     logged_in: function () {

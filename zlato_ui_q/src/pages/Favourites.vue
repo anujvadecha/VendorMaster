@@ -47,10 +47,11 @@ export default {
     }
   },
   created () {
+    this.$store.state.rightDrawerOpen = false
+
     this.favourite_items = this.$store.state.instruments.filter(instrument => {
       return instrument.is_favourite === true
     })
-    console.log(this.favourite_items)
   }
 }
 </script>

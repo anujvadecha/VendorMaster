@@ -99,10 +99,11 @@ export default {
       this.$store.dispatch('set_order_item', item)
       this.$store.dispatch('set_sheet', true)
     }
+  },
+  created () {
+    this.$store.state.rightDrawerOpen = false
+    // this.get_orders()
   }
-  // created () {
-  //   this.get_orders()
-  // }
 }
 
 </script>
