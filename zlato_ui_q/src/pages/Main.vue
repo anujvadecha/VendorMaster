@@ -69,13 +69,13 @@
 <!--            <q-space></q-space>-->
             <!--        <q-icon name="mdi-gold"></q-icon>-->
 
-           <div class="col ">Gold :{{$store.state.gold_comex}}</div>
+           <div class="col text-center">Gold :{{$store.state.gold_comex}}</div>
 <!--            <q-space></q-space>-->
             <!--        <q-icon name="mdi-silverware-clean"></q-icon>-->
-            <div class="col">Silver: {{$store.state.silver_ask}}</div>
+            <div class="col text-center">Silver: {{$store.state.silver_ask}}</div>
 <!--            <q-space></q-space>-->
             <!--        <q-icon name="mdi-gold"></q-icon>-->
-            <div class="col">Dollar: {{$store.state.dollar}}</div>
+            <div class="col text-center">Dollar: {{$store.state.dollar}}</div>
 <!--            <q-space></q-space>-->
           </q-toolbar>
             </div>
@@ -83,7 +83,6 @@
           <q-toolbar class="text-dark bg-white justify-evenly" inset style="font-weight: bold">
 <!--            <q-space></q-space>-->
             <!--        <q-icon name="mdi-gold"></q-icon>-->
-
            <div class="col text-center">Gold :{{$store.state.gold_comex}}</div>
 <!--            <q-space></q-space>-->
             <!--        <q-icon name="mdi-silverware-clean"></q-icon>-->
