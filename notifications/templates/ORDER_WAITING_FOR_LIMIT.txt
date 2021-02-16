@@ -1,0 +1,1 @@
+Hello {{ name }} - Your order with transaction id: {{ t_id }} is waiting for limit.

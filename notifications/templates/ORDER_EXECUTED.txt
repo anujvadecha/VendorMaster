@@ -1,0 +1,2 @@
+Hello {name} - Your order with transaction id: { t_id } is executed.
+Your OTP is {otp} Please collect delivery

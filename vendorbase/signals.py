@@ -19,7 +19,6 @@ from notifications.models import NotificationType, TemplateType
 
 logger = logging.getLogger(__name__)
 
-
 @receiver(post_save, sender=Symbol)
 def create_update_symbol(sender, instance, created, **kwargs):
     channel_layer = get_channel_layer()
