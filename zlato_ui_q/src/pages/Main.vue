@@ -64,35 +64,14 @@
           </span>
         </div>
         </q-toolbar>
-          <div v-if="$q.platform.is.mobile">
-          <q-toolbar class="text-dark bg-white justify-evenly" inset style="font-weight: bold">
-<!--            <q-space></q-space>-->
+          <q-toolbar class="text-dark bg-white justify-evenly"  style="font-weight: bold">
             <!--        <q-icon name="mdi-gold"></q-icon>-->
-
-           <div class="">Gold :{{$store.state.gold_comex}}</div>
-<!--            <q-space></q-space>-->
+            <div class="">Gold :{{$store.state.gold_comex}}</div>
             <!--        <q-icon name="mdi-silverware-clean"></q-icon>-->
             <div class="">Silver: {{$store.state.silver_ask}}</div>
-<!--            <q-space></q-space>-->
             <!--        <q-icon name="mdi-gold"></q-icon>-->
             <div class="">Dollar: {{$store.state.dollar}}</div>
-<!--            <q-space></q-space>-->
           </q-toolbar>
-            </div>
-          <div v-else>
-          <q-toolbar class="text-dark bg-white justify-evenly" inset style="font-weight: bold">
-<!--            <q-space></q-space>-->
-            <!--        <q-icon name="mdi-gold"></q-icon>-->
-           <div class="">Gold :{{$store.state.gold_comex}}</div>
-<!--            <q-space></q-space>-->
-            <!--        <q-icon name="mdi-silverware-clean"></q-icon>-->
-            <div class="">Silver: {{$store.state.silver_ask}}</div>
-<!--            <q-space></q-space>-->
-            <!--        <q-icon name="mdi-gold"></q-icon>-->
-            <div class="">Dollar: {{$store.state.dollar}}</div>
-<!--            <q-space></q-space>-->
-          </q-toolbar>
-            </div>
         </q-header>
         <!--    <span class="mobile-only ">-->
         <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-1">
