@@ -24,7 +24,7 @@
       </q-card-section>
 
       <q-card-section>
-      <q-btn label='Apply' @click="applyFilter()" />
+      <q-btn label='Apply' @click="applyFilters()" />
       </q-card-section>
     </q-card>
   </q-dialog>
