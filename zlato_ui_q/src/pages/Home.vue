@@ -15,7 +15,7 @@
   <div class='row'>
     <q-space />
   </div>
-  <TickerPriceTable :render_best="true" title="Live rate" :instruments_to_render="instruments_to_render"></TickerPriceTable>
+  <TickerPriceTable :render_best="true" title="Live Rate" :instruments_to_render="instruments_to_render"></TickerPriceTable>
     <TopVendors class="mobile-hide"  :vendors="vendors_computed"></TopVendors>
     <MobileMarketing></MobileMarketing>
   </div>

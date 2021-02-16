@@ -28,7 +28,6 @@
       </q-card-section>
     </q-card>
   </q-dialog>
-
       <q-layout class="" view="lHh Lpr fFf">
         <q-header class="bg-white text-dark" style="" elevated bordered>
           <q-toolbar style="" class="shadow-2">
@@ -65,18 +64,36 @@
           </span>
         </div>
         </q-toolbar>
-          <q-toolbar class="text-dark bg-white" inset style="font-weight: bold">
-            <q-space></q-space>
+          <div v-if="$q.platform.is.mobile">
+          <q-toolbar class="text-dark bg-white justify-evenly" inset style="font-weight: bold">
+<!--            <q-space></q-space>-->
             <!--        <q-icon name="mdi-gold"></q-icon>-->
-            <span class="" style="">Gold :{{$store.state.gold_comex}}</span>
-            <q-space></q-space>
+
+           <div class="col ">Gold :{{$store.state.gold_comex}}</div>
+<!--            <q-space></q-space>-->
             <!--        <q-icon name="mdi-silverware-clean"></q-icon>-->
-            <span>Silver: {{$store.state.silver_ask}}</span>
-            <q-space></q-space>
+            <div class="col">Silver: {{$store.state.silver_ask}}</div>
+<!--            <q-space></q-space>-->
             <!--        <q-icon name="mdi-gold"></q-icon>-->
-            <span>Dollar: {{$store.state.dollar}}</span>
-            <q-space></q-space>
+            <div class="col">Dollar: {{$store.state.dollar}}</div>
+<!--            <q-space></q-space>-->
           </q-toolbar>
+            </div>
+          <div v-else>
+          <q-toolbar class="text-dark bg-white justify-evenly" inset style="font-weight: bold">
+<!--            <q-space></q-space>-->
+            <!--        <q-icon name="mdi-gold"></q-icon>-->
+
+           <div class="col text-center">Gold :{{$store.state.gold_comex}}</div>
+<!--            <q-space></q-space>-->
+            <!--        <q-icon name="mdi-silverware-clean"></q-icon>-->
+            <div class="col text-center">Silver: {{$store.state.silver_ask}}</div>
+<!--            <q-space></q-space>-->
+            <!--        <q-icon name="mdi-gold"></q-icon>-->
+            <div class="col text-center">Dollar: {{$store.state.dollar}}</div>
+<!--            <q-space></q-space>-->
+          </q-toolbar>
+            </div>
         </q-header>
         <!--    <span class="mobile-only ">-->
         <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-1">

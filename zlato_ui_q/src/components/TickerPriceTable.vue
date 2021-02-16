@@ -9,7 +9,7 @@
         {{title}}
       </div>
       </div>
-      <div class="row">
+      <div class="row justify-center">
 <!--      <div class="row">-->
       <q-input v-if="search_selected" clearable @clear="search_selected=false" class="q-ml-sm" outlined dense debounce="300" v-model="filter" placeholder="Search" />
       <q-btn v-if="!search_selected" class="q-ml-sm" style="max-height:36px" dense icon="mdi-magnify" text-color='dark' color="white" @click="search_selected=true" />
@@ -17,9 +17,9 @@
 <!--      </div>-->
       </div>
     </div>
-      <div class="row q-ml-md">
-          Please click on Bid/Ask to place orders
-      </div>
+<!--      <div class="row q-ml-md">-->
+<!--          Please click on Bid/Ask to place orders-->
+<!--      </div>-->
     <div>
       <q-tabs
         v-model="tab"
@@ -29,7 +29,7 @@
         <div v-for="type in types" :key="type">
           <q-tab :name="type" :label="type" on/>
         </div>
-    </q-tabs>
+      </q-tabs>
       </div>
        <q-card v-if="render_best && instruments_to_render.length>0"  square  bordered flat class="bg-light-blue-2 row q-pa-sm" style="" >
          <div style="" class="col-3 vendor_link" @click="open_vendor_dialog(lowest.vendor_id)" v-if="!$q.platform.is.mobile"  >
