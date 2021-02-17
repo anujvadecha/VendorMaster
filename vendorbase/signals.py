@@ -19,6 +19,7 @@ from notifications.models import NotificationType, TemplateType
 
 logger = logging.getLogger(__name__)
 
+
 @receiver(post_save, sender=Symbol)
 def create_update_symbol(sender, instance, created, **kwargs):
     channel_layer = get_channel_layer()
@@ -51,7 +52,7 @@ def create_update_order(sender, instance, created, **kwargs):
     payload = OrderSerializer(instance).data
 
     if(instance.status == OrderStatus.CANCELLED):
-        notifications.delay([NotificationType.MAIL, NotificationType.SMS], user, payload,
+        notifications.delay([NotificationType.MAIL, NotificationType.SMS], NormalUserSerializer(user).data, payload,
                             TemplateType.ORDER_CANCELLED)
         async_to_sync(channel_layer.group_send)(
             settings.SOCKET_GROUP, {
