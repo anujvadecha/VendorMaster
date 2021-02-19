@@ -76,7 +76,8 @@
               <!--            <q-avatar size="56px" class="q-mb-sm">-->
               <!--              <img src="https://cdn.quasar.dev/img/boy-avatar.png">-->
               <!--            </q-avatar>-->
-              <div class="text-weight-bold">Zlato</div>
+              <div v-if="$store.state.user_details" class="text-weight-bold">{{$store.state.user_details.username}}</div>
+              <div v-else class="text-weight-bold">DeltaBX</div>
               <div>Mumbai</div>
             </div>
           </q-img>
