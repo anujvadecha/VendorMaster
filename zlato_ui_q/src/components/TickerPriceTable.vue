@@ -31,19 +31,19 @@
         </div>
       </q-tabs>
       </div>
-       <q-card v-if="render_best && instruments_to_render.length>0"  square  bordered flat class="bg-light-blue-2 row q-pa-sm" style="" >
-         <div style="" class="col-3 vendor_link" @click="open_vendor_dialog(lowest.vendor_id)" v-if="!$q.platform.is.mobile"  >
+       <div v-if="render_best && instruments_to_render.length>0" class="bg-light-blue-2 row q-pa-sm" style="" >
+          <div style="" class="col vendor_link" @click="open_vendor_dialog(lowest.vendor_id)" v-if="!$q.platform.is.mobile"  >
             Best : {{ lowest.vendor }}
           </div>
-            <div class="col-6" v-if="$q.platform.is.mobile" @click="open_vendor_dialog(lowest.vendor_id)">
-              <div class="q-pl-md ">
+          <div class="col-6" v-if="$q.platform.is.mobile" @click="open_vendor_dialog(lowest.vendor_id)">
+            <div class="q-pl-md ">
                 <div class="row vendor_link" >
                    <span style="font-size:small">Best: {{ lowest.vendor }}</span>
                 </div>
                 <div class="row">
                   <span style="font-size:small">{{lowest.name}}</span>
                 </div>
-              </div>
+            </div>
             </div>
             <div v-else class="col" @click="open_vendor_dialog(lowest.vendor_id)" >
               {{ lowest.name }}
@@ -93,7 +93,7 @@
 <!--              <q-icon size="sm" name="mdi-star-outline"/>-->
 <!--            </div>-->
 <!--          </div>-->
-        </q-card>
+        </div>
   <q-table
       style="max-height: 600px"
       class=""
@@ -108,6 +108,7 @@
       virtual-scroll
       hide-bottom
     >
+
     <template v-slot:top>
 
     </template>

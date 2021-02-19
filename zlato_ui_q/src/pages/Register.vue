@@ -6,9 +6,9 @@
       <q-card-section style="">
             <div class="row">
             <q-img
-            :src="imageSrc"
-            transition="scale-transition"
-            width="50px"
+              :src="imageSrc"
+              transition="scale-transition"
+              width="50px"
             />
              <strong class="text-h6 q-ml-md q-my-md">DeltaBX</strong>
             </div>
@@ -21,7 +21,7 @@
                :rules="[ val => !!val || 'Please provide a username']"
               >
                 <template v-slot:prepend>
-                  <q-icon name="email" />
+                  <q-icon name="email"/>
                 </template>
               </q-input>
               <q-input square clearable v-model="email" type="email" label="Email"
@@ -67,7 +67,8 @@ export default {
       username: '',
       email: '',
       password1: '',
-      password2: ''
+      password2: '',
+      imageSrc: 'logo.png'
     }
   },
   methods: {

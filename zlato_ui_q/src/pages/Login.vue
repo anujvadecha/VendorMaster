@@ -35,7 +35,6 @@
             <p class="text-grey-6"> Forgot your password? </p>
             <p>Not a registered user ? Register <router-link to="/register">here</router-link></p>
           </q-card-section>
-
     </div>
     </div>
 </div>
@@ -98,8 +97,6 @@ export default {
               }
             }
           }
-          console.log(favourites)
-          console.log(instruments)
           store.dispatch('push_instruments', instruments)
         }
         if (message.gold_tick) {
@@ -135,8 +132,6 @@ export default {
     connect_jwt: function () {
       const store = this.$store
       const router = this.$router
-      // router.push('Home')
-      console.log(store)
       var axios = require('axios')
       var data = { username: this.email, password: this.password }
       var config = {
@@ -147,17 +142,18 @@ export default {
         },
         data: data
       }
+      Notify.create({
+        message: config.url,
+        position: 'top',
+        timeout: 5000
+      })
       const quasar_q = this.$q
       axios(config)
         .then(function (response) {
-          console.log(quasar_q.localStorage.getItem('token'))
           store.dispatch('set_token', response.data.key)
-          console.log('before checking' + quasar_q.localStorage.getItem('token'))
           quasar_q.localStorage.set('token', response.data.key)
-          console.log('pushing to home')
           router.push('Home')
         }).catch(function (error) {
-          console.log(error)
           Notify.create({
             message: error.toString(),
             position: 'top',

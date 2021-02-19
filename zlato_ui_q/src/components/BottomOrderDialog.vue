@@ -187,7 +187,7 @@ export default {
   data () {
     return {
       tab: 'MARKET',
-      quantity: 100,
+      quantity: this.order_item.quantity,
       price: '',
       imageSrc: '/logo.png',
       leftDrawerOpen: false,
