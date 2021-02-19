@@ -1,10 +1,5 @@
 <template>
   <div>
-    <!-- <div v-if="orders_to_rate.length > 0">
-      <div v-for="order in orders_to_rate" :key="order.order_id">
-        <Rating v-bind:data="[order.instrument_id.vendor_id, order.instrument_id.vendor, true]" />
-      </div>
-    </div> -->
     <div id="q-app">
       <q-dialog v-model="filterDialog">
     <q-card>
@@ -66,7 +61,8 @@
         </q-toolbar>
           <q-toolbar class="text-dark bg-white justify-evenly"  style="font-weight: bold">
             <!--        <q-icon name="mdi-gold"></q-icon>-->
-            <div class="">Gold :{{$store.state.gold_comex}}</div>
+            <div class="">Gold($) :{{$store.state.gold_comex}}</div>
+            <div v-if="!$q.platform.is.mobile" class="">Gold :{{$store.state.gold_ask}}</div>
             <!--        <q-icon name="mdi-silverware-clean"></q-icon>-->
             <div class="">Silver: {{$store.state.silver_ask}}</div>
             <!--        <q-icon name="mdi-gold"></q-icon>-->
