@@ -19,7 +19,6 @@ def notifications(type, userdata, payload, template):
         elif t == NotificationType.PUSH_NOTIFICATION:
             push_notifications(userdata)
 
-
 def send_email(user, payload, template_type):
 
     subject = str(template_type)
