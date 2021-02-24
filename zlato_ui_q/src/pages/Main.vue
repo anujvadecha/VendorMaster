@@ -367,7 +367,9 @@ export default {
             }
           }
           store.dispatch('push_instruments', instruments)
-          console.log('Done')
+          get_orders().then(res => {
+            store.dispatch('set_orders', res)
+          })
         }
         if (message.gold_tick) {
           store.dispatch('update_prices', message)
@@ -431,28 +433,8 @@ export default {
           console.log(error)
         })
     },
+
     get_orders () {
-      return get_orders().then(res => {
-        this.orders = res
-        console.log(res)
-        console.log('Inside get_orders')
-      })
-        .then(() => {
-          this.orders = this.orders.map(order => {
-            order.instrument_id = this.$store.getters.get_instrument(
-              order.instrument_id
-            )
-            console.log(order.instrument_id)
-            return order
-          })
-        })
-        .then(() => {
-          this.orders_to_rate = this.orders.filter(order => {
-            return order.status === 'CLOSED' && order.is_rated === false
-          })
-          console.log('Orders to be rated')
-          console.log(this.orders_to_rate)
-        })
     },
     get_user_details () {
 

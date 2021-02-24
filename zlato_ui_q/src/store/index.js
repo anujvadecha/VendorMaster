@@ -45,7 +45,13 @@ export default new Vuex.Store({
     gold_comex: 0,
     selected_filters: {
       delivery_to: ''
-    }
+    },
+    orders: null,
+    active_orders: [],
+    executed_orders_waiting: [],
+    executed_orders_confirmed: [],
+    closed_orders: [],
+    orders_to_rate: []
   },
 
   mutations: {
@@ -113,6 +119,41 @@ export default new Vuex.Store({
     },
     set_order_details (state, details) {
       state.order_details_selected = details
+    },
+    set_orders (state, orders) {
+      new Promise(function (resolve) {
+        state.orders = orders.map(order => {
+          order.instrument = state.instruments.find(
+            instrument => instrument.instrument_id === order.instrument_id
+          )
+          return order
+        })
+        resolve()
+      }).then(() => {
+        state.orders.sort((a, b) => {
+          return new Date(b.created_at) - new Date(a.created_at)
+        })
+      }).then(() => {
+        console.log('setting orders as per state')
+        state.active_orders = state.orders.filter(order => {
+          return order.status === 'WAITING_FOR_LIMIT'
+        })
+        state.executed_orders_waiting = state.orders.filter(order => {
+          return order.status === 'OPEN'
+        })
+        state.executed_orders_waiting.sort((a, b) => {
+          return new Date(b.created_at) - new Date(a.created_at)
+        })
+        state.executed_orders_confirmed = state.orders.filter(order => {
+          return order.status === 'EXECUTED'
+        })
+        state.closed_orders = state.orders.filter(order => {
+          return order.status === 'CLOSED'
+        })
+        state.orders_to_rate = state.orders.filter(order => {
+          return order.status === 'CLOSED' && order.is_rated === false
+        })
+      })
     }
   },
   actions: {
@@ -148,6 +189,9 @@ export default new Vuex.Store({
     },
     set_order_details ({ commit }, details) {
       commit('set_order_details', details)
+    },
+    set_orders ({ commit }, orders) {
+      commit('set_orders', orders)
     }
   },
   modules: {},

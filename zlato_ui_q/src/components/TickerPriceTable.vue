@@ -32,7 +32,7 @@
       </q-tabs>
       </div>
        <div v-if="render_best && instruments_to_render.length>0" class="bg-light-blue-2 row q-pa-sm" style="" >
-          <div style="" class="col vendor_link" @click="open_vendor_dialog(lowest.vendor_id)" v-if="!$q.platform.is.mobile"  >
+          <div style="" class="col-3 vendor_link" @click="open_vendor_dialog(lowest.vendor_id)" v-if="!$q.platform.is.mobile"  >
             Best : {{ lowest.vendor }}
           </div>
           <div class="col-6" v-if="$q.platform.is.mobile" @click="open_vendor_dialog(lowest.vendor_id)">
@@ -83,16 +83,7 @@
           <div class="col" v-if="!$q.platform.is.mobile"  >
               {{ lowest.low }}
           </div>
-<!--         <div class="col">Lowest</div>-->
-
-<!--          <div class="col" @click ="toggleFavourite(lowest)" key='favourite' >-->
-<!--            <div v-if="lowest.is_favourite">-->
-<!--              <q-icon size="sm" name="mdi-star"/>-->
-<!--            </div>-->
-<!--            <div v-else>-->
-<!--              <q-icon size="sm" name="mdi-star-outline"/>-->
-<!--            </div>-->
-<!--          </div>-->
+         <div class="col"></div>
         </div>
   <q-table
       style="max-height: 600px"
