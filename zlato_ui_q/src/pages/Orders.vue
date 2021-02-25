@@ -69,7 +69,7 @@ export default {
   created () {
     this.$store.state.rightDrawerOpen = false
     get_orders().then(res => {
-      store.dispatch('set_orders', res)
+      this.$store.dispatch('set_orders', res)
     })
   }
 
