@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="q-ml-md q-mr-md q-mt-md row text-h6" style="">
+    <div class="q-ma-md row text-h6" style="">
       <div class="col">
         <div v-if="title==null">
             Watchlist
@@ -88,23 +88,18 @@
   <q-table
       style="max-height: 600px"
       class=""
-      title="Ticker Prices"
       :data="data_render"
       :columns="headers"
       :filter="filter"
       row-key="instrument_id"
       v-touch-swipe.mouse.horizontal="handleSwipe"
-      bordered flat
+      bordered
+      flat
       hide-bottom
     >
 <!--      :pagination="pagination"-->
 <!--      virtual-scroll-->
-
-    <template v-slot:top>
-
-    </template>
-
-    <template v-if="render_best" v-slot:top-row style="">
+      <template v-if="render_best" v-slot:top-row style="">
         <q-tr  class="col-span-full bg-light-blue-1 " style="" >
             <q-td style="" class="vendor_link" @click="open_vendor_dialog(lowest.vendor_id)" v-if="!$q.platform.is.mobile" key="Vendor" >
             Best: {{ lowest.vendor }}
@@ -172,27 +167,25 @@
     </template>
       <template v-slot:header="props">
         <q-tr class="text-left"  :props="props">
-          <q-th  v-if="!$q.platform.is.mobile">
+          <q-th key="Vendor" v-if="!$q.platform.is.mobile">
             Vendor
           </q-th>
-          <q-th >
+          <q-th key="Symbol">
             Symbol
           </q-th>
-          <q-th>
+          <q-th key="Bid">
             Bid
           </q-th>
-          <q-th>
+          <q-th key="Ask">
             Ask
           </q-th>
-          <q-th v-if="!$q.platform.is.mobile">
+          <q-th key="High" v-if="!$q.platform.is.mobile">
             High
           </q-th>
-          <q-th v-if="!$q.platform.is.mobile">
+          <q-th key="Low" v-if="!$q.platform.is.mobile">
             Low
           </q-th>
-          <q-th>
-          </q-th>
-          <q-th>
+          <q-th key="favourite">
           </q-th>
         </q-tr>
       </template>
