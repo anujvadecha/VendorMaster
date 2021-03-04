@@ -372,6 +372,7 @@ export default {
           })
         }
         if (message.gold_tick) {
+          console.log(message)
           store.dispatch('update_prices', message)
         }
         if (message.instrument_update) {
