@@ -1,7 +1,6 @@
 import json
 from random import randint
 import time
-
 import socketio
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
@@ -11,7 +10,6 @@ from VendorMaster import settings
 from VendorMaster.consumers import TickConsumer
 from vendorbase.models import Symbol
 from vendorbase.tasks import update_high_low
-
 
 class Command(BaseCommand):
     help = 'Process to send gold ticker data'
