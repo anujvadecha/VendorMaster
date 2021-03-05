@@ -285,9 +285,8 @@ class VendorMargin(admin.ModelAdmin):
     list_editable = ('margin',)
     list_display_links = ('user',)
     search_fields = ('user')
-    exclude = ('avg_rating','no_of_ratings')
     def get_readonly_fields(self, request, obj=None):
         if(request.user.is_superuser):
             return ()
         else:
-            return ('user', 'vendor', 'margin_available')
+            return ('user', 'vendor', 'margin_available','avg_rating','no_of_ratings')
