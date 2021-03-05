@@ -44,7 +44,8 @@ class CustomUserAdmin(UserAdmin):
                 (
                  'User details',{
                      "fields":('phone_number','profile_picture',
-                               'pan_card','is_activated','requested_registration'),
+                               'pan_card','is_activated','requested_registration','business_card','reference_1_name','reference_1_mobile'
+                                   ,'reference_2_name','reference_2_mobile'),
                  }
                 )
             )
@@ -54,7 +55,7 @@ class CustomUserAdmin(UserAdmin):
                 (
                     'User details', {
                         "fields": ('first_name','last_name','email','phone_number', 'profile_picture',
-                                   'pan_card', 'is_activated','reference_1_name','reference_1_mobile'
+                                   'pan_card','business_card', 'is_activated','reference_1_name','reference_1_mobile'
                                    ,'reference_2_name','reference_2_mobile','business_card','gst_in_no'),
                     }
                 ),
