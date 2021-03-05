@@ -19,13 +19,13 @@ class ThemeAdmin(admin.ModelAdmin):
         if (request.user.username == settings.ADMIN_USER):
             return qs
         else:
-            return qs.filter(vendor=Vendor.objects.filter(user_id=request.user).first())
+            return qs.filter(vendor = Vendor.objects.filter(user_id=request.user).first())
 
     def get_readonly_fields(self, request, obj=None):
         if (request.user.is_superuser):
             return ()
         else:
-            return ('vendor')
+            return ('vendor','name')
 
     list_display = ('name', 'active',)
     list_editable = ('active',)
