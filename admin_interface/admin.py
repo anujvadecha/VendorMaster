@@ -25,7 +25,7 @@ class ThemeAdmin(admin.ModelAdmin):
         if (request.user.is_superuser):
             return ()
         else:
-            return ('vendor', 'name')
+            return ('vendor')
 
     list_display = ('name', 'active',)
     list_editable = ('active',)
