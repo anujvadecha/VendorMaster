@@ -83,8 +83,8 @@ class VendorDetails(BaseModel):
     about_us = models.TextField(blank=True)
     messages = models.TextField(blank=True)
     delivery_charges = models.TextField(blank=True)
-    avg_rating = models.FloatField(default=0, blank=True)
-    no_of_ratings = models.IntegerField(default=0, editable=True)
+    avg_rating = models.FloatField(default=0, blank=True,editable=False)
+    no_of_ratings = models.IntegerField(default=0, editable=False)
 
     def __str__(self):
         return str(self.vendor)
