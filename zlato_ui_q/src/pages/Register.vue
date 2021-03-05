@@ -60,6 +60,7 @@
 
 <script>
 import { Notify } from 'quasar'
+import { base_url } from 'src/common/api_calls'
 
 export default {
   data () {
@@ -85,7 +86,7 @@ export default {
       const quasar_q = this.$q
       const config = {
         method: 'post',
-        url: 'http://127.0.0.1:8000/api/rest-auth/registration',
+        url: base_url + '/api/rest-auth/registration',
         headers: {
           'Content-Type': 'application/json'
         },
