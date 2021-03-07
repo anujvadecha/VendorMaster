@@ -1,17 +1,11 @@
 # -*- coding: utf-8 -*-
-
 from __future__ import unicode_literals
-
 from django.contrib.auth.models import User
-
 from admin_interface.cache import del_cached_active_theme
-
 from colorfield.fields import ColorField
-
 import django
 from django.db import models
 from django.db.models.signals import post_delete, post_save, pre_save
-
 from userBase.models import NormalUser
 from vendorbase.models import Vendor
 
@@ -86,7 +80,6 @@ class Theme(models.Model):
     active = models.BooleanField(
         default=True,
         verbose_name=_('active'))
-
     title = models.CharField(
         max_length=50,
         default=_('Bullion administration'),
@@ -183,7 +176,6 @@ class Theme(models.Model):
         help_text='#C9F0DD',
         max_length=10,
         verbose_name=_('link hover color'))
-
     css_module_background_color = ColorField(
         blank=True,
         default='#44B78B',
@@ -224,7 +216,6 @@ class Theme(models.Model):
         help_text='#156641',
         max_length=10,
         verbose_name=_('link hover color'))
-
     css_save_button_background_color = ColorField(
         blank=True,
         default='#0C4B33',
@@ -317,7 +308,6 @@ class Theme(models.Model):
 
     class Meta:
         app_label = 'admin_interface'
-
         verbose_name = _('Theme')
         verbose_name_plural = _('Themes')
 

@@ -43,13 +43,6 @@ class ThemeAdmin(admin.ModelAdmin):
                 'vendor',
             )
         }),
-        (_('Language chooser'), {
-            'classes': ('wide',),
-            'fields': (
-                'language_chooser_active',
-                'language_chooser_display',
-            )
-        }),
         (_('Logo'), {
             'classes': ('wide',),
             'fields': (
