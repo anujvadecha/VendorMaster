@@ -40,7 +40,7 @@
       <div class="row q-ma-sm">
         <div class="col"><q-chip dense outline color="orange">{{order.side}} </q-chip> {{order.quantity}}
           <span class="q-ml-sm" style="color:grey"><q-icon name="mdi-clock"></q-icon>{{get_formated_time}}</span>
-        </div> <span class="text-sm q-ml-sm" style="color: grey">ltp: {{order.instrument.ask}}</span>
+        </div> <span class="text-sm q-ml-sm" style="color: grey">LTP: {{order.instrument.ask}}</span>
       </div>
         </div>
     </q-card>

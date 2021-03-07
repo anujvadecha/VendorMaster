@@ -41,7 +41,7 @@ function get_user_margins () {
 }
 
 function get_user_details () {
-  const endpoint = base_url + '/api/rest-auth/user'
+  const endpoint = base_url + '/api/rest-auth/user/'
   return apiService(endpoint, 'GET', null)
 }
 

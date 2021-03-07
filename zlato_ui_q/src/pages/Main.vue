@@ -8,7 +8,6 @@
         <q-space />
         <q-btn icon="close" flat round dense v-close-popup />
       </q-card-section>
-
       <q-card-section>
         <div class="text-h6">Delivery Till</div>
         <div class="q-pa-md">
@@ -279,9 +278,6 @@ export default {
   name: 'Main',
   components: { OrderDetailsBottom, BestLimitBottomOrderDialog, EssentialLink, BottomOrderDialog },
   computed: {
-    is_activated: function () {
-      return !this.$store.getters.get_is_activated
-    },
     logged_in: function () {
       const token = this.$q.localStorage.getItem('token')
       if (token === '' || token === null || token === 'null') {
