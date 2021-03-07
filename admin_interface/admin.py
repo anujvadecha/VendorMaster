@@ -43,15 +43,6 @@ class ThemeAdmin(admin.ModelAdmin):
                 'vendor',
             )
         }),
-        (_('Environment'), {
-            'classes': ('wide',),
-            'fields': (
-                'env_name',
-                'env_color',
-                'env_visible_in_header',
-                'env_visible_in_favicon',
-            )
-        }),
         (_('Language chooser'), {
             'classes': ('wide',),
             'fields': (
@@ -120,16 +111,6 @@ class ThemeAdmin(admin.ModelAdmin):
                 'css_delete_button_background_color',
                 'css_delete_button_background_hover_color',
                 'css_delete_button_text_color',
-            )
-        }),
-        (_('Related Modal'), {
-            'classes': ('wide',),
-            'fields': (
-                'related_modal_active',
-                'related_modal_background_color',
-                'related_modal_background_opacity',
-                'related_modal_rounded_corners',
-                'related_modal_close_button_visible',
             )
         }),
         (_('List Filter'), {
