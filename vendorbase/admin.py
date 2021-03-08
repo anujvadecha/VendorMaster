@@ -284,7 +284,7 @@ class VendorMargin(admin.ModelAdmin):
     list_display = ('user', 'vendor', 'margin', 'margin_available')
     list_editable = ('margin',)
     list_display_links = ('user',)
-    search_fields = ('user')
+    search_fields = ('user',)
     def get_readonly_fields(self, request, obj=None):
         if(request.user.is_superuser):
             return ()
