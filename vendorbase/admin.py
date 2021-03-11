@@ -289,4 +289,4 @@ class VendorMargin(admin.ModelAdmin):
         if(request.user.is_superuser):
             return ()
         else:
-            return ('user', 'vendor', 'margin_available','avg_rating','no_of_ratings')
+            return ('user', 'vendor', 'margin_available')
