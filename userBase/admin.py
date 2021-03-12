@@ -20,7 +20,12 @@ class CustomUserAdmin(UserAdmin):
         queryset = self.model.objects.all()
         return self.get_user_queryset(request=request, queryset=queryset)
 
-    list_display = ['username','is_staff','is_activated','requested_registration']
+    def get_list_display(self, request):
+        if(request.user.is_superuser):
+            return ['username','is_staff','is_activated','requested_registration']
+        else:
+            return ['username','phone_number']
+
     fieldsets = (
                 *UserAdmin.fieldsets,
                 (
