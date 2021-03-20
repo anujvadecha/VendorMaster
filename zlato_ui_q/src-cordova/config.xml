@@ -37,6 +37,7 @@
         <splash density="port-xxxhdpi" src="res/screen/android/splash-port-xxxhdpi.png" />
     </platform>
     <platform name="ios">
+        <preference name="ScrollEnabled" value="true" />
         <preference name="StatusBarOverlaysWebView" value="true" />
         <preference name="StatusBarBackgroundColor" value="#cccccc" />
         <preference name="StatusBarStyle" value="blackopaque" />

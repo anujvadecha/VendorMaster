@@ -17,6 +17,7 @@
     "cordova-ios": "^6.2.0",
     "cordova-plugin-badge": "^0.8.8",
     "cordova-plugin-device": "^2.0.3",
+    "cordova-plugin-ionic-webview": "^5.0.0",
     "cordova-plugin-local-notification": "^0.9.0-beta.2",
     "cordova-plugin-splashscreen": "^6.0.0",
     "cordova-plugin-statusbar": "^2.4.3",
@@ -29,7 +30,8 @@
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-local-notification": {},
       "cordova-plugin-androidx-adapter": {},
-      "cordova-plugin-device": {}
+      "cordova-plugin-device": {},
+      "cordova-plugin-ionic-webview": {}
     },
     "platforms": []
   },
