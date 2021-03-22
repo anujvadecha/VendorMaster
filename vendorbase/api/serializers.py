@@ -102,7 +102,7 @@ class SymbolSerializer(serializers.ModelSerializer):
         model=Symbol
         fields=[
             "instrument_id","vendor_id","type","name","delivery_from","delivery_to",
-        "quantity","source_symbol","buy_premium","sell_premium","vendor","high","low","bid","ask"]
+        "quantity","source_symbol","buy_premium","sell_premium","vendor","high","low","bid","ask","enabled"]
         # exclude=("instrument_id","vendor_id")
 
 class GlobalPremiumSerializer(serializers.ModelSerializer):
