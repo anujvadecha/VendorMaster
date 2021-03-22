@@ -53,7 +53,7 @@ class TickConsumer(AsyncWebsocketConsumer):
 
     def ticker_data_user(self):
         return json.dumps({
-            'instruments': json.dumps(SymbolSerializer(Symbol.objects.all(), many=True).data, cls=UUIDEncoder),
+            'instruments': json.dumps(SymbolSerializer(Symbol.objects.filter(enabled=True), many=True).data, cls=UUIDEncoder),
             'global_premium': GlobalPremiumSerializer(GlobalPremium.objects.all().first()).data,
             'favourites': json.dumps(
                 FavouriteSerializer(Favourite.objects.filter(

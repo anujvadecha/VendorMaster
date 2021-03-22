@@ -103,7 +103,7 @@ class VendorRequestView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self):
-        return Response(VendorSerializer(Vendor.objects.all(), many=True).data, status=status.HTTP_200_OK)
+        return Response(VendorSerializer(Vendor.objects.filter(enabled=True), many=True).data, status=status.HTTP_200_OK)
 
 
 class TickerRequestView(APIView):
