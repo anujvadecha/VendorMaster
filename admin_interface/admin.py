@@ -16,7 +16,7 @@ else:
 class ThemeAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super(ThemeAdmin, self).get_queryset(request)
-        if (request.user.username == settings.ADMIN_USER):
+        if (request.user.is_superuser):
             return qs
         else:
             return qs.filter(vendor = Vendor.objects.filter(user_id=request.user).first())
