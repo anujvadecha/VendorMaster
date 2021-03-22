@@ -24,7 +24,7 @@ class CustomUserAdmin(UserAdmin):
         if(request.user.is_superuser):
             return ['username','is_staff','is_activated','requested_registration']
         else:
-            return ['username','phone_number']
+            return ['username','is_activated','phone_number']
 
     fieldsets = (
                 *UserAdmin.fieldsets,
@@ -37,7 +37,7 @@ class CustomUserAdmin(UserAdmin):
             )
     list_filter = ('is_activated','requested_registration','is_staff')
     list_per_page = 20
-    list_editable = ('is_activated',)
+    # list_editable = ('is_activated',)
 
 
     def get_fieldsets(self, request, obj=None):

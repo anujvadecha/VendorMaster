@@ -320,7 +320,7 @@ class VendorConsumer(WebsocketConsumer):
             }))
         if (type == "vendor_request"):
             self.send(json.dumps({
-                "vendors": VendorSerializer(Vendor.objects.all(), many=True).data
+                "vendors": VendorSerializer(Vendor.objects.filter(enabled=True), many=True).data
             }))
 
     def tick(self, data):
