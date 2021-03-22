@@ -47,7 +47,7 @@ class TickConsumer(AsyncWebsocketConsumer):
 
     def ticker_data_anon(self):
         return json.dumps({
-            'instruments': json.dumps(SymbolSerializer(Symbol.objects.all(), many=True).data, cls=UUIDEncoder),
+            'instruments': json.dumps(SymbolSerializer(Symbol.objects.filter(enabled=True), many=True).data, cls=UUIDEncoder),
             'global_premium': GlobalPremiumSerializer(GlobalPremium.objects.all().first()).data,
         })
 
@@ -63,7 +63,7 @@ class TickConsumer(AsyncWebsocketConsumer):
 
     def vendor_request_data(self):
         return json.dumps({
-            "vendors": VendorSerializer(Vendor.objects.all(), many=True).data
+            "vendors": VendorSerializer(Vendor.objects.filter(enabled=True), many=True).data
         })
 
     async def receive(self, text_data):
