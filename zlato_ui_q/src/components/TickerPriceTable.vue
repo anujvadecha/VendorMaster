@@ -96,6 +96,7 @@
       bordered
       flat
       hide-bottom
+      :pagination="pagination"
     >
 <!--      :pagination="pagination"-->
 <!--      virtual-scroll-->
