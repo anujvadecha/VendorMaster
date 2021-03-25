@@ -131,7 +131,7 @@
                 </div>
               </div>
             </div>
-            <div v-else>
+            <div v-else v-bind:style="getStyleForBid(lowest)">
               {{ lowest.bid }}
             </div>
           </q-td>
@@ -146,7 +146,7 @@
                 </div>
               </div>
             </div>
-            <div v-else>
+            <div v-else v-bind:style="getStyleForAsk(lowest)">
               {{ lowest.ask }}
               </div>
           </q-td>
@@ -213,10 +213,10 @@
           <q-td @click="open_order_sheet(props.row)" key="Bid" :props="props" @change="colorChanger($event)">
             <div v-if="$q.platform.is.mobile">
               <div class="col">
-                <div class="row" :style="getStyleForBid(props.row)">
+                <div class="row" >
                    <span style="font-size:large" >{{ props.row.bid }}</span>
                 </div>
-                <div class="row" :style="getStyleForAsk(props.row)">
+                <div class="row">
                   <span style="font-size:small">L:{{props.row.low}}</span>
                 </div>
               </div>
@@ -231,7 +231,7 @@
           <q-td @click="open_order_sheet(props.row)" key="Ask" :props="props">
             <div v-if="$q.platform.is.mobile">
               <div class="col">
-                <div class="row" :style="getStyleForAsk(props.row)">
+                <div class="row">
                    <span style="font-size:large"> {{ props.row.ask }}</span>
                 </div>
                 <div class="row">
@@ -239,7 +239,7 @@
                 </div>
               </div>
             </div>
-            <div v-else :style="getStyleForAsk(props.row)">
+            <div v-else v-bind:style="getStyleForAsk(props.row)">
               {{ props.row.ask }}
               </div>
           </q-td>
@@ -436,34 +436,25 @@ export default {
     },
     getStyleForBid (obj1) {
       if (obj1.bid > obj1.old_bid) {
-        return 'color:green;font-size:large;font-weight: bold;'
+        return 'font-size:large;font-weight:bold;color:green'
       } else if (obj1.bid < obj1.old_bid) {
-        return 'color:red;font-size:large;font-weight: bold;'
+        return 'font-size:large;font-weight:bold;color:red'
       } else {
         return 'font-size:large'
       }
     },
     getStyleForAsk (obj1) {
       if (obj1.ask > obj1.old_ask) {
-        return 'color:green;font-size:large;font-weight: bold;'
+        return 'font-size:large;font-weight:bold;color:green'
       } else if (obj1.ask < obj1.old_ask) {
-        return 'color:red;font-size:large;font-weight: bold;'
+        return 'font-size:large;font-weight:bold;color:red'
       } else {
-        return 'font-size:large'
+        return 'font-size:large;'
       }
     }
   },
   created () {
 
-  },
-  watch: {
-    data_render: {
-      handler (newValue, oldValue) {
-        console.log('old' + newValue[0].old_ask)
-        console.log(newValue[0].ask)
-      },
-      deep: true
-    }
   }
 }
 </script>
