@@ -64,6 +64,10 @@ export default new Vuex.Store({
       state.silver_ask = tick.silver_tick.ask
       state.dollar = tick.dollar.ask
       state.instruments = state.instruments.map(function (instrument) {
+        instrument.old_bid = instrument.bid
+        instrument.old_ask = instrument.ask
+        instrument.old_high = instrument.high
+        instrument.old_low = instrument.low
         if (instrument.source_symbol === 'gold_fut') {
           instrument.bid = tick.gold_tick.bid + instrument.buy_premium
           instrument.ask = tick.gold_tick.ask + instrument.sell_premium
@@ -100,7 +104,6 @@ export default new Vuex.Store({
       for (var i = 0; i < state.instruments.length; i++) {
         if (state.instruments[i].instrument_id === instrument.instrument_id) {
           state.instruments[i] = instrument
-          console.log('updating instrument')
         }
       }
     },
@@ -134,7 +137,6 @@ export default new Vuex.Store({
           return new Date(b.created_at) - new Date(a.created_at)
         })
       }).then(() => {
-        console.log('setting orders as per state')
         state.active_orders = state.orders.filter(order => {
           return order.status === 'WAITING_FOR_LIMIT'
         })
@@ -200,7 +202,6 @@ export default new Vuex.Store({
       return state.instruments
     },
     get_filtered_instruments: state => {
-      console.log(state.selected_filters.delivery_to)
       var filtered_instruments = {}
       if (state.selected_filters.delivery_to.length > 0) {
         filtered_instruments = state.instruments.filter(
@@ -217,7 +218,6 @@ export default new Vuex.Store({
       )
     },
     get_all_vendors: state => {
-      // console.log("get all vendors");
       return state.vendors
     },
     get_vendor_instruments: state => vendor_id => {
@@ -225,8 +225,6 @@ export default new Vuex.Store({
       vendor_object.instruments = state.instruments.filter(
         instrument => instrument.vendor_id === vendor_id
       )
-      console.log(vendor_id)
-      console.log(state.vendors)
       vendor_object.vendor = state.vendors.find(
         vendor => vendor.vendor_id === vendor_id
       )
@@ -234,7 +232,6 @@ export default new Vuex.Store({
     },
     get_favourite_instruments: state => {
       // TODO
-      console.log(state)
     },
     get_order_item: state => {
       return state.order_item

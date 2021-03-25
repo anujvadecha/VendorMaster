@@ -281,15 +281,12 @@ export default {
     logged_in: function () {
       const token = this.$q.localStorage.getItem('token')
       if (token === '' || token === null || token === 'null') {
-        console.log('returning false')
         return false
       } else {
-        console.log('returning true')
         return true
       }
     },
     currentRouteName: function () {
-      console.log(this.$route.name)
       return this.$route.name
     }
   },
@@ -298,7 +295,6 @@ export default {
       this.$store.state.selected_filters.delivery_to = this.custom_delivery_date
     },
     login_action: function () {
-      console.log(this.email + this.password)
       this.connect_jwt()
     },
     connect_data: function () {
@@ -309,7 +305,6 @@ export default {
         }
       })
       socket.io.on('connection', function (data) {
-        console.log('connected')
       })
       // io.on('connect', function () {
       //   console.log('connectedx')
@@ -349,7 +344,6 @@ export default {
             favourites = favourites.map(favourite => {
               return favourite.instrument_id
             })
-            console.log(instruments)
             instruments = instruments.map(instrument => {
               instrument.is_favourite = false
               return instrument
@@ -368,13 +362,11 @@ export default {
           })
         }
         if (message.gold_tick) {
-          console.log(message)
           store.dispatch('update_prices', message)
         }
         if (message.instrument_update) {
           console.log('instrument_update received')
           var to_update = JSON.parse(message.instrument_update)
-          console.log(to_update)
           store.dispatch('update_instrument', to_update)
         }
         if (message.vendors) {
@@ -394,9 +386,7 @@ export default {
         }
       }
       symbolsocket.onclose = function (event) {
-        console.log(event)
         setTimeout(function () {
-          console.log('websocket disconnected reconnecting ')
           connecter()
         }, 2000)
       }
@@ -418,11 +408,8 @@ export default {
       const quasar_q = this.$q
       axios(config)
         .then(function (response) {
-          console.log(quasar_q.localStorage.getItem('token'))
           store.dispatch('set_token', response.data.key)
-          console.log('before checking' + quasar_q.localStorage.getItem('token'))
           quasar_q.localStorage.set('token', response.data.key)
-          console.log('pushing to home')
           router.push('/')
           connect()
         })

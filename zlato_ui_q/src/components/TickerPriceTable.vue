@@ -135,8 +135,8 @@
               {{ lowest.bid }}
             </div>
           </q-td>
-          <q-td @click="open_order_sheet(lowest)" key="Ask" >
-            <div v-if="$q.platform.is.mobile">
+          <q-td @click="open_order_sheet(lowest)" key="Ask" @change="console.log('ask changed')">
+            <div v-if="$q.platform.is.mobile" >
               <div class="col">
                 <div class="row">
                    <span style="font-size:large"> {{ lowest.ask }}</span>
@@ -167,7 +167,7 @@
         </q-tr>
     </template>
       <template v-slot:header="props">
-        <q-tr class="text-left"  :props="props">
+        <q-tr class="text-left" :props="props">
           <q-th key="Vendor" v-if="!$q.platform.is.mobile">
             Vendor
           </q-th>
@@ -210,25 +210,28 @@
               {{ props.row.name }}
             </div>
           </q-td>
-          <q-td @click="open_order_sheet(props.row)" key="Bid" :props="props">
+          <q-td @click="open_order_sheet(props.row)" key="Bid" :props="props" @change="colorChanger($event)">
             <div v-if="$q.platform.is.mobile">
               <div class="col">
-                <div class="row">
-                   <span style="font-size:large"> {{ props.row.bid }}</span>
+                <div class="row" :style="getStyleForBid(props.row)">
+                   <span style="font-size:large" >{{ props.row.bid }}</span>
                 </div>
-                <div class="row">
+                <div class="row" :style="getStyleForAsk(props.row)">
                   <span style="font-size:small">L:{{props.row.low}}</span>
                 </div>
               </div>
             </div>
             <div v-else>
-              {{ props.row.bid }}
+<!--             <q-chip dense v-if="props.row.bid>props.row.old_bid" square color=""> {{ props.row.bid }}</q-chip>-->
+<!--             <q-chip dense v-else-if="props.row.bid<props.row.old_bid" square color="red"> {{ props.row.bid }}</q-chip>-->
+<!--              <div v-else>{{ // props.row.bid }}</div>-->
+              <div v-bind:style="getStyleForBid(props.row)">{{props.row.bid}}</div>
             </div>
           </q-td>
           <q-td @click="open_order_sheet(props.row)" key="Ask" :props="props">
             <div v-if="$q.platform.is.mobile">
               <div class="col">
-                <div class="row">
+                <div class="row" :style="getStyleForAsk(props.row)">
                    <span style="font-size:large"> {{ props.row.ask }}</span>
                 </div>
                 <div class="row">
@@ -236,7 +239,7 @@
                 </div>
               </div>
             </div>
-            <div v-else>
+            <div v-else :style="getStyleForAsk(props.row)">
               {{ props.row.ask }}
               </div>
           </q-td>
@@ -427,10 +430,40 @@ export default {
           vendor_object: selected_vendor_item
         }
       })
+    },
+    colorchanger (event) {
+      console.log(event)
+    },
+    getStyleForBid (obj1) {
+      if (obj1.bid > obj1.old_bid) {
+        return 'color:green;font-size:large;font-weight: bold;'
+      } else if (obj1.bid < obj1.old_bid) {
+        return 'color:red;font-size:large;font-weight: bold;'
+      } else {
+        return 'font-size:large'
+      }
+    },
+    getStyleForAsk (obj1) {
+      if (obj1.ask > obj1.old_ask) {
+        return 'color:green;font-size:large;font-weight: bold;'
+      } else if (obj1.ask < obj1.old_ask) {
+        return 'color:red;font-size:x-large;font-weight: bold;'
+      } else {
+        return 'font-size:large'
+      }
     }
   },
   created () {
 
+  },
+  watch: {
+    data_render: {
+      handler (newValue, oldValue) {
+        console.log('old' + newValue[0].old_ask)
+        console.log(newValue[0].ask)
+      },
+      deep: true
+    }
   }
 }
 </script>
