@@ -447,7 +447,7 @@ export default {
       if (obj1.ask > obj1.old_ask) {
         return 'color:green;font-size:large;font-weight: bold;'
       } else if (obj1.ask < obj1.old_ask) {
-        return 'color:red;font-size:x-large;font-weight: bold;'
+        return 'color:red;font-size:large;font-weight: bold;'
       } else {
         return 'font-size:large'
       }
