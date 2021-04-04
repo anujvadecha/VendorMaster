@@ -10,7 +10,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     otp=serializers.SerializerMethodField()
     name=serializers.SerializerMethodField()
-
+    vendor_name=serializers.SerializerMethodField()
     def get_name(self,obj):
         if(obj.type==OrderType.BEST_LIMIT):
             return ''
@@ -22,6 +22,7 @@ class OrderSerializer(serializers.ModelSerializer):
             return otp_hash(obj.order_id)
         else:
             return None
+
 
     class Meta:
         model=Order

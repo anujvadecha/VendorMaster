@@ -37,7 +37,7 @@ def send_sms(user, payload, template_type):
 
     html_content = render_to_string(
         'sms/' + str(template_type) + '.html',
-        {'name': user['first_name'], 't_id': str(payload["transaction_id"]), 'otp': str(payload["otp"])})
+        {'name': user['first_name'], 't_id': str(payload["transaction_id"]), 'otp': str(payload["otp"]),'quantity':str(payload['quantity']),'price':str(payload['price'])})
     text_content = strip_tags(html_content)
     message = text_content
     numbers = [user['phone_number']]

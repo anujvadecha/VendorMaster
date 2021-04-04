@@ -31,30 +31,39 @@ class Command(BaseCommand):
                 "gold_tick":
                     {
                         "bid": float(json.loads(data['updatedata'])[0]['gold1_bid']),
-                        "ask": float(json.loads(data['updatedata'])[0]['gold1_ask'])
+                        "ask": float(json.loads(data['updatedata'])[0]['gold1_ask']),
+                        "low": float(json.loads(data['updatedata'])[0]['gold1_low']),
+                        "high": float(json.loads(data['updatedata'])[0]['gold1_high'])
                     },
                 "silver_tick":
                     {
                         "bid": float(json.loads(data['updatedata'])[1]['gold1_bid']),
-                        "ask": float(json.loads(data['updatedata'])[1]['gold1_ask'])
+                        "ask": float(json.loads(data['updatedata'])[1]['gold1_ask']),
+                        "low": float(json.loads(data['updatedata'])[1]['gold1_low']),
+                        "high": float(json.loads(data['updatedata'])[1]['gold1_high'])
                     },
                 "gold_comex":
                     {
                         "bid": float(json.loads(data['updatedata'])[2]['gold1_bid']),
-                        "ask": float(json.loads(data['updatedata'])[2]['gold1_ask'])
+                        "ask": float(json.loads(data['updatedata'])[2]['gold1_ask']),
+                        "low": float(json.loads(data['updatedata'])[2]['gold1_low']),
+                        "high": float(json.loads(data['updatedata'])[2]['gold1_high'])
                     },
                 "silver_comex":
                     {
                         "bid": float(json.loads(data['updatedata'])[3]['gold1_bid']),
-                        "ask": float(json.loads(data['updatedata'])[3]['gold1_ask'])
+                        "ask": float(json.loads(data['updatedata'])[3]['gold1_ask']),
+                        "low": float(json.loads(data['updatedata'])[3]['gold1_low']),
+                        "high": float(json.loads(data['updatedata'])[3]['gold1_high'])
                     },
                 "dollar":
                     {
                         "bid": float(json.loads(data['updatedata'])[4]['gold1_bid']),
-                        "ask": float(json.loads(data['updatedata'])[4]['gold1_ask'])
+                        "ask": float(json.loads(data['updatedata'])[4]['gold1_ask']),
+                        "low": float(json.loads(data['updatedata'])[4]['gold1_low']),
+                        "high": float(json.loads(data['updatedata'])[4]['gold1_high'])
                     }
             }
-            print('tick received')
             channel_layer = get_channel_layer()
             async_to_sync(channel_layer.group_send)(
                 settings.SOCKET_GROUP,

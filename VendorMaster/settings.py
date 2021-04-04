@@ -17,11 +17,12 @@ import django
 from VendorMaster.logging_config import get_config
 import os
 from channels.routing import get_default_application
+
 BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
 SECRET_KEY = '3!sood8bmbjt72+idabk$uezm(agi28&t8=ccc(i51!rn(r47n'
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'VendorMaster.settings')
 # django.setup()
-#application = get_default_application()
+# application = get_default_application()
 
 
 # Quick-start development settings - unsuitable for production
@@ -156,10 +157,8 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-
 ADMIN_USER = "admin"
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

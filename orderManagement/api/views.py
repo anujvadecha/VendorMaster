@@ -40,7 +40,7 @@ logger = logging.getLogger(__name__)
 
 
 class OrderView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [ IsAuthenticated ]
 
     def add_order(self, order, user):
         print(f' adding order {order} ')
