@@ -2,11 +2,11 @@
   <div>
     <div id="q-app">
       <q-dialog v-model="filterDialog">
-    <q-card>
+     <q-card>
       <q-card-section class="row items-center q-pb-none">
         <div class="text-h6">Filters</div>
         <q-space />
-        <q-btn icon="close" flat round dense v-close-popup />
+         <q-btn icon="close" flat round dense v-close-popup />
       </q-card-section>
       <q-card-section>
         <div class="text-h6">Delivery Till</div>
@@ -33,6 +33,7 @@
                 width="50px"
               />
             <span v-if="currentRouteName==='Home'" class="font-extrabold q-ml-sm ">DeltaBX</span>
+            <span v-else-if="currentRouteName==='Favourites'" class="font-extrabold q-ml-sm ">DeltaBX</span>
             <span v-else class="font-extrabold q-ml-sm "> {{ currentRouteName }}</span>
             </q-toolbar-title>
         <div>
@@ -58,14 +59,30 @@
           </span>
         </div>
         </q-toolbar>
-          <q-toolbar class="text-dark bg-white justify-evenly"  style="font-weight: bold">
+          <q-toolbar v-if="!downarrow" class="text-dark bg-white justify-evenly"  style="font-weight: bold">
             <!--        <q-icon name="mdi-gold"></q-icon>-->
-            <div class="">Gold($) :{{$store.state.gold_comex}}</div>
+            <q-icon name=" mdi-chevron-down"></q-icon>
+
+            <div>
+            <div class="">Gold($) :{{$store.state.gold_comex}}
+            <q-tooltip content-class="bg-black" content-style="font-size: 16px" :offset="[10, 10]">H:1789.22 &nbsp; &nbsp; L:1283.23</q-tooltip>
+            </div>
+            <div v-if="!$q.platform.is.mobile" style="font-size: x-small"> H:1789.22 &nbsp; &nbsp; L:1283.23</div>
+            </div>
+            <div>
             <div v-if="!$q.platform.is.mobile" class="">Gold :{{$store.state.gold_ask}}</div>
             <!--        <q-icon name="mdi-silverware-clean"></q-icon>-->
+            <div style="font-size: x-small" v-if="!$q.platform.is.mobile"> H:1789.22 &nbsp; &nbsp; L:1283.23</div>
+            </div>
+              <div>
             <div class="">Silver: {{$store.state.silver_ask}}</div>
+            <div v-if="!$q.platform.is.mobile" style="font-size: x-small"> H:1789.22 &nbsp; &nbsp; L:1283.23</div>
+              </div>
             <!--        <q-icon name="mdi-gold"></q-icon>-->
+            <div>
             <div class="">Dollar: {{$store.state.dollar}}</div>
+            <div v-if="!$q.platform.is.mobile" style="font-size: x-small"> H:1789.22 &nbsp; &nbsp; L:1283.23</div>
+              </div>
           </q-toolbar>
         </q-header>
         <!--    <span class="mobile-only ">-->
@@ -463,6 +480,7 @@ export default {
       tab: 'Home',
       orders_to_rate: [],
       orders: [],
+      downarrow: false,
       filters: [
         {
           label: 'Delivery',
@@ -505,7 +523,6 @@ export default {
   created () {
     this.$router.push('Home')
     this.connect_websocket()
-    // this.connect_data()
     const store = this.$store
     if (this.logged_in) {
       get_user_details().then(

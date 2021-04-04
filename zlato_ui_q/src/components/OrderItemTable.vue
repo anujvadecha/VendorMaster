@@ -26,7 +26,7 @@
         </template>
       </q-table>
     </div>
-    <div v-else>
+    <div v-else-if="best_limit_orders.length<1">
       <div v-if="show_illustration">
       <div class="row align-middle">
         <div class="center">

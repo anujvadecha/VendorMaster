@@ -353,7 +353,7 @@ export default {
   data () {
     return {
       pagination: {
-        rowsPerPage: 0
+        rowsPerPage: 10
       },
       search_selected: false,
       filter: '',
