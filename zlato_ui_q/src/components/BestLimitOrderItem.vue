@@ -23,7 +23,7 @@
         <strong>{{best_order.instrument.vendor}}</strong>
             <span class="font-bold q-ml-xs-sm " style=""> {{best_order.instrument.name}}</span>
           </div>
-             <span class="text-right text-sm q-ml-sm" style="color: grey">ltp: {{best_order.instrument.ask}}</span>
+             <span class="text-right text-sm q-ml-sm" style="color: grey">LTP: {{best_order.instrument.ask}}</span>
       </div>
         </div>
 
