@@ -2,9 +2,7 @@
   <div>
     <div class="q-ma-md row text-h6" style="">
       <div class="col">
-        <div v-if="title==null">
-            Watchlist
-        </div>
+        <div v-if="title==null"></div>
       <div v-else>
         {{title}}
       </div>
@@ -95,7 +93,6 @@
       v-touch-swipe.mouse.horizontal="handleSwipe"
       bordered
       flat
-      hide-bottom
       :pagination="pagination"
     >
 <!--      :pagination="pagination"-->

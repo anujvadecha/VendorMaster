@@ -154,8 +154,9 @@ export default {
           quasar_q.localStorage.set('token', response.data.key)
           router.push('Home')
         }).catch(function (error) {
+          console.log(error.response.data)
           Notify.create({
-            message: error.toString(),
+            message: error.response.data.non_field_errors[0],
             position: 'top',
             timeout: 5000
           })

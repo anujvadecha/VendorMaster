@@ -3,7 +3,7 @@
     <div v-if="logged_in">
       <div v-if="favourite_items.length > 0">
         <div class="Favourites">
-            <TickerPriceTable :render_best="true" title="Favourites" :instruments_to_render="favourite_items" />
+            <TickerPriceTable :render_best="true" :title=None  :instruments_to_render="favourite_items" />
         </div>
       </div>
       <div v-else>

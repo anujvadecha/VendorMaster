@@ -9,10 +9,10 @@
 <!--    </div>-->
     <div class="">
       <span class="q-ma-sm font-bold text-primary row text-h6">
-        Experience zlato on the go
+        Experience deltabx on the go
       </span>
       <span class="q-ma-sm font-bold text-primary row ">
-        Convenience is garunteed with our robust order placement engines
+        Convenience is guaranteed with our robust order placement engines
         and high priority on experience
       </span>
       <q-btn dense flat class="q-pl-sm q-pr-sm q-ma-sm bg-primary" icon="mdi-apple">IOS</q-btn>
