@@ -73,4 +73,4 @@ class Command(BaseCommand):
         sio.connect('http://209.59.158.15:3001/',headers={ "secure": "true", "rejectUnauthorized": "false" },transports=["websocket"])
         # sio.wait()
         # while True:
-        #  time.sleep(1)
+        # time.sleep(1)

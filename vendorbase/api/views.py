@@ -118,5 +118,4 @@ class UserMarginCron(APIView):
         for m in margins:
             m.margin_available = m.margin
             m.save()
-        # print(margins)
         return Response("success", status.HTTP_200_OK)

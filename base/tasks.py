@@ -2,15 +2,12 @@ import logging
 from raven.contrib.django.raven_compat.models import client
 from django.db import transaction
 from django.core.cache import cache
-
 from vendorbase.celery import app
 
 LOGGER = logging.getLogger(__name__)
 
-
 class BaseTask(app.Task):
     """Abstract base class for all tasks in app."""
-
     abstract = True
 
     def on_retry(self, exc, *args, **kwargs):
@@ -31,8 +28,8 @@ class TaskCallableMixin:
 
 class TransactionAwareTask(BaseTask):
     '''
-    Task class which is aware of django db transactions and only executes tasks
-    after transaction has been committed
+     Task class which is aware of django db transactions and only executes tasks
+     after transaction has been committed
     '''
     abstract = True
 

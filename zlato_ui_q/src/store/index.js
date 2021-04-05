@@ -40,9 +40,17 @@ export default new Vuex.Store({
     order_item: null,
     user_details: null,
     gold_ask: 0,
+    gold_low: 0,
+    gold_high: 0,
     silver_ask: 0,
+    silver_low: 0,
+    silver_high: 0,
     dollar: 0,
+    dollar_low: 0,
+    dollar_high: 0,
     gold_comex: 0,
+    gold_comex_low: 0,
+    gold_comex_high: 0,
     selected_filters: {
       delivery_to: ''
     },
@@ -63,6 +71,14 @@ export default new Vuex.Store({
       state.gold_ask = tick.gold_tick.ask
       state.silver_ask = tick.silver_tick.ask
       state.dollar = tick.dollar.ask
+      state.gold_comex_high = tick.gold_comex.high
+      state.gold_comex_low = tick.gold_comex.low
+      state.gold_low = tick.gold_tick.low
+      state.gold_high = tick.gold_tick.high
+      state.silver_high = tick.silver_tick.high
+      state.silver_low = tick.silver_tick.low
+      state.dollar_high = tick.dollar.high
+      state.dollar_low = tick.dollar.low
       state.instruments = state.instruments.map(function (instrument) {
         instrument.old_bid = instrument.bid
         instrument.old_ask = instrument.ask
