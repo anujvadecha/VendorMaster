@@ -38,7 +38,7 @@
             :rules="quantity_rules"/>
             </div>
             <div class="col">
-              <q-input  class="q-ml-lg" type="number" stack-label readonly v-model="order_item.ask" label="Price" />
+              <q-input  class="q-ml-lg" step=100 type="number" stack-label readonly v-model="order_item.ask" label="Price" />
           </div>
             </div>
           </q-tab-panel>
@@ -48,7 +48,7 @@
             <q-input type="number"  standout="text-white" v-model="quantity" label="Quantity(gms)"
             :rules="quantity_rules"/></div>
               <div class="col">
-            <q-input type="number" standout="text-white" class="q-ml-md" stack-label  v-model="price" :label="order_item.ask.toString()" />
+            <q-input type="number" step=100 standout="text-white" class="q-ml-md" stack-label  v-model="price" :label="order_item.ask.toString()" />
             </div>
               </div>
           </q-tab-panel>

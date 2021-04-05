@@ -362,7 +362,7 @@ export default {
       filterDialog: false,
       types: ['All', 'Gold 999', 'Gold 999 1kg', 'Gold 995', 'Gold 995 1kg'],
       headers: [
-        { name: 'Vendor', align: 'start', field: 'vendor', label: 'Vendor' },
+        { name: 'Vendor', align: 'start', field: 'vendor', label: 'Vendor', sortable: false },
         { name: 'Symbol', align: 'start', field: 'name', label: 'Symbol' },
         { name: 'Bid', align: 'start', field: 'bid', filterable: true, label: 'Bid', sortable: true },
         { name: 'Ask', align: 'start', field: 'ask', filterable: true, label: 'Ask', sortable: true },
