@@ -35,11 +35,11 @@ class SymbolAdmin(admin.ModelAdmin):
                     user_id=request.user)
             return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
-    list_display = ('name', 'vendor_id', 'buy_premium',
-                    'sell_premium', 'enabled')
+    list_display = ('name', 'vendor_id','source_symbol', 'buy_premium',
+                    'sell_premium', 'enabled',)
     list_display_links = ('name',)
     list_filter = ('vendor_id', 'name')
-    list_editable = ('enabled', 'buy_premium', 'sell_premium')
+    list_editable = ('enabled', 'buy_premium', 'sell_premium','source_symbol')
     list_per_page = 10
     search_fields = ('name',)
 
