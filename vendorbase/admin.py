@@ -1,7 +1,7 @@
 from django.conf.urls import *
 from django.contrib import admin, messages
 from django.core.cache import cache
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string, get_template
 from django.urls import path, reverse
@@ -12,7 +12,8 @@ from orderManagement.models import Order, OrderStatus, OpenOrder, ExecutedOrder,
     BestLimitOrder, OrderType
 from orderManagement.utils import otp_hash
 from userBase.models import NormalUser
-from vendorbase.models import Symbol, Vendor, Group, City, GlobalPremium, Favourite, VendorDetails, VendorMargin
+from vendorbase.models import Symbol, Vendor, Group, City, GlobalPremium, Favourite, VendorDetails, VendorMargin, \
+    Home
 
 
 @admin.register(Symbol)
@@ -298,3 +299,13 @@ class VendorMargin(admin.ModelAdmin):
             return ()
         else:
             return ('user', 'vendor', 'margin_available')
+
+@admin.register(Home)
+class HomeAdmin(admin.ModelAdmin):
+    model = Home
+    def changelist_view(self, request, extra_context=None):
+        extra_context = {'title': 'Welcome to DeltaBx'}
+        return super(HomeAdmin, self).changelist_view(request, extra_context=extra_context)
+    change_list_template = 'home.html'
+
+

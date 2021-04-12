@@ -198,3 +198,10 @@ class VendorMargin(BaseModel):
         ]
         verbose_name = 'User margin'
         verbose_name_plural = 'User margins'
+
+class Home(models.Model):
+
+    class Meta:
+        app_label='userBase'
+        verbose_name_plural = 'Home'
+

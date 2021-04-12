@@ -159,7 +159,6 @@ USE_L10N = True
 USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-ADMIN_USER = "admin"
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
@@ -220,7 +219,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Africa/Nairobi'
 AUTH_USER_MODEL = "userBase.NormalUser"
 LOGIN_URL = "accounts/login"
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/home"
 LOGOUT_REDIRECT_URL = "/"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 WEBPACK_LOADER = {
