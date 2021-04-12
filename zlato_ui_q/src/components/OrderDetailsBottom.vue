@@ -66,7 +66,7 @@
       <q-separator></q-separator>
         <div class="q-ma-md">Delivery Comment</div>
         <div class="row q-ma-sm">
-        <q-input v-model="delivery_comment" class="col-11" autogrow outlined dense value="1"></q-input>
+        <q-input v-model="$store.state.order_details_selected.comments"   class="col-11" autogrow outlined dense value="1"></q-input>
          <q-btn @click="update_comment()" class="col-1">OK</q-btn>
         </div>
       </q-card>
@@ -118,7 +118,7 @@ export default {
   },
   methods: {
     update_comment: function () {
-      update_comment({ comment: this.delivery_comment, order_id: this.order.order_id }).then(res => {
+      update_comment({ comment: this.$store.state.order_details_selected.comments, order_id: this.order.order_id }).then(res => {
         console.log(res)
       })
     },
@@ -149,14 +149,14 @@ export default {
       })
     }
   },
-  data () {
+  data: function () {
     return {
       base_url: base_url,
-      delivery_comment: this.order.comments
+      delivery_comment: ''
     }
   },
   created () {
-    console.log(this.order)
+    console.log('created')
   }
 }
 </script>
