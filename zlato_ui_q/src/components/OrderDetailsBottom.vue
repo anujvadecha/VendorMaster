@@ -64,12 +64,17 @@
        </q-card>
         </div>
       <q-separator></q-separator>
+        <div class="q-ma-md">Delivery Comment</div>
+        <div class="row q-ma-sm">
+        <q-input v-model="delivery_comment" class="col-11" autogrow outlined dense value="1"></q-input>
+         <q-btn @click="update_comment()" class="col-1">OK</q-btn>
+        </div>
       </q-card>
 </q-dialog>
 </template>
 
 <script>
-import { base_url, cancel_order } from 'src/common/api_calls'
+import { base_url, cancel_order, update_comment } from 'src/common/api_calls'
 
 export default {
   name: 'OrderDetailsBottom',
@@ -112,6 +117,11 @@ export default {
     }
   },
   methods: {
+    update_comment: function () {
+      update_comment({ comment: this.delivery_comment, order_id: this.order.order_id }).then(res => {
+        console.log(res)
+      })
+    },
     set_sheet_close: function () {
       this.$store.state.order_details_bottom_sheet = false
     },
@@ -141,7 +151,8 @@ export default {
   },
   data () {
     return {
-      base_url: base_url
+      base_url: base_url,
+      delivery_comment: ''
     }
   },
   created () {

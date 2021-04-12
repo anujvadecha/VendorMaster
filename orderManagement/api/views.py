@@ -124,14 +124,19 @@ class OrderView(APIView):
             return self.time_in_range(datetime.time(9, 0, 0),datetime.time(11, 45, 0),datetime.now().time())
 
 
-def delete(self, request):
-        order = Order.objects.get(order_id=request.data["order_id"])
-        # margin = VendorMargin.objects.get(user=request.user, vendor_id=order.instrument_id.vendor_id)
-        # margin.margin_available = margin.margin_available + order.quantity
-        # margin.save()
-        order.status = OrderStatus.CANCELLED
+    def delete(self, request):
+            order = Order.objects.get(order_id=request.data["order_id"])
+            # margin = VendorMargin.objects.get(user=request.user, vendor_id=order.instrument_id.vendor_id)
+            # margin.margin_available = margin.margin_available + order.quantity
+            # margin.save()
+            order.status = OrderStatus.CANCELLED
+            order.save()
+            return Response(status=status.HTTP_200_OK)
+
+    def patch(self,request):
+        order =Order.objects.get(order_id=request.data["order_id"])
+        order.comments = request.data['comment']
         order.save()
-        return Response(status=status.HTTP_200_OK)
 
 
 class UserMarginsView(APIView):

@@ -55,6 +55,10 @@ function activate_user (data) {
   return apiService(endpoint, 'POST', data)
 }
 
+function update_comment (data) {
+  const endpoint = base_url + 'order/api/orders'
+  return apiService(endpoint, 'PATCH', data)
+}
 export {
   base_url,
   add_to_favourites,
@@ -67,5 +71,6 @@ export {
   get_user_details,
   base_websocket_url,
   rate_order,
-  activate_user
+  activate_user,
+  update_comment
 }
