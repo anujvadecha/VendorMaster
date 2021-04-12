@@ -56,7 +56,7 @@ function activate_user (data) {
 }
 
 function update_comment (data) {
-  const endpoint = base_url + 'order/api/orders'
+  const endpoint = base_url + '/order/api/orders'
   return apiService(endpoint, 'PATCH', data)
 }
 export {
