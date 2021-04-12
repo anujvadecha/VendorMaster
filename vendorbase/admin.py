@@ -20,6 +20,26 @@ from vendorbase.models import Symbol, Vendor, Group, City, GlobalPremium, Favour
 class SymbolAdmin(admin.ModelAdmin):
     change_list_template = 'market_data_table.html'
 
+    def get_urls(self):
+        urls = super(SymbolAdmin, self).get_urls()
+        my_urls = [
+            url(r'(?P<instrument_id>.+?)/(?P<number>.+?)/buy_premium/', self.change_buy_premium),
+            url(r'(?P<instrument_id>.+?)/(?P<number>.+?)/sell_premium/', self.change_sell_premium),
+        ]
+        return my_urls+urls
+
+    def change_buy_premium(self,request,instrument_id,number):
+        symbol=Symbol.objects.filter(instrument_id=instrument_id).first()
+        symbol.buy_premium+=int(number)
+        symbol.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+    def change_sell_premium(self,request, instrument_id, number):
+        symbol = Symbol.objects.filter(instrument_id=instrument_id).first()
+        symbol.sell_premium += int(number)
+        symbol.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
     def get_queryset(self, request):
         qs = super(SymbolAdmin, self).get_queryset(request)
         if not request.user.is_superuser:
@@ -36,14 +56,16 @@ class SymbolAdmin(admin.ModelAdmin):
                     user_id=request.user)
             return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
-    list_display = ('name', 'vendor_id','source_symbol', 'buy_premium',
-                    'sell_premium', 'enabled',)
+    list_display = ('name', 'vendor_id','source_symbol','buy','sell', 'enabled',)
     list_display_links = ('name',)
     list_filter = ('vendor_id', 'name')
-    list_editable = ('enabled', 'buy_premium', 'sell_premium','source_symbol')
+    list_editable = ('enabled','source_symbol')
     list_per_page = 10
     search_fields = ('name',)
-
+    def buy(self, obj):
+        return render_to_string('buy_premium_input.html', {'instrument_id': obj.instrument_id,'buy_premium':obj.buy_premium})
+    def sell(self, obj):
+        return render_to_string('sell_premium_input.html', {'instrument_id': obj.instrument_id,'sell_premium':obj.sell_premium})
     def changelist_view(self, request, extra_context=None):
         response = super(SymbolAdmin, self).changelist_view(
             request,
@@ -143,10 +165,7 @@ class OpenOrderAdmin(admin.ModelAdmin):
         order = Order.objects.filter(order_id=order_id).first()
         order.status = OrderStatus.EXECUTED
         order.save()
-        print(order.user_id_id)
-        user = NormalUser.objects.filter(id=order.user_id_id).first()
         # print(user)
-
         #     obj.status=OrderStatus.EXECUTED
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
