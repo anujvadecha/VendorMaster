@@ -33,7 +33,13 @@ class BestLimitUserMapping(BaseModel):
     def __str__(self):
         return self.user.username
 
-
+DeliveryChoices = (
+    ('7-8pm', '7-8pm'),
+    ('6-7pm', '6-7pm'),
+    ('5-6pm', '5-6pm'),
+    ('4-5pm', '4-5pm'),
+    ('3-4pm', '3-4pm'),
+)
 class Order(BaseModel):
     order_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     transaction_id = models.CharField(max_length=120, default=unique_transaction_id_generator, blank=True,
@@ -48,11 +54,12 @@ class Order(BaseModel):
     best_limit_id = models.ForeignKey(BestLimitUserMapping, on_delete=models.DO_NOTHING,null=True,blank=True)
     is_rated = models.BooleanField(default=False)
     comments=models.TextField(blank=True,null=True)
+    delivery_time = models.CharField(max_length=200,choices=DeliveryChoices,blank=True,null=True)
     def vendor(self):
         return self.instrument_id.vendor_id
 
     def __str__(self):
-        return self.user_id.__str__();
+        return self.user_id.__str__()
 
     class Meta:
         indexes = [

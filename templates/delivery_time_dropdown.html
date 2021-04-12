@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{#Hello#}
+{#<form action="{{ order_id }}/234/verify_otp/"  method="get">#}
+{#   <input style="width: 30px" id="otp">#}
+{#    <input type="submit" value="OK" onclick="console.log('clicked')"></form>#}
+{#  <a class="button" type="submit" >OK</a>#}
+{#</form>#}
+    <select name="delivery" id="delivery">
+          <option value="">---</option>
+          <option value="7-8pm">7-8pm</option>
+          <option value="6-7pm">6-7pm</option>
+          <option value="5-6pm">5-6pm</option>
+          <option value="4-5pm">4-5pm</option>
+          <option value="3-4pm">3-4pm</option>
+          <option value="2-3pm">2-3pm</option>
+    </select>
+    <a class ="button"
+    onclick="this.href = '{{ order_id }}/'+document.getElementById('delivery').value+'/confirm_payment/'; console.log(this.href)">OK</a>
+</body>
+</html>

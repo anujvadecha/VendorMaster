@@ -157,13 +157,14 @@ class OpenOrderAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super(OpenOrderAdmin, self).get_urls()
         my_urls = [
-            url(r'(?P<order_id>.+?)/confirm_payment/', self.confirm_payment),
+            url(r'(?P<order_id>.+?)/(?P<delivery>.+?)/confirm_payment/', self.confirm_payment),
         ]
         return my_urls+urls
 
-    def confirm_payment(self, request, order_id):
+    def confirm_payment(self, request, order_id,delivery):
         order = Order.objects.filter(order_id=order_id).first()
         order.status = OrderStatus.EXECUTED
+        order.delivery_time=delivery
         order.save()
         # print(user)
         #     obj.status=OrderStatus.EXECUTED
@@ -175,8 +176,12 @@ class OpenOrderAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         return get_vendor_order_queryset(request=request, queryset=self.model.objects.filter(status=OrderStatus.OPEN))
+
+    def delivery(self,obj):
+        return render_to_string('delivery_time_dropdown.html', {'order_id': obj.order_id})
+
     list_display = ('instrument_id', 'transaction_id', 'side',
-                    'quantity', 'created_at', 'approve_payment')
+                    'quantity', 'created_at', 'delivery')
     list_display_links = ('instrument_id',)
     list_filter = ('instrument_id__name',)
     list_per_page = 10
