@@ -53,7 +53,7 @@ class Order(BaseModel):
     side = models.CharField(default=OrderSide.BUY, max_length=200, choices=OrderSide)
     best_limit_id = models.ForeignKey(BestLimitUserMapping, on_delete=models.DO_NOTHING,null=True,blank=True)
     is_rated = models.BooleanField(default=False)
-    comments=models.TextField(blank=True,null=True)
+    comments = models.TextField(blank=True,null=True)
     delivery_time = models.CharField(max_length=200,choices=DeliveryChoices,blank=True,null=True)
     def vendor(self):
         return self.instrument_id.vendor_id

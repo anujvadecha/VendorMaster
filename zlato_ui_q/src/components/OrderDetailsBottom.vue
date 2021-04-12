@@ -156,6 +156,7 @@ export default {
     }
   },
   created () {
+    console.log(this.order)
   }
 }
 </script>

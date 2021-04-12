@@ -27,4 +27,4 @@ class OrderSerializer(serializers.ModelSerializer):
         fields=["created_at","modified_at","order_id",
         "instrument_id",'transaction_id',"quantity",
         "user_id","price","type",
-        "status","side","otp","name","best_limit_id", "is_rated"]
+        "status","side","otp","name","best_limit_id", "is_rated","comments"]
