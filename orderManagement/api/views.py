@@ -52,6 +52,12 @@ class OrderView(APIView):
             print(serializer.errors)
             return None
 
+    def patch(self,request):
+        order =Order.objects.get(user_id=request.user,order_id=request.data["order_id"])
+        order.comments = request.data['comment']
+        order.save()
+        return Response(status=status.HTTP_200_OK)
+
     def get(self, request):
         orders = Order.objects.filter(user_id=request.user)
         return Response(OrderSerializer(orders, many=True).data)
@@ -133,10 +139,6 @@ class OrderView(APIView):
             order.save()
             return Response(status=status.HTTP_200_OK)
 
-    def patch(self,request):
-        order =Order.objects.get(order_id=request.data["order_id"])
-        order.comments = request.data['comment']
-        order.save()
 
 
 class UserMarginsView(APIView):
