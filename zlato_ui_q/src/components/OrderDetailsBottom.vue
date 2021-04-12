@@ -152,7 +152,7 @@ export default {
   data () {
     return {
       base_url: base_url,
-      delivery_comment: ''
+      delivery_comment: this.order.comments
     }
   },
   created () {
