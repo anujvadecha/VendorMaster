@@ -113,7 +113,7 @@ class OrderView(APIView):
                     return Response(status=status.HTTP_200_OK)
 
     def check_quantity_for_order(self, order_request, instrument):
-        if(order_request['quantity'] >= instrument.quantity):
+        if(int(order_request['quantity']) >= int(instrument.quantity)):
             return True
         else:
             return False
