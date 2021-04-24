@@ -286,7 +286,7 @@ class VendorDetailAdmin(admin.ModelAdmin):
 
     def changelist_view(self, request, extra_context=None):
         if self.get_queryset(request).count() == 1:
-            obj = self.model.objects.all()[0]
+            obj = self.get_queryset(request).all()[0]
             return HttpResponseRedirect(
                 reverse("admin:%s_%s_change" % (self.model._meta.app_label, self.model._meta.model_name),
                         args=(obj.id,)))
