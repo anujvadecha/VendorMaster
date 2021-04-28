@@ -1,75 +1,152 @@
 <!DOCTYPE html>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 {% extends "admin/change_list.html" %}
 {% load static %}
 {% block content %}
     <script>
-    connect();
-    var tickpriceBuy=50000;
-    var tickpriceSell=50000;
-    var instruments;
-    var globalPremiumBuy=0;
-    var globalPremiumSell=0;
-    const user = {{ request.user.id }};
-
-    function connect() {
+        connect();
+        var tickpriceBuy = 50000;
+        var tickpriceSell = 50000;
         var instruments;
-        const url='wss://'
-            + window.location.host
-            + '/ws/'
-            + 'vendor'
-            + '/'
-        const tickerSocket = new WebSocket(
-            url
-        );
-        tickerSocket.onmessage = function (e) {
-            const data = JSON.parse(e.data);
-            if (data["instruments"]) {
-                instruments=data["instruments"]
-                renderTablesOnInstruments(instruments)
-            }
-            if(data['global_premium'])
-            {
-                globalPremiumBuy=data["global_premium"]["buy_premium"]
-                globalPremiumSell=data["global_premium"]["sell_premium"]
-            }
-            if(data["gold_tick"])
-            {
-                tickpriceBuy=data["gold_tick"]["bid"]
-                tickpriceSell=data["gold_tick"]["ask"]
-                renderTablesOnInstruments(instruments)
-            }
-        };
+        var globalPremiumBuy = 0;
+        var globalPremiumSell = 0;
+        const user = {{ request.user.id }};
 
-        tickerSocket.onclose = function (e) {
-            console.log('Socket is closed. Reconnect will be attempted in 2 second.', e.reason);
-            setTimeout(function () {
-                connect();
-            }, 2000);
-        };
+        function connect() {
+            var instruments;
+            const url = 'ws://'
+                + window.location.host
+                + '/ws/'
+                + 'vendor'
+                + '/'
+            const tickerSocket = new WebSocket(
+                url
+            );
+            console.log("connecting")
+            tickerSocket.onmessage = function (e) {
+                const data = JSON.parse(e.data);
+                if (data["instruments"]) {
+                    instruments = data["instruments"]
+                    renderTablesOnInstruments(instruments)
+                }
+                if (data['global_premium']) {
+                    globalPremiumBuy = data["global_premium"]["buy_premium"]
+                    globalPremiumSell = data["global_premium"]["sell_premium"]
+                }
+                if (data["gold_tick"]) {
+                    tickpriceBuy = data["gold_tick"]["bid"]
+                    tickpriceSell = data["gold_tick"]["ask"]
+                    renderTablesOnInstruments(instruments)
+                }
+                if(data["vendors"])
+                {
+                    console.log(data)
+                }
+            };
 
-        tickerSocket.onopen = function () {
-            console.log("tickerSocket opened");
-            tickerSocket.send(JSON.stringify({
-                "type": "ticker_request",
-                'message': "Please send ticks!",
-                'user':user,
-            }));
+            tickerSocket.onclose = function (e) {
+                console.log('Socket is closed. Reconnect will be attempted in 2 second.', e.reason);
+                setTimeout(function () {
+                    connect();
+                }, 2000);
+            };
+
+            tickerSocket.onopen = function () {
+                console.log("tickerSocket opened");
+                tickerSocket.send(JSON.stringify({
+                    "type": "ticker_request",
+                    'message': "Please send ticks!",
+                    'user': user,
+                }));
+                tickerSocket.send(JSON.stringify({
+                    "type": "vendor_request",
+                    'message': "Please send ticks!",
+                    'user': user,
+                }));
+            }
+        }
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
         }
     }
+    return cookieValue;
+}
+        function save() {
+            console.log("Saving output")
+            data_to_send={
+                        gold_premium             :document.getElementById("gold_premium").value,
+                        gold_premium_999         :document.getElementById("gold_999_premium").value,
+                        silver_premium           :document.getElementById("silver_premium").value,
+                        gold_conv                :document.getElementById("gold_conv").value,
+                        gold_999_conv            :document.getElementById("gold_999_conv").value,
+                        silver_conv              :document.getElementById("silver_conv").value,
+                        gold_custom              :document.getElementById("gold_custom").value,
+                        gold_999_custom          :document.getElementById("gold_999_custom").value,
+                        silver_costom            :document.getElementById("silver_custom").value,
+                        gold_dollar_premium      :document.getElementById("gold_dollar_premium").value,
+                        gold_999_dollar_premium  :document.getElementById("gold_999_dollar_premium").value,
+                        silver_dollar_premium:document.getElementById("silver_dollar_premium").value,
+                        gold_tax                 :document.getElementById("gold_tax").value,
+                        gold_999_tax             :document.getElementById("gold_999_tax").value,
+                        silver_tax               :document.getElementById("silver_tax").value
+                    }
+            $.ajax({
+        		url: '/api/bankrate/',
+        		type: 'POST',
+        		headers: {
+                    "X-CSRFToken": getCookie('csrftoken')
+                },
+        		contentType: "application/json",
+        		data: JSON.stringify(data_to_send),
+        		success: function(response){
+                    console.log(response);
+                    alert("success");
+                    window.location.reload(true);
+        		},
+        		error: function(e){
+        		    console.log("errorResponse.responseJSON :: ");
+                    console.log(e)
+        		    if(e.responseJSON.status == 440){
+                        window.location.href = "{{login}}";
+                    }
+        		}
+	 });
+                {#fetch(window.location.host+'/api/bankrate/',{#}
+                {#    method:'POST',#}
+                {#    headers:{#}
+{##}
+{#                    },#}
+{#                    body:JSON.stringify(data_to_send)#}
+{#                }).then(#}
+{#                    response=>{#}
+{#                        console.log(response.json())#}
+{#                    }#}
+{#                )#}
 
-    function renderTablesOnInstruments(instruments)
-    {
-        instruments = JSON.parse(instruments)
-        var rows = '';
-        rows+="<tr>\n" +
-            "    <th>Vendor</th>\n" +
-            "    <th>Product</th>\n" +
-            "    <th>Bid</th>\n" +
-            "    <th>Ask</th>\n" +
-            {#"    <th>High</th>\n" +#}
-            {#"    <th>Low</th>\n" +#}
-            "  </tr>";
-        instruments.forEach(function(item){
+
+        }
+        function renderTablesOnInstruments(instruments) {
+            instruments = JSON.parse(instruments)
+            var rows = '';
+            rows += "<tr>\n" +
+                "    <th>Vendor</th>\n" +
+                "    <th>Product</th>\n" +
+                "    <th>Bid</th>\n" +
+                "    <th>Ask</th>\n" +
+                {#"    <th>High</th>\n" +#}
+                {#"    <th>Low</th>\n" +#}
+                "  </tr>";
+            instruments.forEach(function (item) {
                 const bidprice = item["buy_premium"] + tickpriceBuy + globalPremiumBuy
                 const askprice = item["sell_premium"] + tickpriceSell + globalPremiumSell
                 var row = '<tr>';
@@ -81,13 +158,206 @@
                 {#row += '<td>' + item["low"] + '</td>';#}
                 row + '<tr>';
                 rows += row
-        });
-        document.getElementById("data-table").innerHTML=rows;
-        {#$('#' + "data-table").html(rows);#}
-    }
+            });
+            document.getElementById("data-table").innerHTML = rows;
+            {#$('#' + "data-table").html(rows);#}
+        }
     </script>
 
-<table id="data-table"style="margin:40px;width:60%"></table>
+    <table id="data-table" style="margin:40px;width:60%"></table>
+    {{ block.super }}
+    <style>
+    {#input{#}
+    {#    width: 50px;#}
+    {#}#}
+    {#.sell{#}
+    {#  position: absolute;#}
+{##}
+{#    }#}
 
-{{ block.super }}
+
+{#     .bank {#}
+    {#position: relative;#}
+{#    width: 61px;#}
+{#    top: 24px;#}
+{#    left: 14px;#}
+{#    height: 26px;#}
+{#    right: -56px;#}
+{#    text-align: center;#}
+{#    line-height: 26px;#}
+{#}#}
+{#     .svg {#}
+{#    position: relative;#}
+{#    width: 61px;#}
+{#    top: -1px;#}
+{#    left: 100px;#}
+{#    height: 26px;#}
+{#    right: -56px;#}
+{#    text-align: center;#}
+{#    line-height: 26px;#}
+{#}#}
+{#    .mcx {#}
+{#    position: relative;#}
+{#    width: 61px;#}
+{#    top: -27px;#}
+{#    left: 187px;#}
+{#    height: 26px;#}
+{#    right: -56px;#}
+{#    text-align: center;#}
+{#    line-height: 26px;#}
+{#}#}
+{#     .bank-svg {#}
+{#    position: relative;#}
+{#    width: 61px;#}
+{#    top: -17px;#}
+{#    left: 48px;#}
+{#    height: 26px;#}
+{#    right: -56px;#}
+{#    text-align: center;#}
+{#    line-height: 26px;#}
+{#    color: #FFFFFF;#}
+{#}#}
+{#    .svg-mcx {#}
+    {#position: relative;#}
+{#    width: 61px;#}
+{#    top: -43px;#}
+{#    left: 154px;#}
+{#    height: 26px;#}
+{#    right: -56px;#}
+{#    text-align: center;#}
+{#    line-height: 26px;#}
+{#    color: #FFFFFF;#}
+{#}#}
+{#   .bank-mcx {#}
+    {#position: relative;#}
+{#    width: 61px;#}
+{#    top: -30px;#}
+{#    left: 98px;#}
+{#    height: 26px;#}
+{#    right: -56px;#}
+{#    text-align: center;#}
+{#    line-height: 26px;#}
+{#    color: #FFFFFF;#}
+{#}#}
+    </style>
+    <table style="float: left"  width="50%" border="0" cellpadding="0" cellspacing="0" class="rpbankrates" id="table2">
+        <thead>
+        {% csrf_token %}
+        <tr class="title">
+            <td class="titleheading1">Description</td>
+            <td><p>Gold 999</p></td>
+            <td><p>Gold</p></td>
+            <td><p>Silver</p></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="even">
+            <td class="rateheading">ASK($)</td>
+            <td class=" "
+            ><label id="askdollar_Gold_999" class="0_askdollar">1861.90</label></td>
+            <td class=" "
+            ><label id="askdollar_Gold" class="1_askdollar">1861.90</label></td>
+            <td class=" "
+            ><label id="askdollar_Silver" class="2_askdollar">24.08</label></td></tr>
+        <tr class="odd">
+            <td class="rateheading">Premium</td>
+            <td class=" "
+            ><input  class="white-highlight" type="text" value="1.000" id="gold_999_premium"></td>
+            <td class=" "
+            ><input class="white-highlight" type="text" value="3.500" name="fv[bankrate][Gold][premium]"
+                        id="gold_premium"></td>
+            <td class=" "><input class="white-highlight" type="text" value="0.120" name="fv[bankrate][Silver][premium]"
+                        id="silver_premium" ></td></tr>
+        <tr class="even">
+            <td class="rateheading">Conv</td>
+            <td class=" "
+            ><input class="txtlabel" type="text" value="32.1200" name="fv[bankrate][Gold_999][bconvert_value]"
+                        id="gold_999_conv" readonly="true"></td>
+            <td class=" "
+            ><input class="txtlabel" type="text" value="31.1034" name="fv[bankrate][Gold][bconvert_value]"
+                        id="gold_conv" readonly="true"></td>
+            <td class=" "
+            ><input class="txtlabel" type="text" value="32.1508" name="fv[bankrate][Silver][bconvert_value]"
+                        id="silver_conv" readonly="true"></td></tr>
+        <tr class="odd">
+            <td class="rateheading">INR(₹)</td>
+            <td class=" "
+            ><label id="dollar" class="0_inr">74.32</label></td>
+            <td class=" "
+            ><label id="dollar" class="1_inr">74.32</label></td>
+            <td class=" "
+            ><label id="dollar" class="2_inr">74.32</label></td></tr>
+        <tr class="even">
+            <td class="rateheading">Premium</td>
+            <td class=" "
+            ><input class="white-highlight" type="text" value="0.010" name="fv[bankrate][Gold_999][rupeepremium]"
+                        id="gold_999_dollar_premium"></td>
+            <td class=" "
+            ><input class="white-highlight" type="text" value="0.010" name="fv[bankrate][Gold][rupeepremium]"
+                        id="gold_dollar_premium"></td>
+            <td class=" "
+            ><input class="white-highlight" type="text" value="0.001" name="fv[bankrate][Silver][rupeepremium]"
+                        id="silver_dollar_premium"></td></tr>
+        <tr class="odd">
+            <td class="rateheading">Custom</td>
+            <td class=" "
+            ><input class="white-highlight" type="text" value="385000.000" name="fv[bankrate][Gold_999][custom]"
+                        id="gold_999_custom"></td>
+            <td class=" "
+            ><input class="white-highlight" type="text" value="385000.000" name="fv[bankrate][Gold][custom]"
+                        id="gold_custom"></td>
+            <td class=" "
+            ><input class="white-highlight" type="text" value="7025.000" name="fv[bankrate][Silver][custom]"
+                        id="silver_custom"></td></tr>
+        <tr class="odd">
+            <td class="rateheading">Tax</td>
+            <td class=" "
+            ><input class="white-highlight" type="text" value="3.000" name="fv[bankrate][Gold_999][btax_value]"
+                        id="gold_999_tax"></td>
+            <td class=" "
+            ><input class="white-highlight" type="text" value="3.000" name="fv[bankrate][Gold][btax_value]"
+                        id="gold_tax"></td>
+            <td class=" "
+            ><input class="white-highlight" type="text" value="3.000" name="fv[bankrate][Silver][btax_value]"
+                        id="silver_tax"></td></tr>
+        <tr class="odd">
+            <td class="rateheading">1Grm Rate</td>
+            <td class=" "
+            ><label id="grmrate_Gold_999" class="0_grmrate">4977.61</label></td>
+            <td class=" "
+            ><label id="grmrate_Gold" class="1_grmrate">4862.89</label></td>
+            <td class=" "
+            ><label id="grmrate_Silver" class="2_grmrate">66.80</label></td></tr>
+        <tr class="even">
+            <td class="rateheading">1KG Rate</td>
+            <td class=" "
+            ><label id="kgrate_Gold_999" class="0_kgrate">4977614.92</label></td>
+            <td class=" "
+            ><label id="kgrate_Gold" class="1_kgrate">4862891.42</label></td>
+            <td class=" " ><label id="kgrate_Silver" class="2_kgrate">66795.97</label></td></tr>
+        <input type="button" onclick="save()" value="Save"/>
+        </tbody>
+
+    </table>
+
+{#    <div style="display: block" class="sell">#}
+{#        <div class="bank" id="spot_sell">4977.61</div>#}
+{#        <div class="svg" id="sell">4872.90</div>#}
+{#        <div class="mcx" id="future">5001.00</div>#}
+{#        <div class="bank-svg" id="sell_spot" style="background-color: red;">-104.71</div>#}
+{#        <div class="svg-mcx" id="sell_future" style="background-color: red;">-128.10</div>#}
+{#        <div class="bank-mcx" id="spot_future" style="background-color: green;">23.39</div>#}
+{#    </div>#}
+
+{#    <div class="buy">#}
+{#										<div class="bank" id="spot_buy">4977.61</div>#}
+{#										<div class="svg" id="buy">4852.85</div>#}
+{#										<div class="mcx" id="buyfuture">5000.30</div>#}
+{#										<div class="bank-svg" id="buy_spot" style="background-color: red;">-124.76</div>#}
+{#										<div class="svg-mcx" id="buy_future" style="background-color: red;">-147.45</div>#}
+{#	<div class="bank-mcx" id="spot_buyfuture" style="background-color: green;">22.69</div>#}
+{#</div>#}
 {% endblock %}
+{% block filters %}
+    {% endblock %}
+

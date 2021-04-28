@@ -83,7 +83,22 @@ class VendorSerializer(serializers.ModelSerializer):
             "reference_1",
             "reference_2",
             "theme",
-            "vendor_details"
+            "vendor_details",
+            "gold_premium",
+            "gold_999_premium",
+            "silver_premium",
+            "gold_conv",
+            "gold_999_conv",
+            "silver_conv",
+            "gold_custom",
+            "gold_999_custom",
+            "silver_custom",
+            "gold_dollar_premium",
+            "gold_999_dollar_premium",
+            "silver_dollar_premium",
+            "gold_tax",
+            "gold_999_tax",
+            "silver_tax"
         ]
 
 

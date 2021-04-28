@@ -19,16 +19,18 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf.urls import url
 from django.core.cache import cache
+from django.shortcuts import redirect
 from django.urls import include, path, re_path
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework_jwt.views import obtain_jwt_token
 
 from VendorMaster import settings
 from VendorMaster.send_tick_data_test import send_tick_data
 from userBase.forms import CustomUserForm
 from django_registration.backends.one_step.views import RegistrationView
-from vendorbase.api.views import FavouritesView, SupportView, UserMarginCron, VendorRatingView
+from vendorbase.api.views import FavouritesView, SupportView, UserMarginCron, VendorRatingView, BankRateView
 from vendorbase.models import Symbol
-from vendorbase.views import IndexTemplateView, fallback_404
+from vendorbase.views import fallback_404
 from userBase.api.views import ActivateUser, UserRatingView
 from django.conf import settings
 from django.conf.urls.static import static
@@ -50,11 +52,12 @@ urlpatterns = [
     path('api-auth/', include("rest_framework.urls")),
     path("api/rest-auth/", include("rest_auth.urls")),
     path("api/rest-auth/registration", include("rest_auth.registration.urls")),
-    path("", admin.site.urls, name="entry-point"),
+    path("",admin.site.urls, name="entry-point"),
     path("api/favourites/", FavouritesView.as_view(), name="favourite"),
     path("user/", include("userBase.urls"), name="activate"),
     path("api/support/", SupportView.as_view(), name="support"),
     path("api/ratevendor/", VendorRatingView.as_view(), name="vendor_rating"),
+    path("api/bankrate/", csrf_exempt(BankRateView.as_view()), name="bank_rating"),
     path("api/rateuser/", UserRatingView.as_view(), name="user_rating"),
     path("api/margins/", UserMarginCron.as_view(), name="usermargincron"),
     #url(r'^.*$',fallback_404,name="404 fallback")

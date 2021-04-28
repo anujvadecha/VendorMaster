@@ -119,3 +119,29 @@ class UserMarginCron(APIView):
             m.margin_available = m.margin
             m.save()
         return Response("success", status.HTTP_200_OK)
+
+
+class BankRateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self,request):
+        data = request.data
+        vendor=Vendor.objects.filter(user_id=request.user).first()
+        print(vendor)
+        vendor.gold_premium=data["gold_premium"]
+        vendor.gold_999_premium=data["gold_premium_999"]
+        vendor.silver_premium=data["silver_premium"]
+        vendor.gold_conv=data["gold_conv"]
+        vendor.gold_999_conv=data["gold_999_conv"]
+        vendor.silver_conv=data["silver_conv"]
+        vendor.gold_custom=data["gold_custom"]
+        vendor.gold_999_custom=data["gold_999_custom"]
+        vendor.silver_custom=data["silver_costom"]
+        vendor.gold_dollar_premium=data["gold_dollar_premium"]
+        vendor.gold_999_dollar_premium=data["gold_999_dollar_premium"]
+        vendor.silver_dollar_premium=data["silver_dollar_premium"]
+        vendor.gold_tax=data["gold_tax"]
+        vendor.gold_999_tax=data["gold_999_tax"]
+        vendor.silver_tax=data["silver_tax"]
+        vendor.save()
+        return Response("success",status=status.HTTP_200_OK)

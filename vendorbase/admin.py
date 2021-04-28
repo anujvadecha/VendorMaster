@@ -58,7 +58,7 @@ class SymbolAdmin(admin.ModelAdmin):
 
     list_display = ('name', 'vendor_id','source_symbol','buy','sell', 'enabled',)
     list_display_links = ('name',)
-    list_filter = ('vendor_id', 'name')
+    # list_filter = ('vendor_id', 'name')
     list_editable = ('enabled','source_symbol')
     list_per_page = 10
     search_fields = ('name',)

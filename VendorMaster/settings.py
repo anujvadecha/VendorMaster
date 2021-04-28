@@ -48,10 +48,8 @@ INSTALLED_APPS = [
     'userBase',
     'orderManagement',
     'phonenumber_field',
-    # 'django_admin_index',
     'admin_interface',
     'colorfield',
-    # 'import_export',
     "django_object_actions",
     'django.contrib.admin',
     'django.contrib.auth',
@@ -125,8 +123,6 @@ WSGI_APPLICATION = 'VendorMaster.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
@@ -240,6 +236,11 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "deltacap.finance@gmail.com"
 EMAIL_HOST_PASSWORD = "Abfc1234!"
-
+TEMPLATE_LOADERS = (
+    ('django.template.loaders.cached.Loader', (
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+    )),
+)
 USE_TZ = True
 TIME_ZONE = 'Asia/Kolkata'

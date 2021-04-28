@@ -60,7 +60,29 @@ class Vendor(BaseModel):
     promoter_name = models.CharField(max_length=200, blank=True)
     reference_1 = models.CharField(max_length=500, blank=True)
     reference_2 = models.CharField(max_length=500, blank=True)
+
     default_margin=models.IntegerField(default=500)
+
+    gold_premium                    = models.FloatField(blank=True,default=0,null=True)
+    gold_999_premium              = models.FloatField(blank=True,default=0,null=True)
+    silver_premium                  = models.FloatField(blank=True,default=0,null=True)
+
+    gold_conv                   = models.FloatField(blank=True, default=0,null=True)
+    gold_999_conv               = models.FloatField(blank=True, default=0,null=True)
+    silver_conv                 = models.FloatField(blank=True, default=0,null=True)
+
+    gold_custom                 = models.FloatField(blank=True, default=0,null=True)
+    gold_999_custom             = models.FloatField(blank=True, default=0,null=True)
+    silver_custom               = models.FloatField(blank=True, default=0,null=True)
+
+    gold_dollar_premium         = models.FloatField(blank=True, default=3,null=True)
+    gold_999_dollar_premium     = models.FloatField(blank=True, default=3,null=True)
+    silver_dollar_premium   = models.FloatField(blank=True, default=3,null=True)
+
+    gold_tax                    = models.FloatField(blank=True, default=3,null=True)
+    gold_999_tax                = models.FloatField(blank=True, default=3,null=True)
+    silver_tax                  = models.FloatField(blank=True, default=3,null=True)
+
 
     class Meta:
         indexes = [
