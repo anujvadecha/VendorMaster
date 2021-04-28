@@ -88,14 +88,30 @@ export default new Vuex.Store({
           instrument.bid = tick.gold_tick.bid + instrument.buy_premium
           instrument.ask = tick.gold_tick.ask + instrument.sell_premium
         } else if (instrument.source_symbol === 'gold_bank') {
+          console.log(instrument.vendor_object)
           instrument.bid =
-            parseInt((tick.gold_comex.ask * tick.dollar.ask * 31.1035 * 1.12875) /
-              0.999 / 100) +
+            (((tick.gold_comex.ask + instrument.vendor_object.gold_premium) *
+              instrument.vendor_object.gold_conv *
+              (tick.dollar.ask + instrument.vendor_object.gold_dollar_premium) +
+              instrument.vendor_object.gold_custom) *
+              (1 + instrument.vendor_object.gold_tax / 100)) / 100 +
             instrument.buy_premium
+
           instrument.ask =
-            parseInt((tick.gold_comex.ask * tick.dollar.ask * 31.1035 * 1.12875) /
-              0.999 / 100) +
+            (((tick.gold_comex.ask + instrument.vendor_object.gold_premium) *
+              instrument.vendor_object.gold_conv *
+              (tick.dollar.ask + instrument.vendor_object.gold_dollar_premium) +
+              instrument.vendor_object.gold_custom) *
+              (1 + instrument.vendor_object.gold_tax / 100)) / 100 +
             instrument.sell_premium
+          // instrument.bid =
+          //   parseInt((tick.gold_comex.ask * tick.dollar.ask * 31.1035 * 1.12875) /
+          //     0.999 / 100) +
+          //   instrument.buy_premium
+          // instrument.ask =
+          //   parseInt((tick.gold_comex.ask * tick.dollar.ask * 31.1035 * 1.12875) /
+          //     0.999 / 100) +
+          //   instrument.sell_premium
         }
         instrument.high = Math.max(
           instrument.bid,
@@ -128,6 +144,13 @@ export default new Vuex.Store({
       state.snackbar_message = message
     },
     push_vendors (state, vendors) {
+      state.instruments.map(instrument => {
+        vendors.map(vendor => {
+          if (instrument.vendor_id === vendor.vendor_id) {
+            instrument.vendor_object = vendor
+          }
+        })
+      })
       state.vendors = vendors
     },
     set_selected (state, item) {

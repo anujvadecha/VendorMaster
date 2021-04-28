@@ -61,7 +61,7 @@ class SymbolAdmin(admin.ModelAdmin):
     # list_filter = ('vendor_id', 'name')
     list_editable = ('enabled','source_symbol')
     list_per_page = 10
-    search_fields = ('name',)
+    # search_fields = ('name',)
     def buy(self, obj):
         return render_to_string('buy_premium_input.html', {'instrument_id': obj.instrument_id,'buy_premium':obj.buy_premium})
     def sell(self, obj):
