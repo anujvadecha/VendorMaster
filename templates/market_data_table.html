@@ -61,7 +61,7 @@
 
 
                     goldBankRateAsk=(((data["gold_comex"]["ask"] + vendor.gold_premium) * vendor.gold_conv * (data["dollar"]["ask"]+vendor.gold_dollar_premium)+vendor.gold_custom)*(1+vendor.gold_tax/100))/100
-                    goldBankRateAsk=(((data["gold_comex"]["bid"] + vendor.gold_premium) * vendor.gold_conv * (data["dollar"]["bid"]+vendor.gold_dollar_premium)+vendor.gold_custom)*(1+vendor.gold_tax/100))/100
+                    goldBankRateBid=(((data["gold_comex"]["bid"] + vendor.gold_premium) * vendor.gold_conv * (data["dollar"]["bid"]+vendor.gold_dollar_premium)+vendor.gold_custom)*(1+vendor.gold_tax/100))/100
 
                     document.getElementById("dollar1").innerText=data["dollar"]["ask"]
                     document.getElementById("dollar2").innerText=data["dollar"]["ask"]
