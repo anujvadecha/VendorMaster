@@ -319,8 +319,6 @@ const linksData = [
     mobile: true
   }]
 
-import { io } from 'socket.io-client'
-
 export default {
   name: 'Main',
   components: { OrderDetailsBottom, BestLimitBottomOrderDialog, EssentialLink, BottomOrderDialog },
@@ -345,19 +343,7 @@ export default {
       this.connect_jwt()
     },
     connect_data: function () {
-      const socket = io('http://209.59.158.15:3001/', {
-        secure: true,
-        transports: ['websocket'],
-        rejectUnauthorized: false,
-        reconnect: true
-      })
-      socket.on('mcxratesupdate:App\\Events\\MCXRateUpdates', function (data) {
-        if (data.updatedata) {
 
-        }
-      })
-      socket.io.on('connection', function (data) {
-      })
       // io.on('connect', function () {
       //   console.log('connectedx')
       // })
@@ -366,7 +352,7 @@ export default {
       const connecter = this.connect_websocket
       const store = this.$store
       document.cookie = 'authorization=' + this.$q.localStorage.getItem('token') + ';'
-      const url = 'ws://' + base_websocket_url + '/ws/' + 'ticker' + '/' + '?' + this.$q.localStorage.getItem('token')
+      const url = 'wss://' + base_websocket_url + '/ws/' + 'ticker' + '/' + '?' + this.$q.localStorage.getItem('token')
       const symbolsocket = new WebSocket(url)
       symbolsocket.onopen = function () {
         Notify.create({
@@ -465,6 +451,7 @@ export default {
           connect()
         })
         .catch(function (error) {
+          console.log(error)
         })
     },
 
@@ -565,6 +552,7 @@ export default {
           store.state.user_details = res
         }
       ).catch(error => {
+        console.log(error)
         this.$store.state.token = ''
       })
     } else {

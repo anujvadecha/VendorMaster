@@ -182,6 +182,7 @@ export default new Vuex.Store({
       commit('push_instruments', instruments)
     },
     update_prices ({ commit }, tick) {
+      console.log('updating prices')
       commit('update_prices', tick)
     },
     update_instrument ({ commit }, instrument) {
