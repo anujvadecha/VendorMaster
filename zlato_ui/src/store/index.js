@@ -19,26 +19,26 @@ export default new Vuex.Store({
       state.instruments = instruments;
     },
     update_prices(state, tick) {
+      console.log("update prices called");
       state.instruments = state.instruments.map(function(instrument) {
         if (instrument.source_symbol === "gold_fut") {
-          console.log("updating gold fut rate");
           instrument.bid = tick.gold_tick.bid + instrument.buy_premium;
           instrument.ask = tick.gold_tick.ask + instrument.sell_premium;
         } else if (instrument.source_symbol === "gold_bank") {
-          console.log("updating gold bank rate");
           instrument.bid =
-            (((tick.gold_comex.ask + instrument.vendor.gold_premium) *
+            ((tick.gold_comex.ask + instrument.vendor.gold_premium) *
               instrument.vendor.gold_conv *
               (tick.dollar.ask + instrument.vendor.gold_dollar_premium) +
               instrument.vendor.gold_custom) *
-              (1 + instrument.vendor.gold_tax / 100)) /
-            +instrument.buy_premium;
+              (1 + instrument.vendor.gold_tax / 100) +
+            instrument.buy_premium;
+
           instrument.ask =
-            (((tick.gold_comex.ask + instrument.vendor.gold_premium) *
+            ((tick.gold_comex.ask + instrument.vendor.gold_premium) *
               instrument.vendor.gold_conv *
               (tick.dollar.ask + instrument.vendor.gold_dollar_premium) +
               instrument.vendor.gold_custom) *
-              (1 + instrument.vendor.gold_tax / 100)) /
+              (1 + instrument.vendor.gold_tax / 100) +
             instrument.sell_premium;
         }
         instrument.high = Math.max(
@@ -51,7 +51,6 @@ export default new Vuex.Store({
           instrument.low,
           instrument.ask
         );
-
         return instrument;
       });
     },
@@ -62,7 +61,7 @@ export default new Vuex.Store({
       for (var i = 0; i < state.instruments.length; i++) {
         if (state.instruments[i].instrument_id === instrument.instrument_id) {
           state.instruments[i] = instrument;
-          console.log("updating instrument");
+          console.log(" updating instrument ");
         }
       }
     },
