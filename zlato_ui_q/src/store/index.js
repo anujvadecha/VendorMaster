@@ -88,7 +88,6 @@ export default new Vuex.Store({
           instrument.bid = tick.gold_tick.bid + instrument.buy_premium
           instrument.ask = tick.gold_tick.ask + instrument.sell_premium
         } else if (instrument.source_symbol === 'gold_bank') {
-          console.log(instrument.vendor_object)
           instrument.bid =
            parseInt((((tick.gold_comex.bid + instrument.vendor_object.gold_premium) *
               instrument.vendor_object.gold_conv *
@@ -204,7 +203,6 @@ export default new Vuex.Store({
       commit('update_vendor', vendor)
     },
     update_prices ({ commit }, tick) {
-      console.log('updating prices')
       commit('update_prices', tick)
     },
     update_instrument ({ commit }, instrument) {

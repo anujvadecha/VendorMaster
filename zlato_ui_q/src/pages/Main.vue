@@ -352,7 +352,7 @@ export default {
       const connecter = this.connect_websocket
       const store = this.$store
       document.cookie = 'authorization=' + this.$q.localStorage.getItem('token') + ';'
-      const url = 'wss://' + base_websocket_url + '/ws/' + 'ticker' + '/' + '?' + this.$q.localStorage.getItem('token')
+      const url = base_websocket_url + '/ws/' + 'ticker' + '/' + '?' + this.$q.localStorage.getItem('token')
       const symbolsocket = new WebSocket(url)
       symbolsocket.onopen = function () {
         Notify.create({
@@ -407,6 +407,7 @@ export default {
           store.dispatch('update_instrument', to_update)
         }
         if (message.vendor_update) {
+          console.log('update vendor received')
           var to_update_vendor = JSON.parse(message.vendor_update)
           store.dispatch('update_vendor', to_update_vendor)
         }
