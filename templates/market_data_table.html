@@ -23,7 +23,6 @@
             const tickerSocket = new WebSocket(
                 url
             );
-            console.log("connecting")
             tickerSocket.onmessage = function (e) {
                 const data = JSON.parse(e.data);
                 if (data["instruments"]) {
@@ -59,7 +58,6 @@
 
                 }
                 if(data["vendors"]) {
-                    console.log(data)
                     vendor=data["vendors"][0]
                     document.getElementById("gold_premium").value=vendor.gold_premium
                     document.getElementById("gold_999_premium").value=vendor.gold_999_premium
@@ -77,7 +75,6 @@
                     document.getElementById("gold_999_tax").value=vendor.gold_999_tax
                     document.getElementById("silver_tax").value=vendor.silver_tax
                 }
-                console.log(data)
             };
 
             tickerSocket.onclose = function (e) {

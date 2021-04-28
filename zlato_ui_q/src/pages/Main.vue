@@ -417,7 +417,6 @@ export default {
           store.dispatch('update_prices', message)
         }
         if (message.instrument_update) {
-          console.log('instrument_update received')
           var to_update = JSON.parse(message.instrument_update)
           store.dispatch('update_instrument', to_update)
         }
@@ -466,7 +465,6 @@ export default {
           connect()
         })
         .catch(function (error) {
-          console.log(error)
         })
     },
 
@@ -567,7 +565,6 @@ export default {
           store.state.user_details = res
         }
       ).catch(error => {
-        console.log(error)
         this.$store.state.token = ''
       })
     } else {
