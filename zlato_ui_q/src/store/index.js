@@ -187,14 +187,21 @@ export default new Vuex.Store({
           return order.status === 'CLOSED' && order.is_rated === false
         })
       })
+    },
+    update_vendor (state, vendor) {
+      for (var i = 0; i < state.vendors.length; i++) {
+        if (state.vendors[i].vendor_id === vendor.vendor_id) {
+          state.vendors[i] = vendor
+        }
+      }
     }
   },
   actions: {
     push_instruments ({ commit }, instruments) {
-      // instruments = instruments.map(function(instrument) {
-      //   return instrument;
-      // });
       commit('push_instruments', instruments)
+    },
+    update_vendor ({ commit }, vendor) {
+      commit('update_vendor', vendor)
     },
     update_prices ({ commit }, tick) {
       console.log('updating prices')
@@ -207,6 +214,7 @@ export default new Vuex.Store({
       commit('push_vendors', vendors)
     },
     set_sheet ({ commit }, boolean) {
+      commit('set_sheet', boolean)
       commit('set_sheet', boolean)
     },
     set_best_limit_sheet ({ commit }, boolean) {

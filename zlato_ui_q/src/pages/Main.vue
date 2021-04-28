@@ -406,6 +406,10 @@ export default {
           var to_update = JSON.parse(message.instrument_update)
           store.dispatch('update_instrument', to_update)
         }
+        if (message.vendor_update) {
+          var to_update_vendor = JSON.parse(message.vendor_update)
+          store.dispatch('update_vendor', to_update_vendor)
+        }
         if (message.vendors) {
           var vendors = message.vendors.map(vendor => {
             vendor.theme = JSON.parse(vendor.theme)[0]

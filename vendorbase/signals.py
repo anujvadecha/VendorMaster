@@ -11,7 +11,7 @@ from admin_interface.models import Theme
 from orderManagement.api.serializers import OrderSerializer
 from orderManagement.models import Order, LimitOrderPending, OpenOrder, ExecutedOrder, ClosedOrder, OrderStatus, OrderType
 from userBase.models import NormalUser
-from vendorbase.api.serializers import SymbolSerializer, NormalUserSerializer
+from vendorbase.api.serializers import SymbolSerializer, NormalUserSerializer, VendorSerializer
 from vendorbase.models import Symbol, Vendor, VendorDetails, VendorMargin
 from django.core.cache import cache
 from notifications.views import notifications
@@ -106,7 +106,14 @@ def create_vendor_info_objects(sender, instance, created, **kwargs):
                     user=user, vendor=instance,
                     margin=instance.default_margin, margin_available=instance.default_margin
                 )
-
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        settings.SOCKET_GROUP,
+        {
+            "type": "vendor_update",
+            "vendor_update": json.dumps(VendorSerializer(instance).data, cls=UUIDEncoder)
+        }
+    )
 
 @receiver(post_save, sender=NormalUser)
 def user_created_updated(sender, instance, created, **kwargs):
