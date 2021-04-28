@@ -129,7 +129,7 @@ class BankRateView(APIView):
         vendor=Vendor.objects.filter(user_id=request.user).first()
         print(vendor)
         vendor.gold_premium=data["gold_premium"]
-        vendor.gold_999_premium=data["gold_premium_999"]
+        vendor.gold_999_premium=data["gold_999_premium"]
         vendor.silver_premium=data["silver_premium"]
         vendor.gold_conv=data["gold_conv"]
         vendor.gold_999_conv=data["gold_999_conv"]

@@ -11,7 +11,7 @@
         var globalPremiumBuy = 0;
         var globalPremiumSell = 0;
         const user = {{ request.user.id }};
-
+        var vendor=null;
         function connect() {
             var instruments;
             const url = 'ws://'
@@ -37,11 +37,46 @@
                     tickpriceBuy = data["gold_tick"]["bid"]
                     tickpriceSell = data["gold_tick"]["ask"]
                     renderTablesOnInstruments(instruments)
+                    document.getElementById('gold_ask').innerText=data['gold_comex']["ask"]
+                    document.getElementById('gold_999_ask').innerText=data['gold_comex']["ask"]
+                    document.getElementById('silver_ask').innerText=data['silver_tick']["ask"]
+                    document.getElementById("kgrate_Gold").innerText=
+                        ((data["gold_comex"]["ask"] + vendor.gold_premium) * vendor.gold_conv * (data["dollar"]["ask"]+vendor.gold_dollar_premium)+vendor.gold_custom)*(1+vendor.gold_tax/100)
+                    document.getElementById("kgrate_Gold_999").innerText=
+                        ((data["gold_comex"]["ask"] + vendor.gold_999_premium) * vendor.gold_999_conv * (data["dollar"]["ask"]+vendor.gold_999_dollar_premium)+vendor.gold_999_custom)*(1+vendor.gold_999_tax/100)
+                    document.getElementById("grmrate_Gold").innerText=
+                        ( ((data["gold_comex"]["ask"] + vendor.gold_premium) * vendor.gold_conv * (data["dollar"]["ask"]+vendor.gold_dollar_premium)+vendor.gold_custom)*(1+vendor.gold_tax/100))/100
+                    document.getElementById("grmrate_Gold_999").innerText=
+                    (((data["gold_comex"]["ask"] + vendor.gold_999_premium) * vendor.gold_999_conv * (data["dollar"]["ask"]+vendor.gold_999_dollar_premium)+vendor.gold_999_custom)*(1+vendor.gold_999_tax/100))/100
+                    document.getElementById("dollar1").innerText=data["dollar"]["ask"]
+                    document.getElementById("dollar2").innerText=data["dollar"]["ask"]
+                    document.getElementById("dollar3").innerText=data["dollar"]["ask"]
+
+
+                    {#document.getElementById("kgrate_Silver").innerText=#}
+                    {#    (data["silver"]["ask"] + vendor.gold_999_premium * vendor.gold_999_conv * (data["dollar"]["ask"]+vendor.gold_999_dollar_premium)+38500)*(1+vendor.gold_999_tax/100)#}
+
                 }
-                if(data["vendors"])
-                {
+                if(data["vendors"]) {
                     console.log(data)
+                    vendor=data["vendors"][0]
+                    document.getElementById("gold_premium").value=vendor.gold_premium
+                    document.getElementById("gold_999_premium").value=vendor.gold_999_premium
+                    document.getElementById("silver_premium").value=vendor.silver_premium
+                    document.getElementById("gold_conv").value=vendor.gold_conv
+                    document.getElementById("gold_999_conv").value=vendor.gold_999_conv
+                    document.getElementById("silver_conv").value=vendor.silver_conv
+                    document.getElementById("gold_custom").value=vendor.gold_custom
+                    document.getElementById("gold_999_custom").value=vendor.gold_999_custom
+                    document.getElementById("silver_custom").value=vendor.silver_custom
+                    document.getElementById("gold_dollar_premium").value=vendor.gold_dollar_premium
+                    document.getElementById("gold_999_dollar_premium").value=vendor.gold_999_dollar_premium
+                    document.getElementById("silver_dollar_premium").value=vendor.silver_dollar_premium
+                    document.getElementById("gold_tax").value=vendor.gold_tax
+                    document.getElementById("gold_999_tax").value=vendor.gold_999_tax
+                    document.getElementById("silver_tax").value=vendor.silver_tax
                 }
+                console.log(data)
             };
 
             tickerSocket.onclose = function (e) {
@@ -85,17 +120,17 @@ function getCookie(name) {
             console.log("Saving output")
             data_to_send={
                         gold_premium             :document.getElementById("gold_premium").value,
-                        gold_premium_999         :document.getElementById("gold_999_premium").value,
+                        gold_999_premium         :document.getElementById("gold_999_premium").value,
                         silver_premium           :document.getElementById("silver_premium").value,
                         gold_conv                :document.getElementById("gold_conv").value,
                         gold_999_conv            :document.getElementById("gold_999_conv").value,
                         silver_conv              :document.getElementById("silver_conv").value,
                         gold_custom              :document.getElementById("gold_custom").value,
                         gold_999_custom          :document.getElementById("gold_999_custom").value,
-                        silver_costom            :document.getElementById("silver_custom").value,
+                        silver_custom            :document.getElementById("silver_custom").value,
                         gold_dollar_premium      :document.getElementById("gold_dollar_premium").value,
                         gold_999_dollar_premium  :document.getElementById("gold_999_dollar_premium").value,
-                        silver_dollar_premium:document.getElementById("silver_dollar_premium").value,
+                        silver_dollar_premium    :document.getElementById("silver_dollar_premium").value,
                         gold_tax                 :document.getElementById("gold_tax").value,
                         gold_999_tax             :document.getElementById("gold_999_tax").value,
                         silver_tax               :document.getElementById("silver_tax").value
@@ -160,6 +195,7 @@ function getCookie(name) {
                 rows += row
             });
             document.getElementById("data-table").innerHTML = rows;
+
             {#$('#' + "data-table").html(rows);#}
         }
     </script>
@@ -253,12 +289,9 @@ function getCookie(name) {
         <tbody>
         <tr class="even">
             <td class="rateheading">ASK($)</td>
-            <td class=" "
-            ><label id="askdollar_Gold_999" class="0_askdollar">1861.90</label></td>
-            <td class=" "
-            ><label id="askdollar_Gold" class="1_askdollar">1861.90</label></td>
-            <td class=" "
-            ><label id="askdollar_Silver" class="2_askdollar">24.08</label></td></tr>
+            <td class=" "><label id="gold_999_ask" class="0_askdollar">1861.90</label></td>
+            <td class=" "><label id="gold_ask" class="1_askdollar">1861.90</label></td>
+            <td class=" "><label id="silver_ask" class="2_askdollar">24.08</label></td></tr>
         <tr class="odd">
             <td class="rateheading">Premium</td>
             <td class=" "
@@ -282,11 +315,11 @@ function getCookie(name) {
         <tr class="odd">
             <td class="rateheading">INR(₹)</td>
             <td class=" "
-            ><label id="dollar" class="0_inr">74.32</label></td>
+            ><label id="dollar1" class="0_inr">74.32</label></td>
             <td class=" "
-            ><label id="dollar" class="1_inr">74.32</label></td>
+            ><label id="dollar2" class="1_inr">74.32</label></td>
             <td class=" "
-            ><label id="dollar" class="2_inr">74.32</label></td></tr>
+            ><label id="dollar3" class="2_inr">74.32</label></td></tr>
         <tr class="even">
             <td class="rateheading">Premium</td>
             <td class=" "
