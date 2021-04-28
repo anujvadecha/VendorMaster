@@ -193,6 +193,11 @@ export default new Vuex.Store({
           state.vendors[i] = vendor
         }
       }
+      state.instruments.map(instrument => {
+        if (instrument.vendor_id === vendor.vendor_id) {
+          instrument.vendor_object = vendor
+        }
+      })
     }
   },
   actions: {

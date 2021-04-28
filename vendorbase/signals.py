@@ -106,6 +106,7 @@ def create_vendor_info_objects(sender, instance, created, **kwargs):
                     user=user, vendor=instance,
                     margin=instance.default_margin, margin_available=instance.default_margin
                 )
+    print("sending update")
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         settings.SOCKET_GROUP,

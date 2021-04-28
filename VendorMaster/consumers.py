@@ -93,6 +93,9 @@ class TickConsumer(AsyncWebsocketConsumer):
     async def instrument_update(self, data):
         await self.send(text_data=json.dumps(data, cls=UUIDEncoder))
 
+    async def vendor_update(self, data):
+        await self.send(text_data=json.dumps(data, cls=UUIDEncoder))
+
     async def order_update(self, data):
         if(self.user != AnonymousUser):
             if(data["user"] == self.user.id):
