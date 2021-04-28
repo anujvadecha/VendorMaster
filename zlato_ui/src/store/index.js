@@ -27,12 +27,18 @@ export default new Vuex.Store({
         } else if (instrument.source_symbol === "gold_bank") {
           console.log("updating gold bank rate");
           instrument.bid =
-            (tick.gold_comex.ask * tick.dollar.ask * 31.1035 * 1.12875) /
-              0.999 +
-            instrument.buy_premium;
+            (((tick.gold_comex.ask + instrument.vendor.gold_premium) *
+              instrument.vendor.gold_conv *
+              (tick.dollar.ask + instrument.vendor.gold_dollar_premium) +
+              instrument.vendor.gold_custom) *
+              (1 + instrument.vendor.gold_tax / 100)) /
+            +instrument.buy_premium;
           instrument.ask =
-            (tick.gold_comex.ask * tick.dollar.ask * 31.1035 * 1.12875) /
-              0.999 +
+            (((tick.gold_comex.ask + instrument.vendor.gold_premium) *
+              instrument.vendor.gold_conv *
+              (tick.dollar.ask + instrument.vendor.gold_dollar_premium) +
+              instrument.vendor.gold_custom) *
+              (1 + instrument.vendor.gold_tax / 100)) /
             instrument.sell_premium;
         }
         instrument.high = Math.max(
