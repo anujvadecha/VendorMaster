@@ -90,20 +90,20 @@ export default new Vuex.Store({
         } else if (instrument.source_symbol === 'gold_bank') {
           console.log(instrument.vendor_object)
           instrument.bid =
-            (((tick.gold_comex.ask + instrument.vendor_object.gold_premium) *
+           parseInt((((tick.gold_comex.ask + instrument.vendor_object.gold_premium) *
               instrument.vendor_object.gold_conv *
               (tick.dollar.ask + instrument.vendor_object.gold_dollar_premium) +
               instrument.vendor_object.gold_custom) *
               (1 + instrument.vendor_object.gold_tax / 100)) / 100 +
-            instrument.buy_premium
+            instrument.buy_premium)
 
           instrument.ask =
-            (((tick.gold_comex.ask + instrument.vendor_object.gold_premium) *
+        parseInt((((tick.gold_comex.ask + instrument.vendor_object.gold_premium) *
               instrument.vendor_object.gold_conv *
               (tick.dollar.ask + instrument.vendor_object.gold_dollar_premium) +
               instrument.vendor_object.gold_custom) *
               (1 + instrument.vendor_object.gold_tax / 100)) / 100 +
-            instrument.sell_premium
+            instrument.sell_premium)
           // instrument.bid =
           //   parseInt((tick.gold_comex.ask * tick.dollar.ask * 31.1035 * 1.12875) /
           //     0.999 / 100) +
