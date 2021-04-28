@@ -136,7 +136,7 @@ class BankRateView(APIView):
         vendor.silver_conv=data["silver_conv"]
         vendor.gold_custom=data["gold_custom"]
         vendor.gold_999_custom=data["gold_999_custom"]
-        vendor.silver_custom=data["silver_costom"]
+        vendor.silver_custom=data["silver_custom"]
         vendor.gold_dollar_premium=data["gold_dollar_premium"]
         vendor.gold_999_dollar_premium=data["gold_999_dollar_premium"]
         vendor.silver_dollar_premium=data["silver_dollar_premium"]
