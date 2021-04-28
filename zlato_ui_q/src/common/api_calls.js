@@ -1,8 +1,8 @@
 import { apiService } from './api.service'
-// const base_url = 'https://admin.deltabx.com'
-// const base_websocket_url = 'admin.deltabx.com'
-const base_url = 'http://localhost:8000'
-const base_websocket_url = 'localhost:8000'
+const base_url = 'https://admin.deltabx.com'
+const base_websocket_url = 'admin.deltabx.com'
+// const base_url = 'http://localhost:8000'
+// const base_websocket_url = 'localhost:8000'
 
 function add_to_favourites (instrument_id) {
   const endpoint = base_url + '/api/favourites/'
