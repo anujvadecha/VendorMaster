@@ -41,6 +41,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     # 'debug_toolbar',
+    'admin_reorder',
     'django_celery_results',
     'channels',
     'base',
@@ -77,6 +78,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'admin_reorder.middleware.ModelAdminReorder',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -244,3 +246,10 @@ TEMPLATE_LOADERS = (
 )
 USE_TZ = True
 TIME_ZONE = 'Asia/Kolkata'
+ADMIN_REORDER = (
+    'vendorbase',
+    'orderManagement',
+    'admin_interface',
+    'accounts',
+    'sites',
+)
