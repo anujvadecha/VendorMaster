@@ -88,6 +88,24 @@
                     document.getElementById("gold_999_tax").value=vendor.gold_999_tax
                     document.getElementById("silver_tax").value=vendor.silver_tax
                 }
+                if(data["vendor_update"]) {
+                    vendor=data["vendor_update"]
+                    document.getElementById("gold_premium").value=vendor.gold_premium
+                    document.getElementById("gold_999_premium").value=vendor.gold_999_premium
+                    document.getElementById("silver_premium").value=vendor.silver_premium
+                    document.getElementById("gold_conv").value=vendor.gold_conv
+                    document.getElementById("gold_999_conv").value=vendor.gold_999_conv
+                    document.getElementById("silver_conv").value=vendor.silver_conv
+                    document.getElementById("gold_custom").value=vendor.gold_custom
+                    document.getElementById("gold_999_custom").value=vendor.gold_999_custom
+                    document.getElementById("silver_custom").value=vendor.silver_custom
+                    document.getElementById("gold_dollar_premium").value=vendor.gold_dollar_premium
+                    document.getElementById("gold_999_dollar_premium").value=vendor.gold_999_dollar_premium
+                    document.getElementById("silver_dollar_premium").value=vendor.silver_dollar_premium
+                    document.getElementById("gold_tax").value=vendor.gold_tax
+                    document.getElementById("gold_999_tax").value=vendor.gold_999_tax
+                    document.getElementById("silver_tax").value=vendor.silver_tax
+                }
             };
 
             tickerSocket.onclose = function (e) {
@@ -157,7 +175,7 @@ function getCookie(name) {
         		success: function(response){
                     console.log(response);
                     alert("success");
-                    window.location.reload(true);
+                    {#window.location.reload(true);#}
         		},
         		error: function(e){
         		    console.log("errorResponse.responseJSON :: ");
