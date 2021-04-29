@@ -52,16 +52,16 @@
                     document.getElementById("kgrate_Gold_999").innerText=
                         ((data["gold_comex"]["ask"] + vendor.gold_999_premium) * vendor.gold_999_conv * (data["dollar"]["ask"]+vendor.gold_999_dollar_premium)+vendor.gold_999_custom)*(1+vendor.gold_999_tax/100)
                     document.getElementById("grmrate_Gold").innerText=
-                        ( ((data["gold_comex"]["ask"] + vendor.gold_premium) * vendor.gold_conv * (data["dollar"]["ask"]+vendor.gold_dollar_premium)+vendor.gold_custom)*(1+vendor.gold_tax/100))/100
+                        ( ((data["gold_comex"]["ask"] + vendor.gold_premium) * vendor.gold_conv * (data["dollar"]["ask"]+vendor.gold_dollar_premium)+vendor.gold_custom)*(1+vendor.gold_tax/100))/1000
                     document.getElementById("grmrate_Gold_999").innerText=
-                    (((data["gold_comex"]["ask"] + vendor.gold_999_premium) * vendor.gold_999_conv * (data["dollar"]["ask"]+vendor.gold_999_dollar_premium)+vendor.gold_999_custom)*(1+vendor.gold_999_tax/100))/100
+                    (((data["gold_comex"]["ask"] + vendor.gold_999_premium) * vendor.gold_999_conv * (data["dollar"]["ask"]+vendor.gold_999_dollar_premium)+vendor.gold_999_custom)*(1+vendor.gold_999_tax/100))/1000
                     goldBankRate999Ask=        (((data["gold_comex"]["ask"] + vendor.gold_999_premium) * vendor.gold_999_conv * (data["dollar"]["ask"]+vendor.gold_999_dollar_premium)+vendor.gold_999_custom)*(1+vendor.gold_999_tax/100))/100
 
                     goldBankRate999Bid=        (((data["gold_comex"]["bid"] + vendor.gold_999_premium) * vendor.gold_999_conv * (data["dollar"]["bid"]+vendor.gold_999_dollar_premium)+vendor.gold_999_custom)*(1+vendor.gold_999_tax/100))/100
 
 
-                    goldBankRateAsk=(((data["gold_comex"]["ask"] + vendor.gold_premium) * vendor.gold_conv * (data["dollar"]["ask"]+vendor.gold_dollar_premium)+vendor.gold_custom)*(1+vendor.gold_tax/100))/100
-                    goldBankRateBid=(((data["gold_comex"]["bid"] + vendor.gold_premium) * vendor.gold_conv * (data["dollar"]["bid"]+vendor.gold_dollar_premium)+vendor.gold_custom)*(1+vendor.gold_tax/100))/100
+                    goldBankRateAsk= (((data["gold_comex"]["ask"] + vendor.gold_premium) * vendor.gold_conv * (data["dollar"]["ask"]+vendor.gold_dollar_premium)+vendor.gold_custom)*(1+vendor.gold_tax/100))/100
+                    goldBankRateBid= (((data["gold_comex"]["bid"] + vendor.gold_premium) * vendor.gold_conv * (data["dollar"]["bid"]+vendor.gold_dollar_premium)+vendor.gold_custom)*(1+vendor.gold_tax/100))/100
 
                     document.getElementById("dollar1").innerText=data["dollar"]["ask"]
                     document.getElementById("dollar2").innerText=data["dollar"]["ask"]
@@ -413,10 +413,135 @@ function getCookie(name) {
             </td>
         </tr>
         </tbody>
-
     </table>
 
-{#    <div style="display: block" class="sell">#}
+
+   <table style="float: left"  width="50%" border="0" cellpadding="0" cellspacing="0" class="rpbankrates" id="table2">
+{#        <thead>#}
+{#        <tr class="title" >#}
+{#                <td>Selling</td>#}
+{#        </tr>#}
+{#        </thead>#}
+        <tbody>
+        <tr class="even" align="middle" >
+            <td colspan="2">Spot</td>
+            <td colspan="2">Selling</td>
+            <td colspan="2">Future</td>
+        </tr>
+        <tr class="even" align="middle"  >
+            <td id="sell_spot"  style="font-size: large" style="font-size: large" colspan="2">Spot</td>
+            <td id="selling" style="font-size: large" colspan="2">Selling</td>
+            <td id="sell_future" style="font-size: large" colspan="2">Future</td>
+        </tr>
+        <tr class="even" align="middle">
+            <td   colspan="3">Difference_Spot</td>
+            <td  colspan="3">Difference_Future</td>
+        </tr>
+        <tr class="even" align="middle">
+            <td id="difference_spot" style="font-size: large" colspan="3">Difference_Spot</td>
+            <td id="difference_fut"  style="font-size: large" colspan="3">Difference_Future</td>
+        </tr>
+        <tr class="odd" align="middle" >
+            <td  colspan="6">Spot_Future diff</td>
+        </tr>
+        <tr class="odd" align="middle" >
+            <td colspan="6" style="font-size: large">Spot_Future diff</td>
+        </tr>
+        <tr>
+            <td  colspan="6">&nbsp;</td>
+        </tr>
+{#        <tr>#}
+{#           <td>Hell</td>#}
+{#        </tr>#}
+{#        <tr class="even">#}
+{#            <td class="rateheading">ASK($)</td>#}
+{#            <td class=" "><label id="gold_999_ask" class="0_askdollar">1861.90</label></td>#}
+{#            <td class=" "><label id="gold_ask" class="1_askdollar">1861.90</label></td>#}
+{#            <td class=" "><label id="silver_ask" class="2_askdollar">24.08</label></td></tr>#}
+{#        <tr class="odd">#}
+{#            <td class="rateheading">Premium</td>#}
+{#            <td class=" "#}
+{#            ><input  class="white-highlight" type="text" value="1.000" id="gold_999_premium"></td>#}
+{#            <td class=" "#}
+{#            ><input class="white-highlight" type="text" value="3.500" name="fv[bankrate][Gold][premium]"#}
+{#                        id="gold_premium"></td>#}
+{#            <td class=" "><input class="white-highlight" type="text" value="0.120" name="fv[bankrate][Silver][premium]"#}
+{#                        id="silver_premium" ></td></tr>#}
+{#        <tr class="even">#}
+{#            <td class="rateheading">Conv</td>#}
+{#            <td class=" "#}
+{#            ><input class="txtlabel" type="text" value="32.1200" name="fv[bankrate][Gold_999][bconvert_value]"#}
+{#                        id="gold_999_conv" ></td>#}
+{#            <td class=" "#}
+{#            ><input class="txtlabel" type="text" value="31.1034" name="fv[bankrate][Gold][bconvert_value]"#}
+{#                        id="gold_conv" ></td>#}
+{#            <td class=" "#}
+{#            ><input class="txtlabel" type="text" value="32.1508" name="fv[bankrate][Silver][bconvert_value]"#}
+{#                        id="silver_conv" ></td></tr>#}
+{#        <tr class="odd">#}
+{#            <td class="rateheading">INR(₹)</td>#}
+{#            <td class=" "#}
+{#            ><label id="dollar1" class="0_inr">74.32</label></td>#}
+{#            <td class=" "#}
+{#            ><label id="dollar2" class="1_inr">74.32</label></td>#}
+{#            <td class=" "#}
+{#            ><label id="dollar3" class="2_inr">74.32</label></td></tr>#}
+{#        <tr class="even">#}
+{#            <td class="rateheading">Premium</td>#}
+{#            <td class=" "#}
+{#            ><input class="white-highlight" type="text" value="0.010" name="fv[bankrate][Gold_999][rupeepremium]"#}
+{#                        id="gold_999_dollar_premium"></td>#}
+{#            <td class=" "#}
+{#            ><input class="white-highlight" type="text" value="0.010" name="fv[bankrate][Gold][rupeepremium]"#}
+{#                        id="gold_dollar_premium"></td>#}
+{#            <td class=" "#}
+{#            ><input class="white-highlight" type="text" value="0.001" name="fv[bankrate][Silver][rupeepremium]"#}
+{#                        id="silver_dollar_premium"></td></tr>#}
+{#        <tr class="odd">#}
+{#            <td class="rateheading">Custom</td>#}
+{#            <td class=" "#}
+{#            ><input class="white-highlight" type="text" value="385000.000" name="fv[bankrate][Gold_999][custom]"#}
+{#                        id="gold_999_custom"></td>#}
+{#            <td class=" "#}
+{#            ><input class="white-highlight" type="text" value="385000.000" name="fv[bankrate][Gold][custom]"#}
+{#                        id="gold_custom"></td>#}
+{#            <td class=" "#}
+{#            ><input class="white-highlight" type="text" value="7025.000" name="fv[bankrate][Silver][custom]"#}
+{#                        id="silver_custom"></td></tr>#}
+{#        <tr class="odd">#}
+{#            <td class="rateheading">Tax</td>#}
+{#            <td class=" "#}
+{#            ><input class="white-highlight" type="text" value="3.000" name="fv[bankrate][Gold_999][btax_value]"#}
+{#                        id="gold_999_tax"></td>#}
+{#            <td class=" "#}
+{#            ><input class="white-highlight" type="text" value="3.000" name="fv[bankrate][Gold][btax_value]"#}
+{#                        id="gold_tax"></td>#}
+{#            <td class=" "#}
+{#            ><input class="white-highlight" type="text" value="3.000" name="fv[bankrate][Silver][btax_value]"#}
+{#                        id="silver_tax"></td></tr>#}
+{#        <tr class="odd">#}
+{#            <td class="rateheading">1Grm Rate</td>#}
+{#            <td class=" "#}
+{#            ><label id="grmrate_Gold_999" class="0_grmrate">4977.61</label></td>#}
+{#            <td class=" "#}
+{#            ><label id="grmrate_Gold" class="1_grmrate">4862.89</label></td>#}
+{#            <td class=" "#}
+{#            ><label id="grmrate_Silver" class="2_grmrate">66.80</label></td></tr>#}
+{#        <tr class="even">#}
+{#            <td class="rateheading">1KG Rate</td>#}
+{#            <td class=" "#}
+{#            ><label id="kgrate_Gold_999" class="0_kgrate">4977614.92</label></td>#}
+{#            <td class=" "#}
+{#            ><label id="kgrate_Gold" class="1_kgrate">4862891.42</label></td>#}
+{#            <td class=" " ><label id="kgrate_Silver" class="2_kgrate">66795.97</label></td></tr>#}
+{#        <tr class="odd">#}
+{#        <td colspan="4">#}
+{#            <input type="button" onclick="save()" value="Save"/>#}
+{#            </td>#}
+{#        </tr>#}
+        </tbody>
+    </table>
+
 {#        <div class="bank" id="spot_sell">4977.61</div>#}
 {#        <div class="svg" id="sell">4872.90</div>#}
 {#        <div class="mcx" id="future">5001.00</div>#}
@@ -432,7 +557,7 @@ function getCookie(name) {
 {#										<div class="bank-svg" id="buy_spot" style="background-color: red;">-124.76</div>#}
 {#										<div class="svg-mcx" id="buy_future" style="background-color: red;">-147.45</div>#}
 {#	<div class="bank-mcx" id="spot_buyfuture" style="background-color: green;">22.69</div>#}
-{#</div>#}
+</div>
 {% endblock %}
 {% block filters %}
     {% endblock %}
