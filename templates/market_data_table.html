@@ -226,8 +226,8 @@ function getCookie(name) {
                 var row = '<tr>';
                 row += '<td style="font-size: large">' + item["vendor"] + '</td>';
                 row += '<td style="font-size: large">' + item["name"] + '</td>';
-                row += '<td style="font-size: large">' + bidprice + '</td>';
-                row += '<td style="font-size: large">' + askprice + '</td>';
+                row += '<td style="font-size: large">' + parseInt(bidprice) + '</td>';
+                row += '<td style="font-size: large">' + parseInt(askprice) + '</td>';
                 {#row += '<td>' + item["high"] + '</td>';#}
                 {#row += '<td>' + item["low"] + '</td>';#}
                 row + '<tr>';
