@@ -345,4 +345,5 @@ class VendorConsumer(WebsocketConsumer):
         logger.info(f"Premium has been updated for {data}")
 
     def vendor_update(self, data):
+        print("sending vendor update")
         self.send(text_data=json.dumps(data, cls=UUIDEncoder))

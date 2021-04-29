@@ -89,7 +89,8 @@
                     document.getElementById("silver_tax").value=vendor.silver_tax
                 }
                 if(data["vendor_update"]) {
-                    vendor=data["vendor_update"]
+                    vendor= JSON.parse(data["vendor_update"])
+                    console.log(vendor)
                     document.getElementById("gold_premium").value=vendor.gold_premium
                     document.getElementById("gold_999_premium").value=vendor.gold_999_premium
                     document.getElementById("silver_premium").value=vendor.silver_premium
