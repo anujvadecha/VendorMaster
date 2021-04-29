@@ -63,8 +63,8 @@
                     goldBankRateAsk= (((data["gold_comex"]["ask"] + vendor.gold_premium) * vendor.gold_conv * (data["dollar"]["ask"]+vendor.gold_dollar_premium)+vendor.gold_custom)*(1+vendor.gold_tax/100))/100
                     goldBankRateBid= (((data["gold_comex"]["bid"] + vendor.gold_premium) * vendor.gold_conv * (data["dollar"]["bid"]+vendor.gold_dollar_premium)+vendor.gold_custom)*(1+vendor.gold_tax/100))/100
                     document.getElementById('sell_spot').innerText = goldBankRateAsk/10
-                    document.getElementById('sell_future').innerText = data['gold_tick']['ask']/100
-                    document.getElementById('spot_future_diff').innerText = goldBankRateAsk - data['gold_tick']['ask']
+                    document.getElementById('sell_future').innerText = data['gold_tick']['ask']/10
+                    document.getElementById('spot_future_diff').innerText = goldBankRateAsk/10 - data['gold_tick']['ask']/10
                     document.getElementById("dollar1").innerText=data["dollar"]["ask"]
                     document.getElementById("dollar2").innerText=data["dollar"]["ask"]
                     document.getElementById("dollar3").innerText=data["dollar"]["ask"]
