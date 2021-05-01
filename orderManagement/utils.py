@@ -2,7 +2,7 @@ import hashlib
 import random
 import string
 
-def random_string_generator(size=13, chars= string.digits):
+def random_string_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 
