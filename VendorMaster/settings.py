@@ -41,7 +41,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     # 'debug_toolbar',
-    'admin_reorder',
+    # 'admin_reorder',
     'django_celery_results',
     'channels',
     'base',
@@ -246,11 +246,3 @@ TEMPLATE_LOADERS = (
 )
 USE_TZ = True
 TIME_ZONE = 'Asia/Kolkata'
-ADMIN_REORDER = (
-    'vendorbase',
-    'orderManagement',
-    'userBase',
-    'admin_interface',
-    'accounts',
-    'sites',
-)
