@@ -249,6 +249,7 @@ TIME_ZONE = 'Asia/Kolkata'
 ADMIN_REORDER = (
     'vendorbase',
     'orderManagement',
+    'userBase',
     'admin_interface',
     'accounts',
     'sites',
