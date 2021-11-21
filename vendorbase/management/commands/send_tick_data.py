@@ -14,54 +14,55 @@ from vendorbase.tasks import update_high_low
 class Command(BaseCommand):
     help = 'Process to send gold ticker data'
     def handle(self, *args, **options):
-        sio = socketio.Client(reconnection=True)
+        # sio = socketio.Client(reconnection=True)
 
-        @sio.on(event='connect')
+        # @sio.on(event='connect')
         def connect():
             print('connection established')
 
-        @sio.on(event='disconnect')
+        # @sio.on(event='disconnect')
         def disconnect():
             print('disconnected from server')
 
-        @sio.on(event='mcxratesupdate:App\\Events\\MCXRateUpdates')
-        def my_message(data):
+        # @sio.on(event='mcxratesupdate:App\\Events\\MCXRateUpdates')
+        while True:
+        # def my_message(data):
             tick = {
                 "type": "tick",
                 "gold_tick":
                     {
-                        "bid": float(json.loads(data['updatedata'])[0]['gold1_bid']),
-                        "ask": float(json.loads(data['updatedata'])[0]['gold1_ask']),
-                        "low": float(json.loads(data['updatedata'])[0]['gold1_low']),
-                        "high": float(json.loads(data['updatedata'])[0]['gold1_high'])
+                        "bid": randint(50000,50800),
+                        "ask": randint(50000,50800),
+                        "low": randint(50000,50800),
+                        "high": randint(50000,50800)
                     },
                 "silver_tick":
                     {
-                        "bid": float(json.loads(data['updatedata'])[1]['gold1_bid']),
-                        "ask": float(json.loads(data['updatedata'])[1]['gold1_ask']),
-                        "low": float(json.loads(data['updatedata'])[1]['gold1_low']),
-                        "high": float(json.loads(data['updatedata'])[1]['gold1_high'])
+                        "bid": randint(23, 25),
+                        "ask": randint(23, 25),
+                        "low": randint(23, 25),
+                        "high": randint(23, 25)
                     },
                 "gold_comex":
                     {
-                        "bid": float(json.loads(data['updatedata'])[2]['gold1_bid']),
-                        "ask": float(json.loads(data['updatedata'])[2]['gold1_ask']),
-                        "low": float(json.loads(data['updatedata'])[2]['gold1_low']),
-                        "high": float(json.loads(data['updatedata'])[2]['gold1_high'])
+                        "bid": randint(1840,1840),
+                        "ask": randint(1840,1840),
+                        "low": randint(1840,1840),
+                        "high": randint(1840,1840)
                     },
                 "silver_comex":
                     {
-                        "bid": float(json.loads(data['updatedata'])[3]['gold1_bid']),
-                        "ask": float(json.loads(data['updatedata'])[3]['gold1_ask']),
-                        "low": float(json.loads(data['updatedata'])[3]['gold1_low']),
-                        "high": float(json.loads(data['updatedata'])[3]['gold1_high'])
+                        "bid": randint(23, 25),
+                        "ask": randint(23, 25),
+                        "low": randint(23, 25),
+                        "high": randint(23, 25)
                     },
                 "dollar":
                     {
-                        "bid": float(json.loads(data['updatedata'])[4]['gold1_bid']),
-                        "ask": float(json.loads(data['updatedata'])[4]['gold1_ask']),
-                        "low": float(json.loads(data['updatedata'])[4]['gold1_low']),
-                        "high": float(json.loads(data['updatedata'])[4]['gold1_high'])
+                        "bid": randint(74, 75),
+                        "ask": randint(74, 75),
+                        "low": randint(74, 75),
+                        "high": randint(74, 75)
                     }
             }
             channel_layer = get_channel_layer()
@@ -70,7 +71,9 @@ class Command(BaseCommand):
                 tick
             )
             update_high_low.delay(tick)
-        sio.connect('http://209.59.158.15:3001/',headers={ "secure": "true", "rejectUnauthorized": "false" },transports=["websocket"])
+            time.sleep(0.5)
+        # sio.connect('http://209.59.158.15:3001/',headers={ "secure": "true", "rejectUnauthorized": "false" },transports=["websocket"])
         # sio.wait()
         # while True:
         # time.sleep(1)
+
