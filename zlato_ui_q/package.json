@@ -1,8 +1,8 @@
 {
   "name": "zlato_ui_q",
   "version": "0.0.1",
-  "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "description": "Gold bullion marketplace. See bullion prices accross multiple bullions and place orders",
+  "productName": "Deltabx",
   "author": "",
   "private": true,
   "scripts": {
